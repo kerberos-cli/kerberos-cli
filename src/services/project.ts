@@ -1,59 +1,139 @@
 import fs from 'fs-extra'
 import path from 'path'
 import { promisify } from 'util'
-import inquirer from 'inquirer'
-import flattenDeep from 'lodash/flattenDeep'
-import { execPath } from '../constants/config'
-import * as Types from '../types'
+import isGitUrl from 'is-git-url'
 import { glob } from 'glob'
+import flattenDeep from 'lodash/flattenDeep'
+import { isPristine } from './git'
+import { configFile } from '../constants/config'
+import * as Types from '../types'
 
-export async function selectPackage(config: Types.CerberusSettings, options?: { cwd?: string }) {
-  const { packages } = config || {}
-  if (!Array.isArray(packages)) {
-    return []
-  }
-
-  const selectOptions = packages.map(item => {
-    const name = path.dirname(item)
-    const value = path.join(options?.cwd || execPath, name)
-    return { name, value }
-  })
-
-  const { value: selected } = await inquirer.prompt({
-    type: 'list',
-    name: 'value',
-    message: 'Please select clone folder',
-    choices: selectOptions,
-  })
-
-  return selected
-}
-
-export async function openConfigFile(file?: string, options?: { cwd?: string }): Promise<Types.CerberusSettings> {
-  const configFile = path.isAbsolute(file) ? file : path.join(options?.cwd || execPath, file)
-  const source = await fs.readJSON(configFile)
+/** 读取配置文件信息 */
+export async function getConfig(): Promise<Types.CCSettings> {
+  const config = path.join(process.cwd(), configFile)
+  const source = (await fs.readJSON(config)) || {}
   return source
 }
 
-export async function getPackages(config: Types.CerberusSettings, options?: { cwd?: string }): Promise<Array<{ name: string, version: string }>> {
-  const { packages } = config || {}
-  if (!Array.isArray(packages)) {
+/** 获取所有工作区信息 */
+export async function getWorkspaces(): Promise<Types.CCWorkspace[]> {
+  const { workspaces } = await getConfig()
+  if (!Array.isArray(workspaces)) {
     return []
   }
 
-  const globPromises = packages.map(async item => {
-    const pattern = path.join(options?.cwd || execPath, item)
-    return await promisify(glob)(pattern)
+  return workspaces.map(item => {
+    const name = path.dirname(item)
+    const folder = path.join(process.cwd(), name)
+    return { name, folder }
+  })
+}
+
+/**
+ * 获取工作区信息
+ * @param name 工作区名称
+ */
+export async function getWorkspace(name: string): Promise<Types.CCWorkspace> {
+  const { workspaces } = await getConfig()
+  if (!Array.isArray(workspaces)) {
+    return null
+  }
+
+  const names = workspaces.map(pattern => path.dirname(pattern))
+  if (-1 === names.indexOf(name)) {
+    return null
+  }
+
+  const folder = path.join(process.cwd(), name)
+  return { name, folder }
+}
+
+/** 获取所有的工作区 */
+export async function getFoldersInWorkspace(): Promise<string[]> {
+  const { workspaces } = await getConfig()
+  if (!Array.isArray(workspaces)) {
+    return []
+  }
+
+  const promises = workspaces.map(async workspacePattern => {
+    const pattern = path.join(process.cwd(), workspacePattern)
+    const folders = await promisify(glob)(pattern)
+    return folders
   })
 
-  const folders = await Promise.all(globPromises)
-  const pkgPromises = flattenDeep(folders).map(async folder => {
-    const file = path.join(folder, 'package.json')
-    if (await fs.pathExists(file)) {
-      const { name, version } = await fs.readJSON(file)
-      return { name, version }
+  const results = await Promise.all(promises)
+  return flattenDeep(results)
+}
+
+/**
+ * 获取所有 Packages
+ * @param filters 过滤项目名
+ */
+export async function getProjects(filters?: string[]): Promise<Types.CCProject[]> {
+  const workspaces = await getFoldersInWorkspace()
+  const projects = await Promise.all(
+    workspaces.map(async folder => {
+      const file = path.join(folder, 'package.json')
+      if (await fs.pathExists(file)) {
+        const { name, version } = await fs.readJSON(file)
+        return { name, version, folder }
+      }
+    })
+  )
+
+  if (Array.isArray(filters) && filters.length > 0) {
+    return projects.filter(item => -1 !== filters.indexOf(item.name))
+  }
+
+  return projects
+}
+
+/**
+ * 根据名称获取Package
+ * @param name 项目名称
+ */
+export async function getProject(name: string): Promise<Types.CCProject> {
+  const projects = await getProjects()
+  return projects.find(item => item.name === name)
+}
+
+/** 获取有未提交的项目 */
+export async function getDirtyProjects(): Promise<Types.CCProject[]> {
+  const projects = await getProjects()
+  const promises = projects.map(async item => ((await isPristine(item.folder)) ? true : item))
+  const pristines = await Promise.all(promises)
+  const dirty = pristines.filter(flag => flag !== true)
+  return dirty as Types.CCProject[]
+}
+
+/**
+ * 添加项目
+ * @param projects 项目信息
+ */
+export async function addProjects(projects: Types.CCSettingProject[]): Promise<void> {
+  const config = path.join(process.cwd(), configFile)
+  const source = await getConfig()
+  const workspaces = await getWorkspaces()
+
+  const finalProjects = source.projects || []
+  projects.forEach(project => {
+    const { name, repository, workspace } = project || {}
+
+    if (!(typeof name === 'string' && name)) {
+      return
     }
+
+    if (!(typeof repository === 'string' && isGitUrl(repository))) {
+      return
+    }
+
+    if (!(typeof workspace === 'string' && -1 !== workspaces.findIndex(item => item.name === workspace))) {
+      return
+    }
+
+    finalProjects.push(project)
   })
 
-  return await Promise.all(pkgPromises)
+  source.projects = finalProjects
+  await fs.writeFile(config, JSON.stringify(source, null, 2))
 }

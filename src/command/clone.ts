@@ -1,25 +1,41 @@
 import path from 'path'
 import { program } from 'commander'
 import isGitUrl from 'is-git-url'
-import { openConfigFile, selectPackage } from '../services/project'
-import { clone as gitClone } from '../services/git'
-import { configFile, execPath } from '../constants/config'
-import * as Types from '../types'
+import { addProjects, getConfig } from '../services/project'
+import { gitClone } from '../services/git'
+import { success } from '../services/logger'
+import intercept from '../interceptors'
+import tryGetWorkspace from './share/tryGetWorkspace'
 
-async function clone (repo: string, folder?: string, options?: Types.CerberusOptions) {
-  if (!isGitUrl(repo)) {
+type CLICloneOptions = {
+  workspace?: string
+  optional?: boolean
+}
+
+async function takeAction(repository: string, name: string = path.basename(repository).replace('.git', ''), optoins?: CLICloneOptions): Promise<void> {
+  if (!isGitUrl(repository)) {
     throw new Error('Repo is not a valid git url')
   }
-  
-  const file = options?.config || configFile
-  const source = await openConfigFile(file, { cwd: options?.cwd })
-  const target = typeof folder === 'string' ? (path.isAbsolute(folder) ? folder : path.join(options?.cwd || execPath, folder)) : await selectPackage(source)
-  await gitClone(repo, null, target)
+
+  const { name: workspace, folder } = await tryGetWorkspace('Please select a workspace to clone the repository.', optoins?.workspace)
+  const config = await getConfig()
+  const projects = config?.projects || []
+  if (-1 !== projects.findIndex(item => item.name === name && item.workspace)) {
+    throw new Error('There is a project with the same name already exists.')
+  }
+
+  if (!(await gitClone(repository, name, folder))) {
+    throw new Error('Git clone error.')
+  }
+
+  const optional = typeof optoins?.optional === 'boolean' ? optoins?.optional : false
+  await addProjects([{ name, repository, workspace, optional }])
+  success('Git clone project completed.')
 }
 
 program
-.command('clone <repo> [folder]')
-.description('git clone repository')
-.option('-c, --config <config>', 'set the config file of the cerberus.')
-.option('--cwd <cwd>', 'set the current working directory of the Node.js process.')
-.action((repo: string, folder?: string, options?: Types.CerberusOptions) => clone(repo, folder, options))
+  .command('clone <repo> [name]')
+  .description('clone git repository to the workspace')
+  .option('-w, --workspace <workspace>', 'set the workspace for git clone.')
+  .option('-o, --optional [optional]', 'specify the repository as selective installation.')
+  .action((repo: string, name?: string, optoins?: CLICloneOptions) => intercept()(takeAction)(repo, name, optoins))

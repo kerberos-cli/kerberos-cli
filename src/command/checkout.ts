@@ -1,11 +1,26 @@
 import { program } from 'commander'
-import * as Types from '../types'
+import { spawn } from '../services/process'
+import { success } from '../services/logger'
+import intercept from '../interceptors'
+import tryGetProject from './share/tryGetProject'
+import tryGetBranch from './share/tryGetBranch'
 
-async function checkout (branch: string, options?: Types.CerberusOptions) {
+type CLICheckoutOptions = {
+  branch?: string
+  project?: string
+}
 
+async function takeAction(options?: CLICheckoutOptions) {
+  const { name, folder } = await tryGetProject('Please select the project to checkout branch.', options?.project)
+  const branch = await tryGetBranch('Please select the branch to checkout branch.', folder, options?.branch)
+  if (!(await spawn('git', ['checkout', branch], { stdio: 'inherit', cwd: folder }))) {
+    success(`Project ${name} has been change branch to ${branch}.`)
+  }
 }
 
 program
-.command('checkout <branch>')
-.option('--cwd <cwd>', 'set the current working directory of the Node.js process.')
-.action((branch: string, options?: Types.CerberusOptions) => checkout(branch, options))
+  .command('checkout')
+  .description('checkout git branch in the packages.')
+  .option('-b, --branch <branch>', 'specify the branch to switch.')
+  .option('-p, --project <project>', 'set project that exec command.')
+  .action((options?: CLICheckoutOptions) => intercept()(takeAction)(options))

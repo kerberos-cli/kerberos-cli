@@ -2,7 +2,7 @@ import { spawn as cpSpawn, exec, SpawnOptions, ExecOptions } from 'child_process
 
 export async function spawn(cli: string, params: string[] = [], options: SpawnOptions = {}, stdout?: (data: string, type: 'out' | 'err') => void): Promise<number> {
   return new Promise((resolve, reject) => {
-    let cp = cpSpawn(cli, params || [], options || {})
+    let cp = cpSpawn(cli, params, { stdio: 'inherit', ...options })
 
     if (typeof stdout === 'function') {
       cp.stdout.on('data', data => stdout(data, 'out'))
@@ -28,11 +28,9 @@ export async function spawn(cli: string, params: string[] = [], options: SpawnOp
   })
 }
 
-export async function getStdout(command: string, options: ExecOptions = {}, stdoutFn?: (data: string, type: 'out' | 'err') => void) {
+export async function getStdout(command: string, options: ExecOptions = {}, stdoutFn?: (data: string, type: 'out' | 'err') => void): Promise<string> {
   return new Promise((resolve, reject) => {
     exec(command, options, (error, stdout, stderr) => {
-      console.log(error, stdout, stderr)
-
       if (error) {
         if (typeof stdoutFn === 'function') {
           stdoutFn(stderr, 'err')
@@ -41,7 +39,7 @@ export async function getStdout(command: string, options: ExecOptions = {}, stdo
         reject(error)
         return
       }
-      
+
       if (typeof stdoutFn === 'function') {
         stdoutFn(stdout, 'out')
       }

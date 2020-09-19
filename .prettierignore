@@ -1,5 +1,7 @@
 # Folder
 
+/@app
+/@theme
 /bin
 /libs
 /node_modules
