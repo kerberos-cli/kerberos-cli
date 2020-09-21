@@ -5,11 +5,17 @@ import isEqual from 'lodash/isEqual'
 import { getConfig } from '../services/project'
 import { spawn } from '../services/process'
 import { success } from '../services/logger'
-import { confirm, selectConfigProjects } from '../services/ui'
+import { confirm, multiSelect } from '../services/ui'
 import intercept from '../interceptors'
 import * as Types from '../types'
 
-async function takeAction(): Promise<void> {
+type CLIBootstrapOptions = {
+  yes?: boolean
+  optional?: boolean
+}
+
+async function takeAction(options?: CLIBootstrapOptions): Promise<void> {
+  const { yes, optional } = options
   const config = await getConfig()
   const pkgFile = path.join(process.cwd(), 'package.json')
   if (!(await fs.pathExists(pkgFile))) {
@@ -57,20 +63,28 @@ async function takeAction(): Promise<void> {
     }
   })
 
+  // 安装依赖
   const nCodes = await Promise.all(install(necessaries))
   codes.push(...nCodes)
 
   if (optionals.length > 0) {
-    if (await confirm('It was found that some optional items were not installed. Do I need to install these items?', false)) {
-      const selectedProjects = await selectConfigProjects('Please select the project to clone.', optionals)
-      const oCodes = await Promise.all(install(selectedProjects))
-      codes.push(...oCodes)
+    if (yes) {
+      if (optional) {
+        const oCodes = await Promise.all(install(optionals))
+        codes.push(...oCodes)
+      }
+    } else {
+      if (await confirm('It was found that some optional items were not installed. Do I need to install these items?', false)) {
+        const selectedProjects = await multiSelect('projectInConfig')('Please select the project to clone.', optionals)
+        const oCodes = await Promise.all(install(selectedProjects))
+        codes.push(...oCodes)
+      }
     }
   }
 
-  // 安装依赖
+  // 操作结果
   if (codes.filter(code => code === 0).length === 0) {
-    if (!(await spawn('yarn', [], { stdio: 'inherit' }))) {
+    if (!(await spawn('yarn'))) {
       success('bootstrap has been completed.')
     }
   }
@@ -78,5 +92,7 @@ async function takeAction(): Promise<void> {
 
 program
   .command('bootstrap')
-  .description('initialize yarn workspace and install depedencies.')
-  .action(() => intercept()(takeAction)())
+  .description('initialize yarn workspace and install depedencies of all projects.')
+  .option('-y, --yes [yes]', 'Skip all questions.')
+  .option('-o, --optional [optional]', 'Specify to install all optional dependencies when When specifying the --yes option.')
+  .action((options: CLIBootstrapOptions) => intercept()(takeAction)(options))

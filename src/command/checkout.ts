@@ -13,7 +13,7 @@ type CLICheckoutOptions = {
 async function takeAction(options?: CLICheckoutOptions) {
   const { name, folder } = await tryGetProject('Please select the project to checkout branch.', options?.project)
   const branch = await tryGetBranch('Please select the branch to checkout branch.', folder, options?.branch)
-  if (!(await spawn('git', ['checkout', branch], { stdio: 'inherit', cwd: folder }))) {
+  if (!(await spawn('git', ['checkout', branch], { cwd: folder }))) {
     success(`Project ${name} has been change branch to ${branch}.`)
   }
 }

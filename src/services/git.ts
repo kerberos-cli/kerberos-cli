@@ -47,7 +47,7 @@ export async function gitClone(repo: string, name: string, folder: string): Prom
   await fs.ensureDir(folder)
 
   const args = ['clone', repo, name]
-  if (await spawn('git', args, { cwd: folder, stdio: 'inherit' })) {
+  if (await spawn('git', args, { cwd: folder })) {
     return false
   }
 

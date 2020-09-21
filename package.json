@@ -26,6 +26,7 @@
     "fs-extra": "^9.0.1",
     "glob": "^7.1.6",
     "inquirer": "^7.3.3",
+    "inquirer-command-prompt": "^0.0.29",
     "inquirer-search-checkbox": "^1.0.0",
     "inquirer-search-list": "^1.2.6",
     "is-git-url": "^1.0.0",

@@ -9,7 +9,7 @@ type CLIBranchesOptions = {
 
 async function takeAction(options?: CLIBranchesOptions): Promise<void> {
   const { folder } = await tryGetProject('Please select the project to view the branch.', options?.project)
-  await spawn('git', ['branch', '-a'], { stdio: 'inherit', cwd: folder })
+  await spawn('git', ['branch', '-a'], { cwd: folder })
 }
 
 program

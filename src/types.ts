@@ -34,4 +34,6 @@ export type CCProject = {
   folder: string
   /** 项目版本 */
   version: string
+  /** 可执行脚本 */
+  scripts: string[]
 }

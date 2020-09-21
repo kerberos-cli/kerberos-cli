@@ -75,8 +75,8 @@ export async function getProjects(filters?: string[]): Promise<Types.CCProject[]
     workspaces.map(async folder => {
       const file = path.join(folder, 'package.json')
       if (await fs.pathExists(file)) {
-        const { name, version } = await fs.readJSON(file)
-        return { name, version, folder }
+        const { name, version, scripts } = await fs.readJSON(file)
+        return { name, version, folder, scripts }
       }
     })
   )

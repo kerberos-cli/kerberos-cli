@@ -1,5 +1,5 @@
 import { getWorkspaces } from '../../services/project'
-import { selectWorkspace } from '../../services/ui'
+import { select } from '../../services/ui'
 
 /**
  * 如果未指定工作区则提示选择
@@ -17,6 +17,6 @@ export default async function tryGetWrokspace(message: string, wrokspace?: strin
     return workspaces[index]
   }
 
-  const workspace = await selectWorkspace(message)
+  const workspace = await select('workspace')(message)
   return workspace
 }
