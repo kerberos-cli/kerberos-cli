@@ -2,7 +2,7 @@ import fs from 'fs-extra'
 import path from 'path'
 import { program } from 'commander'
 import isEqual from 'lodash/isEqual'
-import { getConfig } from '../services/project'
+import { getConfig, getProjectInfoCollection } from '../services/project'
 import { spawn } from '../services/process'
 import { success } from '../services/logger'
 import { confirm, multiSelect } from '../services/ui'
@@ -29,15 +29,7 @@ async function takeAction(options?: Types.CLIBootstrapOptions): Promise<void> {
 
   // 克隆所有仓库
   const projects = config?.projects || []
-  const noExistsProjectFlags = await Promise.all(
-    projects.map(async ({ name, workspace }) => {
-      const wsFolder = path.join(process.cwd(), workspace)
-      const pjFolder = path.join(wsFolder, name)
-      const exists = await fs.pathExists(pjFolder)
-      return !exists
-    })
-  )
-
+  const existsProjects = (await getProjectInfoCollection()).map(project => project.name)
   const necessaries: Types.CProject[] = []
   const optionals: Types.CProject[] = []
   const codes: number[] = []
@@ -48,8 +40,8 @@ async function takeAction(options?: Types.CLIBootstrapOptions): Promise<void> {
     })
   }
 
-  projects.forEach((project, index) => {
-    if (noExistsProjectFlags[index]) {
+  projects.forEach(project => {
+    if (-1 === existsProjects.indexOf(project.name)) {
       if (project.optional === true) {
         optionals.push(project)
       } else {
@@ -77,12 +69,11 @@ async function takeAction(options?: Types.CLIBootstrapOptions): Promise<void> {
     }
   }
 
-  // 操作结果
-  if (codes.filter(code => code === 0).length === 0) {
-    if (!(await spawn('yarn'))) {
-      success('bootstrap has been completed.')
-    }
+  if (await confirm('Do you need to install dependencies.')) {
+    await spawn('yarn')
   }
+
+  success('bootstrap has been completed.')
 }
 
 program

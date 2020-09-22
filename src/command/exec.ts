@@ -57,8 +57,8 @@ async function takeAction(command?: string, options?: Types.CLIExecOptions): Pro
 }
 
 program
-  .command('exec [command...]')
+  .command('exec [command]')
   .description('execute commands in the project')
   .option('-p, --project <project>', 'specify the project to run npm-scripts')
   .option('--excute-once <excuteOnce>', 'exit after executing the command once')
-  .action((command: string[], options?: Types.CLIExecOptions) => intercept()(takeAction)(command.join(' '), options))
+  .action((command: string, options?: Types.CLIExecOptions) => intercept()(takeAction)(command, options))

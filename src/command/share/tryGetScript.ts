@@ -14,6 +14,6 @@ export default async function tryGetScript(message: string, scripts?: { [N: stri
     return scripts[specified]
   }
 
-  const { command } = await select('script')(message, scripts)
-  return command
+  const { name } = await select('script')(message, scripts)
+  return name
 }

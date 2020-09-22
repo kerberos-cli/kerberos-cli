@@ -52,12 +52,12 @@ async function takeAction(folder: string, repo?: string): Promise<void> {
       throw new Error('Project is invalid: can not found cerberus.json file.')
     }
 
-    await fs.link(defaultConfigFile, path.join(context, configFile))
+    await fs.symlink(defaultConfigFile, path.join(context, configFile))
   } else {
     if (await confirm('Can I create a new cerberus configuration project?')) {
       await fs.ensureDir(defaultConfigFolder)
       await fs.copy(configTemplate, defaultConfigFolder)
-      await fs.link(defaultConfigFile, path.join(context, configFile))
+      await fs.symlink(defaultConfigFile, path.join(context, configFile))
 
       if (!(await spawn('git', ['init'], { cwd: defaultConfigFolder }))) {
         success('The generation of the cerberus configuration project has been completed.')

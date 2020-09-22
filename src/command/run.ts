@@ -9,9 +9,8 @@ async function takeAction(script?: string, options?: Types.CLIRunOptions): Promi
   const project = await tryGetProject('Please select the project to be executed.', options?.project)
   const { folder, package: pkgJson } = project || {}
   const { scripts } = pkgJson || {}
-  const command = await tryGetScript('Please select a script to run.', scripts, script)
-  const [cli, ...params] = command.split(' ')
-  await spawn(cli, params, { cwd: folder })
+  const scriptName = await tryGetScript('Please select a script to run.', scripts, script)
+  await spawn('yarn', ['run', scriptName], { cwd: folder })
 }
 
 program

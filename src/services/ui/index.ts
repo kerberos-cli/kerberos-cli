@@ -78,7 +78,7 @@ export function gMultiSel<C, S extends Types.ChoicesGenerators<C>>(initialOption
 
       const { selected } = await inquirer.prompt({
         ...initialOptions,
-        type: 'list',
+        type: 'checkbox',
         name: 'selected',
         message: message,
         choices: choices,

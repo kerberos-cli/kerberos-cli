@@ -16,8 +16,8 @@ export async function getConfig(): Promise<Types.CConfig> {
 }
 
 /** 获取 package.json 文件路径集合 */
-export async function getPackagePathCollection(): Promise<string[]> {
-  const { workspaces } = await getConfig()
+export async function getPackagePathCollection(specifyConfig?: Types.CConfig): Promise<string[]> {
+  const { workspaces } = specifyConfig || (await getConfig())
   if (!Array.isArray(workspaces)) {
     return []
   }
@@ -35,15 +35,15 @@ export async function getPackagePathCollection(): Promise<string[]> {
 }
 
 /** 获取项目路径集合 */
-export async function getProjectPathCollection(): Promise<string[]> {
-  const packages = await getPackagePathCollection()
+export async function getProjectPathCollection(specifyPackagePathCollection?: string[]): Promise<string[]> {
+  const packages = specifyPackagePathCollection || (await getPackagePathCollection())
   const projects = packages.map(file => path.dirname(file))
   return projects
 }
 
 /** 获取有未提交的项目路径集合 */
-export async function getDirtyProjectPathCollection(): Promise<string[]> {
-  const collection = await getProjectPathCollection()
+export async function getDirtyProjectPathCollection(specifyProjectPathCollection?: string[]): Promise<string[]> {
+  const collection = specifyProjectPathCollection || (await getProjectPathCollection())
   const pristines = await Promise.all(
     collection.map(async folder => {
       const flag = await isPristine(folder)
@@ -56,15 +56,15 @@ export async function getDirtyProjectPathCollection(): Promise<string[]> {
 }
 
 /** 获取工作区路径集合 */
-export async function getWorkspacePathCollection(): Promise<string[]> {
-  const projects = await getProjectPathCollection()
+export async function getWorkspacePathCollection(specifyProjectPathCollection?: string[]): Promise<string[]> {
+  const projects = specifyProjectPathCollection || (await getProjectPathCollection())
   const workspaces = projects.map(folder => path.dirname(folder))
   return uniq(workspaces)
 }
 
 /** 获取项目信息集合 */
-export async function getProjectInfoCollection(): Promise<Types.DProject[]> {
-  const packages = await getPackagePathCollection()
+export async function getProjectInfoCollection(specifyPackagePathCollection?: string[]): Promise<Types.DProject[]> {
+  const packages = specifyPackagePathCollection || (await getPackagePathCollection())
   return await Promise.all(
     packages.map(async file => {
       const abs = path.join(process.cwd(), file)
@@ -77,14 +77,14 @@ export async function getProjectInfoCollection(): Promise<Types.DProject[]> {
 }
 
 /** 通过名称获取项目信息 */
-export async function getProjectInfoByName(name: string): Promise<Types.DProject> {
-  const collection = await getProjectInfoCollection()
+export async function getProjectInfoByName(name: string, specifyProjectInfoCollection?: Types.DProject[]): Promise<Types.DProject> {
+  const collection = specifyProjectInfoCollection || (await getProjectInfoCollection())
   return collection.find(item => item.name === name)
 }
 
 /** 获取有未提交的项目路径集合 */
-export async function getDirtyProjectInfoCollection(): Promise<Types.DProject[]> {
-  const collection = await getDirtyProjectPathCollection()
+export async function getDirtyProjectInfoCollection(specifyDirtyProjectPathCollection?: string[]): Promise<Types.DProject[]> {
+  const collection = specifyDirtyProjectPathCollection || (await getDirtyProjectPathCollection())
   return Promise.all(
     collection.map(async pFolder => {
       const file = path.join(pFolder, 'package.json')
@@ -97,12 +97,31 @@ export async function getDirtyProjectInfoCollection(): Promise<Types.DProject[]>
 }
 
 /** 获取工作区信息集合 */
-export async function getWorkspaceInfoCollection(): Promise<Types.DWorkspace[]> {
-  const workspaces = await getWorkspacePathCollection()
+export async function getWorkspaceInfoCollection(specifyWorkspacePathCollection?: string[]): Promise<Types.DWorkspace[]> {
+  const workspaces = specifyWorkspacePathCollection || (await getWorkspacePathCollection())
   return workspaces.map(name => {
     const folder = path.join(process.cwd(), name)
     return { name, folder }
   })
+}
+
+/** 获取依赖图谱 */
+export async function getDependencyGraph(specifyProjectInfoCollection?: Types.DProject[]): Promise<Types.FlattenDependencyList> {
+  const collection = specifyProjectInfoCollection || (await getProjectInfoCollection())
+  const names = collection.map(({ package: pkgJSON }) => pkgJSON.name)
+  const graph = collection.map(({ package: pkgJSON }) => {
+    const { name, dependencies: prodDependencies = {}, devDependencies = {}, optionalDependencies = {}, bundleDependencies = {}, bundledDependencies = {} } = pkgJSON
+
+    const prod = Object.keys(prodDependencies)
+    const dev = Object.keys(devDependencies)
+    const optional = Object.keys(optionalDependencies)
+    const bundle = Object.keys(bundleDependencies)
+    const bundled = Object.keys(bundledDependencies)
+    const dependencies: string[] = [].concat(prod, dev, optional, bundle, bundled).filter(name => -1 !== names.indexOf(name))
+    return { name, dependencies }
+  })
+
+  return graph
 }
 
 /**

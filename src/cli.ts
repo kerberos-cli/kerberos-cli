@@ -1,14 +1,18 @@
 import { program } from 'commander'
 import './extends/inquirer'
-import './command/bootstrap'
+
 import './command/init'
+import './command/bootstrap'
+import './command/install'
 import './command/ls'
 import './command/clone'
 import './command/checkout'
 import './command/branch'
 import './command/tag'
 import './command/run'
+import './command/run-multi'
 import './command/exec'
+import './command/exec-multi'
 import './command/support'
 
 const argv = ['node', 'cerberus'].concat(process.argv.slice(2))

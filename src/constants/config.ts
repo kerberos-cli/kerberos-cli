@@ -3,6 +3,9 @@ import path from 'path'
 /** CLI根目录 */
 export const rootPath = path.join(__dirname, '../../')
 
+/** 临时目录 */
+export const tmpPath = path.join(rootPath, '.temporary')
+
 /** 配置文件名称 */
 export const configFile = 'cerberus.json'
 
