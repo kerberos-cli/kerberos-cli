@@ -1,7 +1,7 @@
 language: node_js
 sudo: false
 node_js:
-  - 6
+  - 12
 
 cache:
   directories:
@@ -18,7 +18,7 @@ script:
   - npm run test
 
 before_deploy:
-  - npm run release
+  - npm run product
 
 deploy:
   - provider: npm
@@ -27,4 +27,4 @@ deploy:
       tags: true
     email: qowera@qq.com
     api_key:
-      secure: JbSsu9YP6niS1UOvlJh8EwKSVUKgLmM0+5S5yVyriSi7SWzRV1D4n/NonRMkJWtFFtLyv392DfFRxjNdcMJ/8RmdswA4M5azmZTBcBA2NiT7TepORj5e33VHDhbvQ6MllNJzeGihe4+9ZhM/BuBgs/1xVdlPGPoBvsIOTk1taO5TFvMa2mU3sv8iycDv3xKHCzCsaEPXDcHJIZxZbXnOvacg93BPMNeNEWM/+22pcikn3sZgNWeRKlk0l6FpLI4rh+9KoYMcUwI/JaKhWTkbqmnqPmXPu5XgcpzwQPUxbCDWGQVwTwbCVBKe2GjqbpalvLRD8hH1Ea9Qinm2U8JUostyzDLfeAME2E60EXjk8PI6fpXVzCiZiT65vK8SnGP6iOu+AF7Ve+27+eHSqj3h02BVJ63VfwH86gRyLDA1L9sjeMBNkQI2DwjHNqmq8aF7eRZmuq1QHEvhm9UaCes2KmBRZd+yv9oMJm3dJHUeMkWXtgTfE2Vk8iOUTHaicwEdm/AM4B8aGyZCK9bGiTtwI1BE31DtYs1c8Yw75g7Fd4kUI/gVbp/DK3sxN1J+dCCqiHV38htzfX/DVC6RkHsheXSLmbr3iWMT5whADFnhojDu7eJ1+7+R6hHoZGj7/XcU7z3KKSvjLU1zszq/ihCTzef4UCMhayOxjHgAJM1sCTY=
+      secure: F1gA9zHLUoV9vjoyO5t+xRg6wR/gDkwza5ow5zq4CK/fIvJHdpi3VUTAY8uqlKdni8xBnmbxGdt8Ngh5rqsTT58UITyoit1baPDYd+cU4ZlorXVHBR+arInF1TQQ7R3xBYrHK9321xUlizhRHJXRbWwtZJErDHt1JUQn74DvWOjQTUt4GDdhXKHoRG4AwL7Dd16KuVt/SHq4TZfKzFCF4166PjZrSne+4AfKiq3xA1XnQf93IQmEa2EcJqtP//R+RY8kYxiek+FuF9dBRFSuUPJDzpkInY1jjcfcv/nyhH3zjf5w2ZiJAZ0GYgLiXEF26Sd0fxJjE4Ne9ED7M456Cs1z9nLmSc/SndMottenca8MzELBQL9pdcaNPNR7oeg5g6x2rCcgmHKgqJnQ5JYj+TzlhZFRLpYayr6ibWsffYb/IqcYzsZ4YPckzQHzxWI87ZzpHDNl+s31bNxQ3QbzdEtpnmeIV8rJP2xBfv7i+aMVQP9wUraXmbRSRfsqTzwhNehtxPDwCylueBZONXc7LLNYqXQZx9w8s8BGLlaiVipzN4ZQaOzvktEN9RJZ5Jova6PjTf0LOgU8dNi8SnoKbuRi01wDR/VWwGi83suBYn484iBoiOdyXPVbKaFauLBxmv9EtrMTixM6RpeP+vSSVqikk+P/csjw3gdVHx5yWmM=

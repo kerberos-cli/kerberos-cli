@@ -1,7 +1,7 @@
 import fs from 'fs-extra'
 import path from 'path'
 import { PromiseType } from 'utility-types'
-import { warn } from '../services/logger'
+import { warn, error as promptError } from '../services/logger'
 import { configFile } from '../constants/config'
 import * as Types from '../types'
 
@@ -39,7 +39,13 @@ export default function context<T extends (...args: any[]) => Promise<any>, A ex
   callback: T
 ): (...args: A) => Promise<R> {
   return async function(...args: A): Promise<R> {
-    const { folder } = await lookupContext()
+    const context = await lookupContext()
+    if (!context) {
+      promptError('Not a kerberos workspace (or any of the parent directories)')
+      process.exit(0)
+    }
+
+    const { folder } = context
     process.chdir(folder)
 
     return callback(...args)
