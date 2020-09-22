@@ -1,0 +1,30 @@
+language: node_js
+sudo: false
+node_js:
+  - 6
+
+cache:
+  directories:
+    - node_modules
+
+install:
+  - npm install
+
+before_script:
+  - export DISPLAY=:99.0
+  - sh -e /etc/init.d/xvfb start
+
+script:
+  - npm run test
+
+before_deploy:
+  - npm run release
+
+deploy:
+  - provider: npm
+    skip_cleanup: true
+    on:
+      tags: true
+    email: qowera@qq.com
+    api_key:
+      secure: JbSsu9YP6niS1UOvlJh8EwKSVUKgLmM0+5S5yVyriSi7SWzRV1D4n/NonRMkJWtFFtLyv392DfFRxjNdcMJ/8RmdswA4M5azmZTBcBA2NiT7TepORj5e33VHDhbvQ6MllNJzeGihe4+9ZhM/BuBgs/1xVdlPGPoBvsIOTk1taO5TFvMa2mU3sv8iycDv3xKHCzCsaEPXDcHJIZxZbXnOvacg93BPMNeNEWM/+22pcikn3sZgNWeRKlk0l6FpLI4rh+9KoYMcUwI/JaKhWTkbqmnqPmXPu5XgcpzwQPUxbCDWGQVwTwbCVBKe2GjqbpalvLRD8hH1Ea9Qinm2U8JUostyzDLfeAME2E60EXjk8PI6fpXVzCiZiT65vK8SnGP6iOu+AF7Ve+27+eHSqj3h02BVJ63VfwH86gRyLDA1L9sjeMBNkQI2DwjHNqmq8aF7eRZmuq1QHEvhm9UaCes2KmBRZd+yv9oMJm3dJHUeMkWXtgTfE2Vk8iOUTHaicwEdm/AM4B8aGyZCK9bGiTtwI1BE31DtYs1c8Yw75g7Fd4kUI/gVbp/DK3sxN1J+dCCqiHV38htzfX/DVC6RkHsheXSLmbr3iWMT5whADFnhojDu7eJ1+7+R6hHoZGj7/XcU7z3KKSvjLU1zszq/ihCTzef4UCMhayOxjHgAJM1sCTY=
