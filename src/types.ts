@@ -137,12 +137,18 @@ export type CLICloneOptions = {
 export type CLIExecOptions = {
   /** 指定项目 */
   project?: string
-  /** 只执行一次 */
-  excuteOnce?: boolean
 }
 
 /** Run 命令选项 */
 export type CLIRunOptions = {
+  /** 指定项目 */
+  project?: string
+}
+
+/** It 命令选项 */
+export type CLIItOptions = {
+  /** 显示全部 */
+  all?: string
   /** 指定项目 */
   project?: string
 }

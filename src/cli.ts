@@ -13,6 +13,7 @@ import './command/run'
 import './command/run-multi'
 import './command/exec'
 import './command/exec-multi'
+import './command/it'
 import './command/support'
 
 const argv = ['node', 'kerberos'].concat(process.argv.slice(2))

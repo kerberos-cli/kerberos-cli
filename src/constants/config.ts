@@ -6,6 +6,9 @@ export const rootPath = path.join(__dirname, '../../')
 /** 临时目录 */
 export const tmpPath = path.join(rootPath, '.temporary')
 
+/** 初始执行目录 */
+export const execPath = process.cwd()
+
 /** 配置文件名称 */
 export const configFile = 'kerberos.json'
 
