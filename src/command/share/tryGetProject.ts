@@ -1,4 +1,4 @@
-import { getProject } from '../../services/project'
+import { getProjectInfoByName } from '../../services/project'
 import { select } from '../../services/ui'
 
 /**
@@ -8,7 +8,7 @@ import { select } from '../../services/ui'
  */
 export default async function tryGetProject(message: string, specified?: string) {
   if (typeof specified === 'string') {
-    const project = await getProject(specified)
+    const project = await getProjectInfoByName(specified)
     if (!project) {
       throw new Error(`Project not found: ${specified}`)
     }

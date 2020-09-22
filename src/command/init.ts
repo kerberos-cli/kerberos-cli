@@ -71,5 +71,5 @@ async function takeAction(folder: string, repo?: string): Promise<void> {
 
 program
   .command('init <folder> [repo]')
-  .description('initialize cerberus workspace.')
+  .description('initialize cerberus workspace')
   .action((folder: string, repo?: string) => intercept(['tryAction', 'supported'])(takeAction)(folder, repo))

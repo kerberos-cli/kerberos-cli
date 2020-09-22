@@ -6,7 +6,7 @@ import { configFile } from '../constants/config'
 import * as Types from '../types'
 
 type Context = {
-  config: Types.CCSettings
+  config: Types.CConfig
   package: object
   folder: string
 }

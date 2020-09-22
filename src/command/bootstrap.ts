@@ -9,12 +9,7 @@ import { confirm, multiSelect } from '../services/ui'
 import intercept from '../interceptors'
 import * as Types from '../types'
 
-type CLIBootstrapOptions = {
-  yes?: boolean
-  optional?: boolean
-}
-
-async function takeAction(options?: CLIBootstrapOptions): Promise<void> {
+async function takeAction(options?: Types.CLIBootstrapOptions): Promise<void> {
   const { yes, optional } = options
   const config = await getConfig()
   const pkgFile = path.join(process.cwd(), 'package.json')
@@ -43,10 +38,10 @@ async function takeAction(options?: CLIBootstrapOptions): Promise<void> {
     })
   )
 
-  const necessaries: Types.CCSettingProject[] = []
-  const optionals: Types.CCSettingProject[] = []
+  const necessaries: Types.CProject[] = []
+  const optionals: Types.CProject[] = []
   const codes: number[] = []
-  const install = (projects: Types.CCSettingProject[]) => {
+  const install = (projects: Types.DProjectInConfChoice[]) => {
     return projects.map(({ name, workspace, repository }) => {
       const wsFolder = path.join(process.cwd(), workspace)
       return spawn('git', ['clone', repository, name], { cwd: wsFolder })
@@ -92,7 +87,7 @@ async function takeAction(options?: CLIBootstrapOptions): Promise<void> {
 
 program
   .command('bootstrap')
-  .description('initialize yarn workspace and install depedencies of all projects.')
-  .option('-y, --yes [yes]', 'Skip all questions.')
-  .option('-o, --optional [optional]', 'Specify to install all optional dependencies when When specifying the --yes option.')
-  .action((options: CLIBootstrapOptions) => intercept()(takeAction)(options))
+  .description('initialize yarn workspace and install depedencies of all projects')
+  .option('-y, --yes [yes]', 'skip all questions')
+  .option('-o, --optional [optional]', 'specify to install all optional dependencies when specifying the --yes option')
+  .action((options: Types.CLIBootstrapOptions) => intercept()(takeAction)(options))

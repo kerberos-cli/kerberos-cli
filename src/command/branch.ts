@@ -1,19 +1,16 @@
 import { program } from 'commander'
 import { spawn } from '../services/process'
-import intercept from '../interceptors'
 import tryGetProject from './share/tryGetProject'
+import intercept from '../interceptors'
+import * as Types from '../types'
 
-type CLIBranchesOptions = {
-  project?: string
-}
-
-async function takeAction(options?: CLIBranchesOptions): Promise<void> {
+async function takeAction(options?: Types.CLIBranchOptions): Promise<void> {
   const { folder } = await tryGetProject('Please select the project to view the branch.', options?.project)
   await spawn('git', ['branch', '-a'], { cwd: folder })
 }
 
 program
   .command('branch')
-  .description("show all project's branches (locals and remotes).")
-  .option('-p, --project <project>', 'set project that exec command.')
-  .action((options?: CLIBranchesOptions) => intercept()(takeAction)(options))
+  .description('show all branches of the project (local and remote)')
+  .option('-p, --project <project>', 'specify the project to display the branch')
+  .action((options?: Types.CLIBranchOptions) => intercept()(takeAction)(options))

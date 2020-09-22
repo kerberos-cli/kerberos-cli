@@ -1,14 +1,15 @@
 import inquirer from 'inquirer'
+import { PromiseType, ValuesType } from 'utility-types'
 import commonCommands from '../../constants/command'
 import * as SelectOptions from './selectOptions'
-import { PromiseType, ValuesType } from 'utility-types'
+import * as Types from '../../types'
 
-type ChoiceLoader = (...args: any[]) => any
-type ChoiceLoaders<C> = {
-  [N in keyof C]: C[N] extends ChoiceLoader ? C[N] : never
-}
-
-export function gSel<C, S extends ChoiceLoaders<C>>(initialOptions: inquirer.ListQuestionOptions = {}, selectors: C = SelectOptions as any) {
+/**
+ * 创建单选UI
+ * @param initialOptions 初始配置
+ * @param choicesGenerator 选项生成器
+ */
+export function gSel<C, S extends Types.ChoicesGenerators<C>>(initialOptions: inquirer.ListQuestionOptions = {}, choicesGenerator: C = SelectOptions as any) {
   return function<
     /** 类型 */
     T extends keyof C,
@@ -22,7 +23,7 @@ export function gSel<C, S extends ChoiceLoaders<C>>(initialOptions: inquirer.Lis
     P extends R extends Promise<unknown> ? PromiseType<R> : R
   >(type: T) {
     return async function(message: string, ...args: A): Promise<ValuesType<P>> {
-      const context = selectors[type]
+      const context = choicesGenerator[type]
       if (!(typeof context === 'function')) {
         throw new Error(`Selector not found: ${type}`)
       }
@@ -46,7 +47,12 @@ export function gSel<C, S extends ChoiceLoaders<C>>(initialOptions: inquirer.Lis
   }
 }
 
-export function gMultiSel<C, S extends ChoiceLoaders<C>>(initialOptions: inquirer.CheckboxQuestionOptions = {}, selectors: C = SelectOptions as any) {
+/**
+ * 创建多选UI
+ * @param initialOptions 初始配置
+ * @param choicesGenerator 选项生成器
+ */
+export function gMultiSel<C, S extends Types.ChoicesGenerators<C>>(initialOptions: inquirer.CheckboxQuestionOptions = {}, choicesGenerator: C = SelectOptions as any) {
   return function<
     /** 类型 */
     T extends keyof C,
@@ -60,7 +66,7 @@ export function gMultiSel<C, S extends ChoiceLoaders<C>>(initialOptions: inquire
     P extends R extends Promise<unknown> ? PromiseType<R> : R
   >(type: T) {
     return async function(message: string, ...args: A): Promise<P> {
-      const context = selectors[type]
+      const context = choicesGenerator[type]
       if (!(typeof context === 'function')) {
         throw new Error(`Selector not found: ${type}`)
       }

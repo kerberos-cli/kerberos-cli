@@ -11,10 +11,7 @@
     "skipLibCheck": true,
     "sourceMap": false,
     "declaration": true,
-    "resolveJsonModule": true,
-    "paths": {
-      "@/*": ["./src/*"]
-    }
+    "resolveJsonModule": true
   },
   "include": ["**/*.ts", "**/*.d.ts"],
   "typeRoots": ["node_modules/@types"],

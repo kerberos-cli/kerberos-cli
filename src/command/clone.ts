@@ -6,13 +6,9 @@ import { gitClone } from '../services/git'
 import { success } from '../services/logger'
 import intercept from '../interceptors'
 import tryGetWorkspace from './share/tryGetWorkspace'
+import * as Types from '../types'
 
-type CLICloneOptions = {
-  workspace?: string
-  optional?: boolean
-}
-
-async function takeAction(repository: string, name: string = path.basename(repository).replace('.git', ''), optoins?: CLICloneOptions): Promise<void> {
+async function takeAction(repository: string, name: string = path.basename(repository).replace('.git', ''), optoins?: Types.CLICloneOptions): Promise<void> {
   if (!isGitUrl(repository)) {
     throw new Error('Repo is not a valid git url')
   }
@@ -35,7 +31,7 @@ async function takeAction(repository: string, name: string = path.basename(repos
 
 program
   .command('clone <repo> [name]')
-  .description('clone git repository to the workspace')
-  .option('-w, --workspace <workspace>', 'set the workspace for git clone.')
-  .option('-o, --optional [optional]', 'specify the repository as selective installation.')
-  .action((repo: string, name?: string, optoins?: CLICloneOptions) => intercept()(takeAction)(repo, name, optoins))
+  .description('clone the git repository to the workspace')
+  .option('-w, --workspace <workspace>', 'specify the workspace of git clone')
+  .option('-o, --optional [optional]', 'specify the repository as selective installation')
+  .action((repo: string, name?: string, optoins?: Types.CLICloneOptions) => intercept()(takeAction)(repo, name, optoins))

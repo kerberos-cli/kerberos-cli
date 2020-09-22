@@ -7,13 +7,9 @@ import { spawn } from '../services/process'
 import { inputCommand } from '../services/ui'
 import intercept from '../interceptors'
 import tryGetProject from './share/tryGetProject'
+import * as Types from '../types'
 
-type CLIExecOptions = {
-  project?: string
-  excuteOnce?: boolean
-}
-
-async function takeAction(command?: string, options?: CLIExecOptions): Promise<void> {
+async function takeAction(command?: string, options?: Types.CLIExecOptions): Promise<void> {
   const { excuteOnce: isExcuteOnce, project } = options || {}
   const { name, folder } = await tryGetProject('Please select the project to be executed.', project)
 
@@ -62,7 +58,7 @@ async function takeAction(command?: string, options?: CLIExecOptions): Promise<v
 
 program
   .command('exec [command...]')
-  .description('execute commands from the project.')
-  .option('-p, --project <project>', 'specify the project to run npm-scripts.')
-  .option('--excute-once <excuteOnce>', 'exit after executing the command once.')
-  .action((command: string[], options?: CLIExecOptions) => intercept()(takeAction)(command.join(' '), options))
+  .description('execute commands in the project')
+  .option('-p, --project <project>', 'specify the project to run npm-scripts')
+  .option('--excute-once <excuteOnce>', 'exit after executing the command once')
+  .action((command: string[], options?: Types.CLIExecOptions) => intercept()(takeAction)(command.join(' '), options))

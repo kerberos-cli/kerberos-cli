@@ -24,5 +24,5 @@ async function takeAction(): Promise<void> {
 
 program
   .command('support')
-  .description('determine whether all dependencies have been installed.')
+  .description('determine whether all dependencies have been installed')
   .action(() => takeAction())

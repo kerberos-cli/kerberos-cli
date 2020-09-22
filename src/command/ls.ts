@@ -1,11 +1,11 @@
 import { program } from 'commander'
 import chalk from 'chalk'
-import { getProjects } from '../services/project'
+import { getProjectInfoCollection } from '../services/project'
 import { getBranch } from '../services/git'
 import intercept from '../interceptors'
 
 async function takeAction(): Promise<void> {
-  const projects = await getProjects()
+  const projects = await getProjectInfoCollection()
   const branches = await Promise.all(projects.map(project => getBranch(project.folder)))
 
   projects.forEach(({ name, version }, index) => {
@@ -17,5 +17,5 @@ async function takeAction(): Promise<void> {
 
 program
   .command('ls')
-  .description('show all projects info.')
+  .description('show all project information')
   .action(() => intercept()(takeAction)())
