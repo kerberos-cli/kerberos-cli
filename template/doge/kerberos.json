@@ -1,0 +1,10 @@
+{
+  "workspaces": ["@kerberos/*"],
+  "projects": [
+    {
+      "name": "@kerberos/doge",
+      "workspace": "@kerberos",
+      "optional": false
+    }
+  ]
+}

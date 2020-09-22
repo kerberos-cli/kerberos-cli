@@ -60,7 +60,7 @@ async function takeAction(): Promise<void> {
   await fs.writeFile(path.join(cwd, 'package.json'), JSON.stringify(wsPkgJson, null, 2))
 
   // 创建配置软链
-  await fs.symlink(path.join(dest, 'cerberus.json'), path.join(cwd, 'cerberus.json'))
+  await fs.symlink(path.join(dest, 'kerberos.json'), path.join(cwd, 'kerberos.json'))
 }
 
 program

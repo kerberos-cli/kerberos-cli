@@ -1,9 +1,10 @@
 {
-  "name": "cerberus",
+  "name": "kerberos-cli",
   "version": "1.0.0-alpha.1",
   "main": "./libs/index.js",
   "bin": {
-    "cerberus": "./bin/cli"
+    "kerberos-cli": "./bin/cli",
+    "kerbe": "./bin/cli"
   },
   "license": "MIT",
   "scripts": {

@@ -36,7 +36,7 @@ async function takeAction(folder: string, repo?: string): Promise<void> {
   // 更改环境
   process.chdir(context)
 
-  const defaultConfigFolder = path.join(context, '@cerberus', configProjectFolderName)
+  const defaultConfigFolder = path.join(context, '@kerberos', configProjectFolderName)
   const defaultConfigFile = path.join(defaultConfigFolder, configFile)
 
   if (typeof repo === 'string') {
@@ -44,32 +44,32 @@ async function takeAction(folder: string, repo?: string): Promise<void> {
       throw new Error(`Repo is invalid: ${repo}`)
     }
 
-    if (!(await gitClone(repo, configProjectFolderName, path.join(context, '@cerberus')))) {
+    if (!(await gitClone(repo, configProjectFolderName, path.join(context, '@kerberos')))) {
       throw new Error(`Git clone failed: ${repo}`)
     }
 
     if (!(await fs.pathExists(defaultConfigFile))) {
-      throw new Error('Project is invalid: can not found cerberus.json file.')
+      throw new Error('Project is invalid: can not found kerberos.json file.')
     }
 
     await fs.symlink(defaultConfigFile, path.join(context, configFile))
   } else {
-    if (await confirm('Can I create a new cerberus configuration project?')) {
+    if (await confirm('Can I create a new kerberos configuration project?')) {
       await fs.ensureDir(defaultConfigFolder)
       await fs.copy(configTemplate, defaultConfigFolder)
       await fs.symlink(defaultConfigFile, path.join(context, configFile))
 
       if (!(await spawn('git', ['init'], { cwd: defaultConfigFolder }))) {
-        success('The generation of the cerberus configuration project has been completed.')
+        success('The generation of the kerberos configuration project has been completed.')
       }
     }
   }
 
-  success('The initial setup of the cerberus workspace has been completed.')
+  success('The initial setup of the kerberos workspace has been completed.')
   info(`Press <cd ${folder}> and enter the workspace.`)
 }
 
 program
   .command('init <folder> [repo]')
-  .description('initialize cerberus workspace')
+  .description('initialize kerberos workspace')
   .action((folder: string, repo?: string) => intercept(['tryAction', 'supported'])(takeAction)(folder, repo))

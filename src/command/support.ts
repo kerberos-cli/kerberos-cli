@@ -16,7 +16,7 @@ async function takeAction(): Promise<void> {
   })
 
   if (allSupported.length === 0) {
-    console.log(chalk.cyan('All dependencies are ready, you can use cerberus normally.'))
+    console.log(chalk.cyan('All dependencies are ready, you can use kerberos normally.'))
   } else {
     console.log(`Please install ${allSupported.join(', ')} first.`)
   }

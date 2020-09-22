@@ -15,9 +15,9 @@ import './command/exec'
 import './command/exec-multi'
 import './command/support'
 
-const argv = ['node', 'cerberus'].concat(process.argv.slice(2))
+const argv = ['node', 'kerberos'].concat(process.argv.slice(2))
 
 program
-  .name('cerberus')
+  .name('kerberos')
   .usage('<command> [options]')
   .parse(argv)
