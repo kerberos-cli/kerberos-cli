@@ -23,4 +23,7 @@ async function takeAction() {
   // })
 }
 
-program.command('tag').action(() => intercept()(takeAction)())
+program
+  .command('tag')
+  .description('not supported in current version')
+  .action(() => intercept()(takeAction)())

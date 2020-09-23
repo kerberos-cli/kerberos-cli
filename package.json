@@ -7,6 +7,10 @@
     "kerbe": "./bin/cli"
   },
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kerberos-cli/kerberos-cli.git"
+  },
   "scripts": {
     "commit": "git-cz",
     "prepublishOnly": "npm run product",
