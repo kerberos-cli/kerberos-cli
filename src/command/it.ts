@@ -48,7 +48,7 @@ async function takeAction(options?: Types.CLIItOptions): Promise<void> {
     }
   }
 
-  const pkgJSON: Types.DProject['package'] = await fs.readJSON(path.join(folder, 'package.json'))
+  const pkgJSON: Types.CPackage = await fs.readJSON(path.join(folder, 'package.json'))
   while (true) {
     const command = await inputCommand(`${pkgJSON.name} ${chalk.green.bold('>')}`)
     if (typeof command === 'string' && command.length > 0) {

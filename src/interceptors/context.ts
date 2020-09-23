@@ -2,7 +2,7 @@ import fs from 'fs-extra'
 import path from 'path'
 import { PromiseType } from 'utility-types'
 import { warn, error as promptError } from '../services/logger'
-import { configFile } from '../constants/config'
+import { configFileName } from '../constants/config'
 import * as Types from '../types'
 
 type Context = {
@@ -13,7 +13,7 @@ type Context = {
 
 async function lookupContext(context: string = process.cwd()): Promise<Context> {
   while (true) {
-    const cfg = path.join(context, configFile)
+    const cfg = path.join(context, configFileName)
     const pkg = path.join(context, 'package.json')
     if ((await fs.pathExists(cfg)) && (await fs.lstat(cfg)).isSymbolicLink() && (await fs.pathExists(pkg))) {
       try {

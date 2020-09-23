@@ -1,5 +1,4 @@
 {
-  "workspaces": ["@kerberos/*"],
   "projects": [
     {
       "name": "@kerberos/doge",

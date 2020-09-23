@@ -1,8 +1,7 @@
 import fs from 'fs-extra'
 import path from 'path'
 import { program } from 'commander'
-import isEqual from 'lodash/isEqual'
-import { getConfig, getProjectInfoCollection } from '../services/project'
+import { getConfigInfo, getProjectInfoCollection } from '../services/project'
 import { spawn } from '../services/process'
 import { success } from '../services/logger'
 import { confirm, multiSelect } from '../services/ui'
@@ -11,20 +10,10 @@ import * as Types from '../types'
 
 async function takeAction(options?: Types.CLIBootstrapOptions): Promise<void> {
   const { yes, optional } = options
-  const config = await getConfig()
+  const config = await getConfigInfo()
   const pkgFile = path.join(process.cwd(), 'package.json')
   if (!(await fs.pathExists(pkgFile))) {
     throw new Error('package.json is invalid.')
-  }
-
-  // 重写 package.json
-  const pkgSource = await fs.readJSON(pkgFile)
-  if (!(pkgSource.private === true && isEqual(pkgSource.workspaces, config?.workspaces))) {
-    pkgSource.workspaces = config?.workspaces || []
-    pkgSource.private = true
-
-    const finalSource = JSON.stringify(pkgSource, null, 2)
-    await fs.writeFile(pkgFile, finalSource)
   }
 
   // 克隆所有仓库

@@ -1,0 +1,7 @@
+{
+  "name": "@kerberos/workspaces",
+  "version": "0.0.1",
+  "description": "Cerberus workspace.",
+  "private": true,
+  "workspaces": ["@kerberos/*"]
+}

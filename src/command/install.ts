@@ -2,16 +2,16 @@ import fs from 'fs-extra'
 import path from 'path'
 import { program } from 'commander'
 import { confirm } from '../services/ui'
-import { configFile, configProjectFolderName, configTemplate } from '../constants/config'
+import { configFileName, packageFileName, configProjectFolderName } from '../constants/config'
 import intercept from '../interceptors'
 import * as Types from '../types'
 
 async function takeAction(): Promise<void> {
   const cwd = process.cwd()
-  const cfg = path.join(cwd, configFile)
+  const cfg = path.join(cwd, configFileName)
   const pkg = path.join(cwd, 'package.json')
   if (!(await fs.pathExists(cfg)) || (await fs.lstat(cfg)).isSymbolicLink()) {
-    throw new Error(`The file ${configFile} is a soft link and cannot be installed`)
+    throw new Error(`The file ${configFileName} is a soft link and cannot be installed`)
   }
 
   if (!(await fs.pathExists(pkg))) {
@@ -19,15 +19,15 @@ async function takeAction(): Promise<void> {
   }
 
   const config: Types.CConfig = await fs.readJSON(cfg)
-  const source: Types.DProject['package'] = await fs.readJSON(pkg)
+  const source: Types.CPackage = await fs.readJSON(pkg)
   const project = config.projects.find(item => item.name === source.name)
   if (!project) {
-    throw new Error(`The settings of this project could not be found in the ${configFile}`)
+    throw new Error(`The settings of this project could not be found in the ${configFileName}`)
   }
 
   const { workspace } = project || {}
   if (!(typeof workspace === 'string' && workspace.length > 0)) {
-    throw new Error(`Workspace configuration setting error in the ${configFile}`)
+    throw new Error(`Workspace configuration setting error in the ${configFileName}`)
   }
 
   if (!(await confirm('This action will move your files, are you sure you want to perform this action?'))) {
@@ -51,19 +51,12 @@ async function takeAction(): Promise<void> {
     })
   )
 
-  // 重写 package.json
-  const wsPkg = path.join(configTemplate, 'package.json')
-  const wsPkgJson: Types.DProject['package'] = await fs.readJSON(wsPkg)
-  wsPkgJson.workspaces = config.workspaces
-  wsPkgJson.private = true
-
-  await fs.writeFile(path.join(cwd, 'package.json'), JSON.stringify(wsPkgJson, null, 2))
-
   // 创建配置软链
-  await fs.symlink(path.join(dest, 'kerberos.json'), path.join(cwd, 'kerberos.json'))
+  await fs.symlink(path.join(dest, configFileName), path.join(cwd, configFileName))
+  await fs.symlink(path.join(dest, packageFileName), path.join(cwd, 'package.json'))
 }
 
 program
   .command('install')
   .description('execute project script')
-  .action(() => intercept()(takeAction)())
+  .action(() => intercept(['tryAction', 'supported', 'context'])(takeAction)())

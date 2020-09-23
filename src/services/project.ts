@@ -5,19 +5,26 @@ import { flatten, uniq } from 'lodash'
 import isGitUrl from 'is-git-url'
 import { glob } from 'glob'
 import { isPristine } from '../services/git'
-import { configFile } from '../constants/config'
+import { configFileName } from '../constants/config'
 import * as Types from '../types'
 
 /** 读取配置文件信息 */
-export async function getConfig(): Promise<Types.CConfig> {
-  const config = path.join(process.cwd(), configFile)
-  const source = (await fs.readJSON(config)) || {}
+export async function getConfigInfo(): Promise<Types.CConfig> {
+  const file = path.join(process.cwd(), configFileName)
+  const source = (await fs.readJSON(file)) || {}
+  return source
+}
+
+/** 读取 package.json 文件信息 */
+export async function getPackageInfo(): Promise<Types.CPackage> {
+  const file = path.join(process.cwd(), 'package.json')
+  const source = (await fs.readJSON(file)) || {}
   return source
 }
 
 /** 获取 package.json 文件路径集合 */
-export async function getPackagePathCollection(specifyConfig?: Types.CConfig): Promise<string[]> {
-  const { workspaces } = specifyConfig || (await getConfig())
+export async function getPackagePathCollection(specifyConfig?: Types.CPackage): Promise<string[]> {
+  const { workspaces } = specifyConfig || (await getPackageInfo())
   if (!Array.isArray(workspaces)) {
     return []
   }
@@ -57,9 +64,11 @@ export async function getDirtyProjectPathCollection(specifyProjectPathCollection
 
 /** 获取工作区路径集合 */
 export async function getWorkspacePathCollection(specifyProjectPathCollection?: string[]): Promise<string[]> {
+  const { workspaces } = await getPackageInfo()
+  const abstract = workspaces.map(pattern => pattern.split('/').shift())
   const projects = specifyProjectPathCollection || (await getProjectPathCollection())
-  const workspaces = projects.map(folder => path.dirname(folder))
-  return uniq(workspaces)
+  const exists = projects.map(folder => path.dirname(folder))
+  return uniq([].concat(abstract, exists))
 }
 
 /** 获取项目信息集合 */
@@ -129,8 +138,8 @@ export async function getDependencyGraph(specifyProjectInfoCollection?: Types.DP
  * @param projects 项目信息
  */
 export async function addProjects(projects: Types.CProject[]): Promise<void> {
-  const config = path.join(process.cwd(), configFile)
-  const source = await getConfig()
+  const config = path.join(process.cwd(), configFileName)
+  const source = await getConfigInfo()
   const workspaces = await getWorkspaceInfoCollection()
 
   const finalProjects = source.projects || []

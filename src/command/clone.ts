@@ -1,7 +1,7 @@
 import path from 'path'
 import { program } from 'commander'
 import isGitUrl from 'is-git-url'
-import { addProjects, getConfig } from '../services/project'
+import { addProjects, getConfigInfo } from '../services/project'
 import { gitClone } from '../services/git'
 import { success } from '../services/logger'
 import intercept from '../interceptors'
@@ -14,7 +14,7 @@ async function takeAction(repository: string, name: string = path.basename(repos
   }
 
   const { name: workspace, folder } = await tryGetWorkspace('Please select a workspace to clone the repository.', optoins?.workspace)
-  const config = await getConfig()
+  const config = await getConfigInfo()
   const projects = config?.projects || []
   if (-1 !== projects.findIndex(item => item.name === name && item.workspace)) {
     throw new Error('There is a project with the same name already exists.')
