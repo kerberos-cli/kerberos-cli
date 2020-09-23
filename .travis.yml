@@ -4,23 +4,24 @@ node_js:
   - 12
 
 cache:
+  yarn: true
   directories:
     - node_modules
 
 install:
-  - npm install
+  - yarn install
 
 script:
-  - npm run test
+  - yarn product
 
 before_deploy:
-  - npm run product
+  - echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" >> $HOME/.npmrc 2> /dev/null
+  - yarn product
 
 deploy:
-  - provider: npm
+  - provider: script
     skip_cleanup: true
     on:
       tags: true
-    email: qowera@qq.com
-    api_key:
-      secure: F1gA9zHLUoV9vjoyO5t+xRg6wR/gDkwza5ow5zq4CK/fIvJHdpi3VUTAY8uqlKdni8xBnmbxGdt8Ngh5rqsTT58UITyoit1baPDYd+cU4ZlorXVHBR+arInF1TQQ7R3xBYrHK9321xUlizhRHJXRbWwtZJErDHt1JUQn74DvWOjQTUt4GDdhXKHoRG4AwL7Dd16KuVt/SHq4TZfKzFCF4166PjZrSne+4AfKiq3xA1XnQf93IQmEa2EcJqtP//R+RY8kYxiek+FuF9dBRFSuUPJDzpkInY1jjcfcv/nyhH3zjf5w2ZiJAZ0GYgLiXEF26Sd0fxJjE4Ne9ED7M456Cs1z9nLmSc/SndMottenca8MzELBQL9pdcaNPNR7oeg5g6x2rCcgmHKgqJnQ5JYj+TzlhZFRLpYayr6ibWsffYb/IqcYzsZ4YPckzQHzxWI87ZzpHDNl+s31bNxQ3QbzdEtpnmeIV8rJP2xBfv7i+aMVQP9wUraXmbRSRfsqTzwhNehtxPDwCylueBZONXc7LLNYqXQZx9w8s8BGLlaiVipzN4ZQaOzvktEN9RJZ5Jova6PjTf0LOgU8dNi8SnoKbuRi01wDR/VWwGi83suBYn484iBoiOdyXPVbKaFauLBxmv9EtrMTixM6RpeP+vSSVqikk+P/csjw3gdVHx5yWmM=
+    script:
+      - yarn ci:deploy

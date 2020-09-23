@@ -1,9 +1,5 @@
 # Folder
 
-/@app
-/@theme
-/bin
-/libs
-/node_modules
+node_modules
 package-lock.json
 yarn.lock
