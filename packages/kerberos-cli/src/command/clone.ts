@@ -1,3 +1,4 @@
+import fs from 'fs-extra'
 import path from 'path'
 import { program } from 'commander'
 import isGitUrl from 'is-git-url'
@@ -24,8 +25,19 @@ async function takeAction(repository: string, name: string = path.basename(repos
     throw new Error('Git clone error.')
   }
 
+  const pkgFile = path.join(folder, name, 'package.json')
+  if (!(await fs.pathExists(pkgFile))) {
+    throw new Error('Repository is not a nodejs project.')
+  }
+
+  const pkgJson: Types.CPackage = await fs.readJSON(pkgFile)
+  const realname = pkgJson?.name
+  if (!(typeof realname === 'string' && realname.length > 0)) {
+    throw new Error('Pacakge name is invalid.')
+  }
+
   const optional = typeof optoins?.optional === 'boolean' ? optoins?.optional : false
-  await addProjects([{ name, repository, workspace, optional }])
+  await addProjects([{ name: realname, repository, workspace, optional }])
   success('Git clone project completed.')
 }
 

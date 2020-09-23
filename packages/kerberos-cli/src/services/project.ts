@@ -24,9 +24,13 @@ export async function getPackageInfo(): Promise<Types.CPackage> {
 
 /** 获取 package.json 文件路径集合 */
 export async function getPackagePathCollection(specifyConfig?: Types.CPackage): Promise<string[]> {
-  const { workspaces } = specifyConfig || (await getPackageInfo())
+  let { workspaces } = specifyConfig || (await getPackageInfo())
   if (!Array.isArray(workspaces)) {
-    return []
+    if (!Array.isArray(workspaces.packages)) {
+      return []
+    }
+
+    workspaces = workspaces.packages
   }
 
   const packages = await Promise.all(
@@ -64,7 +68,15 @@ export async function getDirtyProjectPathCollection(specifyProjectPathCollection
 
 /** 获取工作区路径集合 */
 export async function getWorkspacePathCollection(specifyProjectPathCollection?: string[]): Promise<string[]> {
-  const { workspaces } = await getPackageInfo()
+  let { workspaces } = await getPackageInfo()
+  if (!Array.isArray(workspaces)) {
+    if (!Array.isArray(workspaces.packages)) {
+      return []
+    }
+
+    workspaces = workspaces.packages
+  }
+
   const abstract = workspaces.map((pattern) => pattern.split('/').shift())
   const projects = specifyProjectPathCollection || (await getProjectPathCollection())
   const exists = projects.map((folder) => path.dirname(folder))

@@ -28,7 +28,12 @@ export type CPackage = {
   /** 是否为私有 */
   private?: boolean
   /** 工作区 */
-  workspaces: string[]
+  workspaces:
+    | string[]
+    | {
+        packages?: string[]
+        nohoist?: string[]
+      }
   /** 脚本 */
   scripts?: {
     [name: string]: string
@@ -134,19 +139,25 @@ export type CLICloneOptions = {
   optional?: boolean
 }
 
-/** Exec 命令选项 */
+/** exec 命令选项 */
 export type CLIExecOptions = {
   /** 指定项目 */
   project?: string
 }
 
-/** Run 命令选项 */
+/** exec-multi 命令选项 */
+export type CLIExecMultiOptions = {
+  /** 指定项目 */
+  project?: string[]
+}
+
+/** run 命令选项 */
 export type CLIRunOptions = {
   /** 指定项目 */
   project?: string
 }
 
-/** It 命令选项 */
+/** it 命令选项 */
 export type CLIItOptions = {
   /** 显示全部 */
   all?: string
@@ -154,7 +165,7 @@ export type CLIItOptions = {
   project?: string
 }
 
-/** Ls 命令选项 */
+/** ls 命令选项 */
 export type CLILsOptions = {
   /** 指定项目 */
   project?: string

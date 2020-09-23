@@ -6,10 +6,11 @@ import { spawn } from '../services/process'
 import { getDependencyGraph } from '../services/project'
 import { getDependencyWeight } from '../services/pm'
 import intercept from '../interceptors'
-import { multiSelect } from '../services/ui'
+import tryGetProjects from './share/tryGetProjects'
+import * as Types from '../types'
 
-async function takeAction(command: string): Promise<void> {
-  const projects = await multiSelect('project')('Please select a project to run the script.')
+async function takeAction(command: string, options?: Types.CLIExecMultiOptions): Promise<void> {
+  const projects = await tryGetProjects('Please select a project to run the script.', options?.project)
   const dependencyGraph = await getDependencyGraph(projects)
   const weightGraph = getDependencyWeight(dependencyGraph)
 
@@ -40,7 +41,8 @@ async function takeAction(command: string): Promise<void> {
 }
 
 program
-  .command('exec [command]')
+  .command('exec-multi [command]')
   .alias('mexec')
   .description('execute commands in multiple projects')
-  .action((command: string) => intercept()(takeAction)(command))
+  .option('-p, --project <project...>', 'specify the project to run npm-scripts')
+  .action((command: string, options?: Types.CLIExecMultiOptions) => intercept()(takeAction)(command, options))
