@@ -153,6 +153,12 @@ export type CLIItOptions = {
   project?: string
 }
 
+/** Ls 命令选项 */
+export type CLILsOptions = {
+  /** 显示依赖列表 */
+  dependencies?: boolean
+}
+
 // 其他
 // ----------
 

@@ -83,8 +83,8 @@ export async function getProjectInfoByName(name: string, specifyProjectInfoColle
 }
 
 /** 获取有未提交的项目路径集合 */
-export async function getDirtyProjectInfoCollection(specifyDirtyProjectPathCollection?: string[]): Promise<Types.DProject[]> {
-  const collection = specifyDirtyProjectPathCollection || (await getDirtyProjectPathCollection())
+export async function getDirtyProjectInfoCollection(): Promise<Types.DProject[]> {
+  const collection = await getDirtyProjectPathCollection()
   return Promise.all(
     collection.map(async pFolder => {
       const file = path.join(pFolder, 'package.json')
