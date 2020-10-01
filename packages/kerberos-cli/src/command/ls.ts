@@ -4,6 +4,7 @@ import { getDependencyGraph, getProjectInfoCollection } from '../services/projec
 import { getBranch } from '../services/git'
 import { warn } from '../services/logger'
 import intercept from '../interceptors'
+import i18n from '../i18n'
 import * as Types from '../types'
 
 function showDependencies(
@@ -20,7 +21,7 @@ function showDependencies(
         const message = chalk.grey(`${new Array(spaces).fill(' ').join('')}↳ ...`)
         console.log(message)
 
-        warn(`There are circular references between projects: ${queue.concat([name]).join(' > ')}`)
+        warn(`${i18n.COMMAND__LS__WARNING_CIRCULAR_MESSAGE}: ${queue.concat([name]).join(' > ')}`)
         return
       }
 
@@ -56,7 +57,7 @@ async function takeAction(options?: Types.CLILsOptions): Promise<void> {
 
 program
   .command('ls')
-  .description('show all project information')
-  .option('-p, --project <project>', 'specify the project to show information')
-  .option('-d, --dependencies [dependencies]', 'show the list of dependencies')
+  .description(i18n.COMMAND__LS__DESC``)
+  .option('-p, --project <project>', i18n.COMMAND__LS__OPTIONS_PROJECT``)
+  .option('-d, --dependencies [dependencies]', i18n.COMMAND__LS__OPTIONS_DEPENDENCIES``)
   .action((options?: Types.CLILsOptions) => intercept()(takeAction)(options))

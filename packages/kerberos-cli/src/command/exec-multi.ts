@@ -7,10 +7,11 @@ import { getDependencyGraph } from '../services/project'
 import { getDependencyWeight } from '../services/pm'
 import intercept from '../interceptors'
 import tryGetProjects from './share/tryGetProjects'
+import i18n from '../i18n'
 import * as Types from '../types'
 
 async function takeAction(command: string, options?: Types.CLIExecMultiOptions): Promise<void> {
-  const projects = await tryGetProjects('Please select a project to run the script.', options?.project)
+  const projects = await tryGetProjects(i18n.COMMAND__EXEC_MULTI__SELECT_PROJECT``, options?.project)
   const dependencyGraph = await getDependencyGraph(projects)
   const weightGraph = getDependencyWeight(dependencyGraph)
 
@@ -25,7 +26,7 @@ async function takeAction(command: string, options?: Types.CLIExecMultiOptions):
 
   const [cli, ...params] = command.split(' ')
   if (!(await promisify(commandExists)(cli))) {
-    throw new Error(`Command not found: ${cli}`)
+    throw new Error(i18n.COMMAND__EXEC_MULTI__ERROR_NOT_FOUND_COMMAND`${cli}`)
   }
 
   await waterfall(
@@ -43,6 +44,6 @@ async function takeAction(command: string, options?: Types.CLIExecMultiOptions):
 program
   .command('exec-multi [command]')
   .alias('mexec')
-  .description('execute commands in multiple projects')
-  .option('-p, --project <project...>', 'specify the project to run npm-scripts')
+  .description(i18n.COMMAND__EXEC_MULTI__DESC``)
+  .option('-p, --project <project...>', i18n.COMMAND__EXEC_MULTI__OPTION_PROJECT``)
   .action((command: string, options?: Types.CLIExecMultiOptions) => intercept()(takeAction)(command, options))

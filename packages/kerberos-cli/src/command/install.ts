@@ -4,6 +4,7 @@ import { program } from 'commander'
 import { confirm } from '../services/ui'
 import { configFileName, packageFileName, configProjectFolderName } from '../constants/config'
 import intercept from '../interceptors'
+import i18n from '../i18n'
 import * as Types from '../types'
 
 async function takeAction(): Promise<void> {
@@ -11,26 +12,26 @@ async function takeAction(): Promise<void> {
   const cfg = path.join(cwd, configFileName)
   const pkg = path.join(cwd, 'package.json')
   if (!(await fs.pathExists(cfg)) || (await fs.lstat(cfg)).isSymbolicLink()) {
-    throw new Error(`The file ${configFileName} is a soft link and cannot be installed`)
+    throw new Error(i18n.COMMAND__INSTALL__ERROR_SOFT_LINK`${configFileName}`)
   }
 
   if (!(await fs.pathExists(pkg))) {
-    throw new Error('The file package.json is not found')
+    throw new Error(i18n.COMMAND__INSTALL__ERROR_NO_PACKAGE``)
   }
 
   const config: Types.CConfig = await fs.readJSON(cfg)
   const source: Types.CPackage = await fs.readJSON(pkg)
   const project = config.projects.find((item) => item.name === source.name)
   if (!project) {
-    throw new Error(`The settings of this project could not be found in the ${configFileName}`)
+    throw new Error(i18n.COMMAND__INSTALL__ERROR_NO_SETTINGS`${configFileName}`)
   }
 
   const { workspace } = project || {}
   if (!(typeof workspace === 'string' && workspace.length > 0)) {
-    throw new Error(`Workspace configuration setting error in the ${configFileName}`)
+    throw new Error(i18n.COMMAND__INSTALL__ERROR_INVALID_SETTINGS`${configFileName}`)
   }
 
-  if (!(await confirm('This action will move your files, are you sure you want to perform this action?'))) {
+  if (!(await confirm(i18n.COMMAND__INSTALL__CONFIRM_MOVE_FILES``))) {
     return
   }
 
@@ -58,5 +59,5 @@ async function takeAction(): Promise<void> {
 
 program
   .command('install')
-  .description('execute project script')
+  .description(i18n.COMMAND__INSTALL__DESC``)
   .action(() => intercept(['tryAction', 'supported', 'context'])(takeAction)())

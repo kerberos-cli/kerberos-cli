@@ -3,13 +3,14 @@ import { getConfigInfo, getWorkspaceInfoCollection, getProjectInfoCollection } f
 import { getBranchNames, getBranchTracking } from '../git'
 import { warn } from '../logger'
 import { configFileName } from '../../constants/config'
+import i18n from '../../i18n'
 import * as Types from '../../types'
 
 /** 获取工作区选项 */
 export async function workspace(): Promise<Types.DWorkspaceChoice[]> {
   const workspaces = await getWorkspaceInfoCollection()
   if (!(Array.isArray(workspaces) && workspaces.length > 0)) {
-    warn('No workspace found.')
+    warn(i18n.UI_SELECT_OPTIONS__WORKSPACE__WARN_NOT_FOUND_WORKSPACE``)
     return null
   }
 
@@ -20,7 +21,7 @@ export async function workspace(): Promise<Types.DWorkspaceChoice[]> {
 export async function project(): Promise<Types.DProjectChoice[]> {
   const choices = await getProjectInfoCollection()
   if (!(Array.isArray(choices) && choices.length > 0)) {
-    warn('No project found.')
+    warn(i18n.UI_SELECT_OPTIONS__PROJECT__WARN_NOT_FOUND_PROJECT``)
     return null
   }
 
@@ -35,7 +36,7 @@ export async function branch(folder: string): Promise<Types.DBranchChoice[]> {
   const branches = await getBranchNames(folder)
   const tracking = await getBranchTracking(folder)
   if (!(Array.isArray(branches) && branches.length > 0)) {
-    warn('No branches found.')
+    warn(i18n.UI_SELECT_OPTIONS__BRANCH__WARN_NOT_FOUND_BRANCH``)
     return null
   }
 
@@ -60,7 +61,7 @@ export async function script(scripts: { [name: string]: string }): Promise<Types
 export async function projectInConfig(projects?: Types.CProject[]): Promise<Types.DProjectInConfChoice[]> {
   const choices = projects || (await getConfigInfo())?.projects || []
   if (!(Array.isArray(choices) && choices.length > 0)) {
-    warn(`No projects found in ${configFileName}.`)
+    warn(i18n.UI_SELECT_OPTIONS__PROJECT_IN_CONFIG__WARN_NOT_FOUND_PROJECTS`${configFileName}`)
     return
   }
 

@@ -6,6 +6,7 @@ import { spawn } from '../services/process'
 import { success } from '../services/logger'
 import { confirm, multiSelect } from '../services/ui'
 import intercept from '../interceptors'
+import i18n from '../i18n'
 import * as Types from '../types'
 
 async function takeAction(options?: Types.CLIBootstrapOptions): Promise<void> {
@@ -13,7 +14,7 @@ async function takeAction(options?: Types.CLIBootstrapOptions): Promise<void> {
   const config = await getConfigInfo()
   const pkgFile = path.join(process.cwd(), 'package.json')
   if (!(await fs.pathExists(pkgFile))) {
-    throw new Error('package.json is invalid.')
+    throw new Error(i18n.COMMAND__BOOTSTRAP__ERROR_INVALID_PACKAGE``)
   }
 
   // 克隆所有仓库
@@ -50,24 +51,24 @@ async function takeAction(options?: Types.CLIBootstrapOptions): Promise<void> {
         codes.push(...oCodes)
       }
     } else {
-      if (await confirm('It was found that some optional items were not installed. Do I need to install these items?', false)) {
-        const selectedProjects = await multiSelect('projectInConfig')('Please select the project to clone.', optionals)
+      if (await confirm(i18n.COMMAND__BOOTSTRAP__CONFIRM_INSTALL_OPTIONAL``, false)) {
+        const selectedProjects = await multiSelect('projectInConfig')(i18n.COMMAND__BOOTSTRAP__SELECT_CLONE_PROJECT``, optionals)
         const oCodes = await Promise.all(install(selectedProjects))
         codes.push(...oCodes)
       }
     }
   }
 
-  if (await confirm('Do you need to install dependencies.')) {
+  if (await confirm(i18n.COMMAND__BOOTSTRAP__CONFIRM_INSTALL_DEPEDENCIES``)) {
     await spawn('yarn')
   }
 
-  success('bootstrap has been completed.')
+  success(i18n.COMMAND__BOOTSTRAP__SUCCESS_COMPLETE``)
 }
 
 program
   .command('bootstrap')
-  .description('initialize yarn workspace and install depedencies of all projects')
-  .option('-y, --yes [yes]', 'skip all questions')
-  .option('-o, --optional [optional]', 'specify to install all optional dependencies when specifying the --yes option')
+  .description(i18n.COMMAND__BOOTSTRAP__DESC``)
+  .option('-y, --yes [yes]', i18n.COMMAND__BOOTSTRAP__OPTION_YES``)
+  .option('-o, --optional [optional]', i18n.COMMAND__BOOTSTRAP__OPTION_OPTIONAL``)
   .action((options: Types.CLIBootstrapOptions) => intercept()(takeAction)(options))

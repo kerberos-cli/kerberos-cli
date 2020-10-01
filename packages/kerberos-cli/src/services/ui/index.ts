@@ -2,6 +2,7 @@ import inquirer from 'inquirer'
 import { PromiseType, ValuesType } from 'utility-types'
 import commonCommands from '../../constants/command'
 import * as SelectOptions from './selectOptions'
+import i18n from '../../i18n'
 import * as Types from '../../types'
 
 /**
@@ -25,7 +26,7 @@ export function gSel<C, S extends Types.ChoicesGenerators<C>>(initialOptions: in
     return async function (message: string, ...args: A): Promise<ValuesType<P>> {
       const context = choicesGenerator[type]
       if (!(typeof context === 'function')) {
-        throw new Error(`Selector not found: ${type}`)
+        throw new Error(i18n.UI__GSEL__ERROR_NOT_FOUND_SELECTOR`${type + ''}`)
       }
 
       const choices = await context(...args)
@@ -68,7 +69,7 @@ export function gMultiSel<C, S extends Types.ChoicesGenerators<C>>(initialOption
     return async function (message: string, ...args: A): Promise<P> {
       const context = choicesGenerator[type]
       if (!(typeof context === 'function')) {
-        throw new Error(`Selector not found: ${type}`)
+        throw new Error(i18n.UI__G_MULTI_SEL__ERROR_NOT_FOUND_SELECTOR`${type + ''}`)
       }
 
       const choices = await context.call(null, message, ...args)
@@ -112,7 +113,7 @@ export function multiSelect<T extends keyof typeof SelectOptions>(type: T, initi
  * @param message 确认信息
  * @param defaultValue 默认值
  */
-export async function confirm(message: string = 'Are you sure?', defaultValue: boolean = true): Promise<boolean> {
+export async function confirm(message: string = i18n.UI__CONFIRM__DEFAULT_MESSAGE``, defaultValue: boolean = true): Promise<boolean> {
   const { value: selected } = await inquirer.prompt({
     type: 'confirm',
     name: 'value',

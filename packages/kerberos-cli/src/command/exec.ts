@@ -4,14 +4,15 @@ import commandExists from 'command-exists'
 import { spawn } from '../services/process'
 import intercept from '../interceptors'
 import tryGetProject from './share/tryGetProject'
+import i18n from '../i18n'
 import * as Types from '../types'
 
 async function takeAction(command?: string, options?: Types.CLIExecOptions): Promise<void> {
-  const project = await tryGetProject('Please select the project to be executed.', options?.project)
+  const project = await tryGetProject(i18n.COMMAND__EXEC__SELECT_PROJECT``, options?.project)
   const { folder } = project || {}
   const [cli, ...params] = command.split(' ')
   if (!(await promisify(commandExists)(cli))) {
-    throw new Error(`Command not found: ${cli}`)
+    throw new Error(i18n.COMMAND__EXEC__ERROR_NOT_FOUND_COMMAND`${cli}`)
   }
 
   try {
@@ -30,6 +31,6 @@ async function takeAction(command?: string, options?: Types.CLIExecOptions): Pro
 
 program
   .command('exec [command]')
-  .description('execute commands in the project')
-  .option('-p, --project <project>', 'specify the project to run npm-scripts')
+  .description(i18n.COMMAND__EXEC__DESC``)
+  .option('-p, --project <project>', i18n.COMMAND__EXEC__OPTION_PROJECT``)
   .action((command: string, options?: Types.CLIExecOptions) => intercept()(takeAction)(command, options))

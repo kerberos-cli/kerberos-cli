@@ -5,10 +5,11 @@ import { getDependencyGraph } from '../services/project'
 import { getDependencyWeight } from '../services/pm'
 import { warn } from '../services/logger'
 import intercept from '../interceptors'
+import i18n from '../i18n'
 import { multiSelect } from '../services/ui'
 
 async function takeAction(script: string): Promise<void> {
-  const projects = await multiSelect('project')('Please select a project to run the script.')
+  const projects = await multiSelect('project')(i18n.COMMAND__RUN_MULTI__SELECT_PROJECT``)
   const dependencyGraph = await getDependencyGraph(projects)
   const weightGraph = getDependencyWeight(dependencyGraph)
 
@@ -28,7 +29,7 @@ async function takeAction(script: string): Promise<void> {
           const { folder, package: pkgJSON } = projects.find((project) => project.name === name)
           const { scripts = {} } = pkgJSON || {}
           if (typeof scripts[script] !== 'string') {
-            warn(`Script ${script} not found in project ${name}`)
+            warn(i18n.COMMAND__RUN_MULTI__WARN_NOT_FOUND_PROJECT`${script} ${name}`)
             return
           }
 
@@ -42,5 +43,5 @@ async function takeAction(script: string): Promise<void> {
 program
   .command('run-multi <script>')
   .alias('mrun')
-  .description('execute script in multiple projects')
+  .description(i18n.COMMAND__RUN_MULTI__DESC``)
   .action((script: string) => intercept()(takeAction)(script))

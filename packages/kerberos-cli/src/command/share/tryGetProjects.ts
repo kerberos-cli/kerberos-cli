@@ -1,3 +1,4 @@
+import i18n from 'src/i18n'
 import { getProjectInfoByName } from '../../services/project'
 import { multiSelect } from '../../services/ui'
 
@@ -21,7 +22,7 @@ export default async function tryGetProjects(message: string, specified?: string
 
     const finalProjects = projects.filter(Boolean)
     if (finalProjects.length === 0) {
-      throw new Error(`No projects match.`)
+      throw new Error(i18n.COMMAND_SHARE__TRY_GET_PROJECTS__ERROR_NO_MATCH_PROJECTS``)
     }
 
     return finalProjects

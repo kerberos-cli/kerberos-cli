@@ -20,3 +20,9 @@ $ npm i -g kerberos-cli
 ```bash
 $ kerberos init my-project
 ```
+
+## Add New Git Repository
+
+```bash
+$ kerberos clone <MyGitRepo>
+```

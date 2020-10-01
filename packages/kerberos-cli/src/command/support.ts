@@ -2,6 +2,7 @@ import chalk from 'chalk'
 import { program } from 'commander'
 import { supportedGit } from '../services/git'
 import { supportedYarn } from '../services/pm'
+import i18n from '../i18n'
 
 async function takeAction(): Promise<void> {
   const supports = {
@@ -16,13 +17,13 @@ async function takeAction(): Promise<void> {
   })
 
   if (allSupported.length === 0) {
-    console.log(chalk.cyan('All dependencies are ready, you can use kerberos normally.'))
+    console.log(chalk.cyan(i18n.COMMAND__SUPPORT__SUCCESS``))
   } else {
-    console.log(`Please install ${allSupported.join(', ')} first.`)
+    console.log(i18n.COMMAND__SUPPORT__ERROR_INSTALL_FIRST`${allSupported.join(', ')}`)
   }
 }
 
 program
   .command('support')
-  .description('determine whether all dependencies have been installed')
+  .description(i18n.COMMAND__SUPPORT__DESC``)
   .action(() => takeAction())

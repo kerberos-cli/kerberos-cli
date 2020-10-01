@@ -1,5 +1,6 @@
 import { getWorkspaceInfoCollection } from '../../services/project'
 import { select } from '../../services/ui'
+import i18n from '../../i18n'
 import * as Types from '../../types'
 
 /**
@@ -12,7 +13,7 @@ export default async function tryGetWrokspace(message: string, wrokspace?: strin
     const workspaces = await getWorkspaceInfoCollection()
     const index = workspaces.findIndex((item) => item.name === wrokspace)
     if (-1 === index) {
-      throw new Error(`Project not found: ${wrokspace}`)
+      throw new Error(i18n.COMMAND_SHARE__TRY_GET_WORKSPACE__ERROR_NOT_FOUND_PROJECT`${wrokspace}`)
     }
 
     return workspaces[index]

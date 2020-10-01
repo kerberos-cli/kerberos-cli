@@ -1,8 +1,9 @@
 import fs from 'fs-extra'
 import path from 'path'
 import { PromiseType } from 'utility-types'
-import { warn, error as promptError } from '../services/logger'
+import { warn, fail } from '../services/logger'
 import { configFileName } from '../constants/config'
+import i18n from '../i18n'
 import * as Types from '../types'
 
 type Context = {
@@ -41,7 +42,7 @@ export default function context<T extends (...args: any[]) => Promise<any>, A ex
   return async function (...args: A): Promise<R> {
     const context = await lookupContext()
     if (!context) {
-      promptError('Not a kerberos workspace (or any of the parent directories)')
+      fail(i18n.INTERCEPTORS__CONTEXT__ERROR_INVALID_PROJECT``)
       process.exit(0)
     }
 
