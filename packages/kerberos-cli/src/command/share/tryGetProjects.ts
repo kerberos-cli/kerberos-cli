@@ -1,6 +1,6 @@
-import i18n from 'src/i18n'
 import { getProjectInfoByName } from '../../services/project'
 import { multiSelect } from '../../services/ui'
+import i18n from '../../i18n'
 
 /**
  * 如果未指定项目则提示选择
