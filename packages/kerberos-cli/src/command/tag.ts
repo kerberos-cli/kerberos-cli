@@ -2,6 +2,7 @@ import { program } from 'commander'
 import { getDirtyProjectInfoCollection } from '../services/project'
 import { multiSelect } from '../services/ui'
 import intercept from '../interceptors'
+import i18n from '../i18n'
 
 async function takeAction() {
   const projects = await multiSelect('project')('please select projects to tag')
@@ -27,3 +28,4 @@ program
   .command('tag')
   .description('not supported in current version')
   .action(() => intercept()(takeAction)())
+  .helpOption('-h, --help', i18n.COMMAND__OPTION__HELP_DESC``)

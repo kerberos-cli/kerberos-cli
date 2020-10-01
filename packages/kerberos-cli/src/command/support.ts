@@ -27,3 +27,4 @@ program
   .command('support')
   .description(i18n.COMMAND__SUPPORT__DESC``)
   .action(() => takeAction())
+  .helpOption('-h, --help', i18n.COMMAND__OPTION__HELP_DESC``)

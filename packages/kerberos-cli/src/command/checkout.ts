@@ -21,3 +21,4 @@ program
   .option('-b, --branch <branch>', i18n.COMMAND__CHECKOUT__OPTION_BRANCH``)
   .option('-p, --project <project>', i18n.COMMAND__CHECKOUT__OPTION_PROJECT``)
   .action((options?: Types.CLICheckoutOptions) => intercept()(takeAction)(options))
+  .helpOption('-h, --help', i18n.COMMAND__OPTION__HELP_DESC``)

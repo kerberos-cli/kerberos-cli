@@ -19,3 +19,4 @@ program
   .description(i18n.COMMAND__RUN__DESC``)
   .option('-p, --project <project>', i18n.COMMAND__RUN__OPTION_PROJECT``)
   .action((script: string, options?: Types.CLIRunOptions) => intercept()(takeAction)(script, options))
+  .helpOption('-h, --help', i18n.COMMAND__OPTION__HELP_DESC``)

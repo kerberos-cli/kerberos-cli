@@ -77,3 +77,4 @@ program
   .command('init <folder> [repo]')
   .description(i18n.COMMAND__INIT__DESC``)
   .action((folder: string, repo?: string) => intercept(['tryAction', 'supported'])(takeAction)(folder, repo))
+  .helpOption('-h, --help', i18n.COMMAND__OPTION__HELP_DESC``)

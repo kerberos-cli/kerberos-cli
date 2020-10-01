@@ -15,3 +15,4 @@ program
   .description(i18n.COMMAND__BRANCH__DESC``)
   .option('-p, --project <project>', i18n.COMMAND__BRANCH__OPTION_PROJECT``)
   .action((options?: Types.CLIBranchOptions) => intercept()(takeAction)(options))
+  .helpOption('-h, --help', i18n.COMMAND__OPTION__HELP_DESC``)

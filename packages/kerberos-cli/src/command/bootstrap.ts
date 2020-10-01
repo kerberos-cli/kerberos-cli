@@ -72,3 +72,4 @@ program
   .option('-y, --yes [yes]', i18n.COMMAND__BOOTSTRAP__OPTION_YES``)
   .option('-o, --optional [optional]', i18n.COMMAND__BOOTSTRAP__OPTION_OPTIONAL``)
   .action((options: Types.CLIBootstrapOptions) => intercept()(takeAction)(options))
+  .helpOption('-h, --help', i18n.COMMAND__OPTION__HELP_DESC``)

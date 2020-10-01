@@ -47,3 +47,4 @@ program
   .description(i18n.COMMAND__EXEC_MULTI__DESC``)
   .option('-p, --project <project...>', i18n.COMMAND__EXEC_MULTI__OPTION_PROJECT``)
   .action((command: string, options?: Types.CLIExecMultiOptions) => intercept()(takeAction)(command, options))
+  .helpOption('-h, --help', i18n.COMMAND__OPTION__HELP_DESC``)

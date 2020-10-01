@@ -1,6 +1,13 @@
 // commands
 // --------
 
+// options
+export const COMMAND__OPTION__VERSION_DESC = '显示当前版本号'
+export const COMMAND__OPTION__HELP_DESC = '显示更多用法'
+
+// command help
+export const COMMAND__HELP__DESC = '显示命令的详细用法'
+
 // command ls
 export const COMMAND__LS__DESC = '显示所有工程信息'
 export const COMMAND__LS__OPTIONS_PROJECT = '指定工程以显示信息'
@@ -18,7 +25,7 @@ export const COMMAND__INSTALL__ERROR_INVALID_SETTINGS = '#{1}中的工作区配�
 // command it
 export const COMMAND__IT__DESC = '选择一个工程以输入命令'
 export const COMMAND__IT__OPTION_PROJECT = '指定工程以输入命令'
-export const COMMAND__IT__SELECT_PROJECT = '请选择要执行的工程。'
+export const COMMAND__IT__SELECT_PROJECT = '请选择要执行命令的工程。'
 export const COMMAND__IT__ERROR_FOLDER_NOT_FOUND = '不是 Kerberos 工程（或未添加到 kerberos.json 文件中）。'
 export const COMMAND__IT__ERROR_COMMAND_NOT_FOUND = '找不到命令1。'
 export const COMMAND__IT__HELP_EXIT = '按 `Ctrl + C` 或输入 `exit` 退出。'

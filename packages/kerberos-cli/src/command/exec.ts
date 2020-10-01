@@ -34,3 +34,4 @@ program
   .description(i18n.COMMAND__EXEC__DESC``)
   .option('-p, --project <project>', i18n.COMMAND__EXEC__OPTION_PROJECT``)
   .action((command: string, options?: Types.CLIExecOptions) => intercept()(takeAction)(command, options))
+  .helpOption('-h, --help', i18n.COMMAND__OPTION__HELP_DESC``)

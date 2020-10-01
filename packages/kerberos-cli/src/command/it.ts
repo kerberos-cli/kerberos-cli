@@ -34,7 +34,7 @@ async function takeAction(options?: Types.CLIItOptions): Promise<void> {
   const excute = async function (command: string) {
     const [cli, ...params] = command.split(' ')
     if (!(await promisify(commandExists)(cli))) {
-      throw new Error(`${i18n.COMMAND__IT__ERROR_COMMAND_NOT_FOUND}: ${cli}`)
+      throw new Error(i18n.COMMAND__IT__ERROR_COMMAND_NOT_FOUND`${cli}`)
     }
 
     try {
@@ -52,7 +52,7 @@ async function takeAction(options?: Types.CLIItOptions): Promise<void> {
   }
 
   const pkgJSON: Types.CPackage = await fs.readJSON(path.join(folder, 'package.json'))
-  console.log(chalk.gray(i18n.COMMAND__IT__HELP_EXIT))
+  console.log(chalk.gray(i18n.COMMAND__IT__HELP_EXIT``))
 
   InputLoop: while (true) {
     const command = await inputCommand(`${pkgJSON.name} ${chalk.green.bold('>')}`)
@@ -80,3 +80,4 @@ program
   .description(i18n.COMMAND__IT__DESC``)
   .option('-p, --project <project>', i18n.COMMAND__IT__OPTION_PROJECT``)
   .action((options?: Types.CLIItOptions) => intercept()(takeAction)(options))
+  .helpOption('-h, --help', i18n.COMMAND__OPTION__HELP_DESC``)

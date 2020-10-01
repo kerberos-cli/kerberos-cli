@@ -1,4 +1,6 @@
 import { program } from 'commander'
+import i18n from './i18n'
+import { version } from './constants/config'
 import './extends/inquirer'
 
 import './command/init'
@@ -19,4 +21,8 @@ import './command/support'
 
 const argv = ['node', 'kerberos'].concat(process.argv.slice(2))
 
-program.name('kerberos').usage('<command> [options]').parse(argv)
+program.name('kerberos').usage('<command> [options]')
+program.addHelpCommand('help', i18n.COMMAND__HELP__DESC``)
+program.version(version, '-v, --version', i18n.COMMAND__OPTION__VERSION_DESC``)
+program.helpOption('-h, --help', i18n.COMMAND__OPTION__HELP_DESC``)
+program.parse(argv)

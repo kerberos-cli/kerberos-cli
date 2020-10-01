@@ -61,3 +61,4 @@ program
   .option('-p, --project <project>', i18n.COMMAND__LS__OPTIONS_PROJECT``)
   .option('-d, --dependencies [dependencies]', i18n.COMMAND__LS__OPTIONS_DEPENDENCIES``)
   .action((options?: Types.CLILsOptions) => intercept()(takeAction)(options))
+  .helpOption('-h, --help', i18n.COMMAND__OPTION__HELP_DESC``)

@@ -45,3 +45,4 @@ program
   .alias('mrun')
   .description(i18n.COMMAND__RUN_MULTI__DESC``)
   .action((script: string) => intercept()(takeAction)(script))
+  .helpOption('-h, --help', i18n.COMMAND__OPTION__HELP_DESC``)

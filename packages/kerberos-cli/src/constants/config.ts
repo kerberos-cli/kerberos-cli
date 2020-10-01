@@ -1,4 +1,7 @@
+import fs from 'fs-extra'
 import path from 'path'
+
+const project = fs.readJSONSync(path.join(__dirname, '../../package.json'))
 
 /** 初始执行目录 */
 export const execPath = process.cwd()
@@ -23,3 +26,6 @@ export const configProjectFolderName = 'doge'
 
 /** 默认工作区名称 */
 export const defaultWorkspaceName = '@kerberos'
+
+/** 版本号 */
+export const version = project.version

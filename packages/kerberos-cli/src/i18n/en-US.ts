@@ -1,6 +1,13 @@
 // commands
 // --------
 
+// options
+export const COMMAND__OPTION__VERSION_DESC = 'show Kerberos version'
+export const COMMAND__OPTION__HELP_DESC = 'show more Kerberos cli information'
+
+// command help
+export const COMMAND__HELP__DESC = 'display help for command'
+
 // command ls
 export const COMMAND__LS__DESC = 'show all project information'
 export const COMMAND__LS__OPTIONS_PROJECT = 'specify the project to show information'
@@ -20,7 +27,7 @@ export const COMMAND__IT__DESC = 'select an project to input the commands'
 export const COMMAND__IT__OPTION_PROJECT = 'specify the project to input the commands'
 export const COMMAND__IT__SELECT_PROJECT = 'Please select the project to be executed.'
 export const COMMAND__IT__ERROR_FOLDER_NOT_FOUND = 'Not a kerberos project (or not added to the kerberos.json file).'
-export const COMMAND__IT__ERROR_COMMAND_NOT_FOUND = 'Command #1 is not found.'
+export const COMMAND__IT__ERROR_COMMAND_NOT_FOUND = 'Command #{1} is not found.'
 export const COMMAND__IT__HELP_EXIT = 'Press `Ctrl+C` or type `exit` to exit.'
 
 // command init
