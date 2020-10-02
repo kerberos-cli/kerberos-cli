@@ -5,5 +5,9 @@
       "workspace": "@kerberos",
       "optional": false
     }
-  ]
+  ],
+  "release": {
+    "type": "tag",
+    "branch": "master"
+  }
 }

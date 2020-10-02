@@ -28,3 +28,7 @@ export function fail(info: string | Error, verbose: boolean = true) {
   const { message } = pretty(info, verbose)
   console.log(chalk.red.bold(`✗ ${message}`))
 }
+
+export function randomHex() {
+  return `#${((Math.random() * (1 << 24)) | 0).toString(16).toUpperCase().padStart(6, '0')}`
+}

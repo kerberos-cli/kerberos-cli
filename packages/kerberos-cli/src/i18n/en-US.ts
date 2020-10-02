@@ -106,6 +106,14 @@ export const COMMAND__RUN_MULTI__DESC = 'execute script in multiple projects'
 export const COMMAND__RUN_MULTI__SELECT_PROJECT = 'Please select a project to run the script.'
 export const COMMAND__RUN_MULTI__WARN_NOT_FOUND_PROJECT = 'Script #{1} not found in project #{2}.'
 
+// command tag
+export const COMMAND__TAG__DESC = 'Git tag for the projects'
+export const COMMAND__TAG__SELECT_PROJECTS = 'Please select projects to tag.'
+export const COMMAND__TAG__CONFIRM_DIFF_BRANCHES = 'The project is in different branches, are you sure you want to continue?\n#{1}\n'
+export const COMMAND__TAG__ERROR_NOT_SUBMIT = 'Some files in the projects are in temporary storage (not submitted), please submit first.\n#{1}'
+export const COMMAND__TAG__ERROR_RELEASE_BRANCH =
+  'Projects #{1} are not in the release branch #{2}, please switch all of it to the release branch before tagging; The release branch is defined by the configuration file.'
+
 // command/share
 // -------------
 

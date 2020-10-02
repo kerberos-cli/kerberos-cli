@@ -23,6 +23,13 @@ export type CProject = {
 export type CConfig = {
   /** 项目信息 */
   projects?: CProject[]
+  /** 发布配置 */
+  release?: {
+    /** 发布类型 */
+    type?: string
+    /** 发布分支 */
+    branch?: string
+  }
 }
 
 /** package json */

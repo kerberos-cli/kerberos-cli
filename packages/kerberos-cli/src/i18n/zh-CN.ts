@@ -106,6 +106,13 @@ export const COMMAND__RUN_MULTI__DESC = '在多个工程中执行脚本'
 export const COMMAND__RUN_MULTI__SELECT_PROJECT = '请选择一个工程来运行脚本。'
 export const COMMAND__RUN_MULTI__WARN_NOT_FOUND_PROJECT = '在工程#{2}中找不到脚本#{1}。'
 
+// command tag
+export const COMMAND__TAG__DESC = '为工程打 Tag'
+export const COMMAND__TAG__SELECT_PROJECTS = '请选择要打 Tag 的工程。'
+export const COMMAND__TAG__CONFIRM_DIFF_BRANCHES = '工程在不同的分支中，确定要继续吗？\n#{1} \n'
+export const COMMAND__TAG__ERROR_NOT_SUBMIT = '工程中的某些文件位于临时存储中（未提交），请先提交。\n#{1}'
+export const COMMAND__TAG__ERROR_RELEASE_BRANCH = '工程 #{1} 不在发布分支 #{2} 中，请在打 Tag 之前将其全部切换到发布分支；发布分支在配置文件中已声明。'
+
 // command/share
 // -------------
 
@@ -139,9 +146,9 @@ export const INTERCEPTORS__SUPPORTED__ERROR_NOT_INSTALL_YARN = '不支持 Yarn�
 // ------------
 
 export const UI_SELECT_OPTIONS__WORKSPACE__WARN_NOT_FOUND_WORKSPACE = '找不到工作空间。'
-export const UI_SELECT_OPTIONS__PROJECT__WARN_NOT_FOUND_PROJECT = '未找到项目。'
+export const UI_SELECT_OPTIONS__PROJECT__WARN_NOT_FOUND_PROJECT = '未找到工程。'
 export const UI_SELECT_OPTIONS__BRANCH__WARN_NOT_FOUND_BRANCH = '未找到分支。'
-export const UI_SELECT_OPTIONS__PROJECT_IN_CONFIG__WARN_NOT_FOUND_PROJECTS = '在#{1}中找不到项目。'
+export const UI_SELECT_OPTIONS__PROJECT_IN_CONFIG__WARN_NOT_FOUND_PROJECTS = '在#{1}中找不到工程。'
 
 export const UI__GSEL__ERROR_NOT_FOUND_SELECTOR = '找不到#{1}选择器。'
 export const UI__G_MULTI_SEL__ERROR_NOT_FOUND_SELECTOR = '找不到#{1}选择器。'
