@@ -11,7 +11,7 @@ import i18n from '../i18n'
 import * as Types from '../types'
 
 async function takeAction(command: string, options?: Types.CLIExecMultiOptions): Promise<void> {
-  const projects = await tryGetProjects(i18n.COMMAND__EXEC_MULTI__SELECT_PROJECT``, options?.project)
+  const projects = await tryGetProjects(i18n.COMMAND__EXEC_MULTI__SELECT_PROJECT``, options?.projects)
   const dependencyGraph = await getDependencyGraph(projects)
   const weightGraph = getDependencyWeight(dependencyGraph)
 
@@ -45,6 +45,6 @@ program
   .command('exec-multi [command]')
   .alias('mexec')
   .description(i18n.COMMAND__EXEC_MULTI__DESC``)
-  .option('-p, --project <project...>', i18n.COMMAND__EXEC_MULTI__OPTION_PROJECT``)
+  .option('-p, --project <projects...>', i18n.COMMAND__EXEC_MULTI__OPTION_PROJECT``)
   .action((command: string, options?: Types.CLIExecMultiOptions) => intercept()(takeAction)(command, options))
   .helpOption('-h, --help', i18n.COMMAND__OPTION__HELP_DESC``)

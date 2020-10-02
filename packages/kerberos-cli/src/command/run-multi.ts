@@ -4,12 +4,13 @@ import { spawn } from '../services/process'
 import { getDependencyGraph } from '../services/project'
 import { getDependencyWeight } from '../services/pm'
 import { warn } from '../services/logger'
+import tryGetProjects from './share/tryGetProjects'
 import intercept from '../interceptors'
 import i18n from '../i18n'
-import { multiSelect } from '../services/ui'
+import * as Types from '../types'
 
-async function takeAction(script: string): Promise<void> {
-  const projects = await multiSelect('project')(i18n.COMMAND__RUN_MULTI__SELECT_PROJECT``)
+async function takeAction(script: string, options?: Types.CLIRunMultiOptions): Promise<void> {
+  const projects = await tryGetProjects(i18n.COMMAND__RUN_MULTI__SELECT_PROJECT``, options.projects)
   const dependencyGraph = await getDependencyGraph(projects)
   const weightGraph = getDependencyWeight(dependencyGraph)
 
@@ -44,5 +45,6 @@ program
   .command('run-multi <script>')
   .alias('mrun')
   .description(i18n.COMMAND__RUN_MULTI__DESC``)
+  .option('-p, --project <projects...>', i18n.COMMAND__RUN_MULTI__OPTION_PROJECT``)
   .action((script: string) => intercept()(takeAction)(script))
   .helpOption('-h, --help', i18n.COMMAND__OPTION__HELP_DESC``)

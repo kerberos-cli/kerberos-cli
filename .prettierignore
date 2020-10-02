@@ -1,5 +1,7 @@
 # Folder
 
+packages/*/libs
+packages/*/.temporary
 node_modules
 package-lock.json
 yarn.lock

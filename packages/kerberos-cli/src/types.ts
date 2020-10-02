@@ -138,10 +138,8 @@ export type CLIBranchOptions = {
 
 /** checkout 命令选项 */
 export type CLICheckoutOptions = {
-  /** 指定分支 */
-  branch?: string
   /** 指定项目 */
-  project?: string
+  projects?: string[]
 }
 
 /** clone 命令选项 */
@@ -161,13 +159,19 @@ export type CLIExecOptions = {
 /** exec-multi 命令选项 */
 export type CLIExecMultiOptions = {
   /** 指定项目 */
-  project?: string[]
+  projects?: string[]
 }
 
 /** run 命令选项 */
 export type CLIRunOptions = {
   /** 指定项目 */
   project?: string
+}
+
+/** run-multi 命令选项 */
+export type CLIRunMultiOptions = {
+  /** 指定项目 */
+  projects?: string[]
 }
 
 /** it 命令选项 */

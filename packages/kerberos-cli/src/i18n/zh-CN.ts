@@ -8,28 +8,6 @@ export const COMMAND__OPTION__HELP_DESC = '显示更多用法'
 // command help
 export const COMMAND__HELP__DESC = '显示命令的详细用法'
 
-// command ls
-export const COMMAND__LS__DESC = '显示所有工程信息'
-export const COMMAND__LS__OPTIONS_PROJECT = '指定工程以显示信息'
-export const COMMAND__LS__OPTIONS_DEPENDENCIES = '显示依赖关系列表'
-export const COMMAND__LS__WARNING_CIRCULAR_MESSAGE = '工程之间存在循环引用。'
-
-// command install
-export const COMMAND__INSTALL__DESC = '使用配置工程初始化工作区'
-export const COMMAND__INSTALL__CONFIRM_MOVE_FILES = '此操作将移动您的文件，确定要执行此操作吗？'
-export const COMMAND__INSTALL__ERROR_SOFT_LINK = '文件#{1}是软链，无法安装。'
-export const COMMAND__INSTALL__ERROR_NO_PACKAGE = '找不到 package.json 文件。'
-export const COMMAND__INSTALL__ERROR_NO_SETTINGS = '在#{1}中找不到此工程的设置。'
-export const COMMAND__INSTALL__ERROR_INVALID_SETTINGS = '#{1}中的工作区配置设置错误。'
-
-// command it
-export const COMMAND__IT__DESC = '选择一个工程以输入命令'
-export const COMMAND__IT__OPTION_PROJECT = '指定工程以输入命令'
-export const COMMAND__IT__SELECT_PROJECT = '请选择要执行命令的工程。'
-export const COMMAND__IT__ERROR_FOLDER_NOT_FOUND = '不是 Kerberos 工程（或未添加到 kerberos.json 文件中）。'
-export const COMMAND__IT__ERROR_COMMAND_NOT_FOUND = '找不到命令1。'
-export const COMMAND__IT__HELP_EXIT = '按 `Ctrl + C` 或输入 `exit` 退出。'
-
 // command init
 export const COMMAND__INIT__DESC = '初始化 Kerberos 工作区'
 export const COMMAND__INIT__CONFIRM_CLEAN_MESSAGE = '文件夹不为空，我可以帮您清理一下吗？'
@@ -43,43 +21,6 @@ export const COMMAND__INIT__SUCCESS_INIT_GIT = 'Kerberos 配置工程的生成�
 export const COMMAND__INIT__SUCCESS_COMPLETE = 'Kerberos 工作区的初始设置已完成。'
 export const COMMAND__INIT__HELP_OPERATION = '输入 <cd #{1}> 进入工作区。'
 
-// command exec
-export const COMMAND__EXEC__DESC = '在工程中执行命令'
-export const COMMAND__EXEC__OPTION_PROJECT = '指定要执行命令的工程'
-export const COMMAND__EXEC__SELECT_PROJECT = '请选择要执行的工程。'
-export const COMMAND__EXEC__ERROR_NOT_FOUND_COMMAND = '找不到#{1}命令。'
-
-// command exec-multi
-export const COMMAND__EXEC_MULTI__DESC = '在多个工程中执行命令'
-export const COMMAND__EXEC_MULTI__OPTION_PROJECT = '指定要执行命令的多个工程'
-export const COMMAND__EXEC_MULTI__SELECT_PROJECT = '请选择一个工程来运行脚本。'
-export const COMMAND__EXEC_MULTI__ERROR_NOT_FOUND_COMMAND = '找不到#{1}命令。'
-
-// command clone
-export const COMMAND__CLONE__DESC = '将 Git 仓库克隆到工作区'
-export const COMMAND__CLONE__OPTION_WORKSPACE = '指定 Git 克隆的工作区'
-export const COMMAND__CLONE__OPTION_OPTIONAL = '将存储库指定为选择性安装'
-export const COMMAND__CLONE__SELECT_WORKSPACE = '请选择一个工作区来克隆存储库。'
-export const COMMAND__CLONE__ERROR_INVALID_REPO = '存储库不是有效的 Git 地址。'
-export const COMMAND__CLONE__ERROR_EXISTS_PROJECT = '已经存在一个具有相同名称的工程。'
-export const COMMAND__CLONE__ERROR_FAILE_CLONE = 'Git 克隆错误。'
-export const COMMAND__CLONE__ERROR_INVALID_NODE_PROJECT = '存储库不是NodeJS工程。'
-export const COMMAND__CLONE__ERROR_INVALID_PROJECT_NAME = '密码名称无效。'
-export const COMMAND__CLONE__SUCCESS_COMPLETE = 'Git 克隆工程已完成。'
-
-// command checkout
-export const COMMAND__CHECKOUT__DESC = '检出包中的分支'
-export const COMMAND__CHECKOUT__OPTION_BRANCH = '指定要切换的分支'
-export const COMMAND__CHECKOUT__OPTION_PROJECT = '指定要切换的工程'
-export const COMMAND__CHECKOUT__SELECT_PROJECT = '请选择要切换分支的工程。'
-export const COMMAND__CHECKOUT__SELECT_BRANCH = '请选择要切换的分支。'
-export const COMMAND__CHECKOUT__SUCCESS_COMPLETE = '工程#{1}已更改为#{2}分支。'
-
-// command branch
-export const COMMAND__BRANCH__DESC = '显示工程的所有分支（本地和远程）'
-export const COMMAND__BRANCH__OPTION_PROJECT = '指定工程以显示分支'
-export const COMMAND__BRANCH__SELECT_PROJECT = '请选择工程以查看分支。'
-
 // command bootstrap
 export const COMMAND__BOOTSTRAP__DESC = '初始化工作区并安装所有工程的依赖'
 export const COMMAND__BOOTSTRAP__OPTION_YES = '跳过所有问题并以确认作为选项'
@@ -90,10 +31,53 @@ export const COMMAND__BOOTSTRAP__CONFIRM_INSTALL_DEPEDENCIES = '是否需要安�
 export const COMMAND__BOOTSTRAP__ERROR_INVALID_PACKAGE = 'Package.json 无效。'
 export const COMMAND__BOOTSTRAP__SUCCESS_COMPLETE = 'Boostrap 已完成。'
 
-// command support
-export const COMMAND__SUPPORT__DESC = '确定是否已安装所有依赖项'
-export const COMMAND__SUPPORT__ERROR_INSTALL_FIRST = '请先安装#{1}。'
-export const COMMAND__SUPPORT__SUCCESS = '所有依赖项已准备就绪，您可以正常使用 Kerberos。'
+// command install
+export const COMMAND__INSTALL__DESC = '使用配置工程初始化工作区'
+export const COMMAND__INSTALL__CONFIRM_MOVE_FILES = '此操作将移动您的文件，确定要执行此操作吗？'
+export const COMMAND__INSTALL__ERROR_SOFT_LINK = '文件#{1}是软链，无法安装。'
+export const COMMAND__INSTALL__ERROR_NO_PACKAGE = '找不到 package.json 文件。'
+export const COMMAND__INSTALL__ERROR_NO_SETTINGS = '在#{1}中找不到此工程的设置。'
+export const COMMAND__INSTALL__ERROR_INVALID_SETTINGS = '#{1}中的工作区配置设置错误。'
+
+// command ls
+export const COMMAND__LS__DESC = '显示所有工程信息'
+export const COMMAND__LS__OPTIONS_PROJECT = '指定工程以显示信息'
+export const COMMAND__LS__OPTIONS_DEPENDENCIES = '显示依赖关系列表'
+export const COMMAND__LS__WARNING_CIRCULAR_MESSAGE = '工程之间存在循环引用。'
+
+// command clone
+export const COMMAND__CLONE__DESC = '将 Git 仓库克隆到工作区'
+export const COMMAND__CLONE__OPTION_WORKSPACE = '指定 Git 克隆的工作区'
+export const COMMAND__CLONE__OPTION_OPTIONAL = '将存储库指定为选择性安装'
+export const COMMAND__CLONE__SELECT_WORKSPACE = '请选择一个工作区来克隆存储库。'
+export const COMMAND__CLONE__ERROR_INVALID_REPO = '存储库不是有效的 Git 地址。'
+export const COMMAND__CLONE__ERROR_EXISTS_PROJECT = '已经存在一个具有相同名称的工程。'
+export const COMMAND__CLONE__ERROR_FAILE_CLONE = 'Git 克隆错误。'
+export const COMMAND__CLONE__ERROR_INVALID_NODE_PROJECT = '存储库不是 NodeJS 工程。'
+export const COMMAND__CLONE__ERROR_INVALID_PROJECT_NAME = '密码名称无效。'
+export const COMMAND__CLONE__SUCCESS_COMPLETE = 'Git 克隆工程已完成。'
+
+// command checkout
+export const COMMAND__CHECKOUT__DESC = '检出包中的分支'
+export const COMMAND__CHECKOUT__OPTION_BRANCH = '指定要切换的分支'
+export const COMMAND__CHECKOUT__OPTION_PROJECT = '指定要切换的工程'
+export const COMMAND__CHECKOUT__SELECT_PROJECT = '请选择要切换分支的工程。'
+export const COMMAND__CHECKOUT__SELECT_BRANCH = '请选择要切换的分支。'
+export const COMMAND__CHECKOUT__ERROR_NOT_SUBMIT = '工程中的某些文件位于临时存储中（未提交），请先提交。\n#{1}'
+export const COMMAND__CHECKOUT__ERROR_FAIL_CHECKOUT = '工程 #{1} 无法切换分支，请手动完成切换。'
+export const COMMAND__CHECKOUT__SUCCESS_COMPLETE = '已全部切换到 #{1} 分支。'
+
+// command branch
+export const COMMAND__BRANCH__DESC = '显示工程的所有分支（本地和远程）'
+export const COMMAND__BRANCH__OPTION_PROJECT = '指定工程以显示分支'
+export const COMMAND__BRANCH__SELECT_PROJECT = '请选择工程以查看分支。'
+
+// command tag
+export const COMMAND__TAG__DESC = '为工程打 Tag'
+export const COMMAND__TAG__SELECT_PROJECTS = '请选择要打 Tag 的工程。'
+export const COMMAND__TAG__CONFIRM_DIFF_BRANCHES = '工程在不同的分支中，确定要继续吗？\n#{1} \n'
+export const COMMAND__TAG__ERROR_NOT_SUBMIT = '工程中的某些文件位于临时存储中（未提交），请先提交。\n#{1}'
+export const COMMAND__TAG__ERROR_RELEASE_BRANCH = '工程 #{1} 不在发布分支 #{2} 中，请在打 Tag 之前将其全部切换到发布分支；发布分支在配置文件中已声明。'
 
 // command run
 export const COMMAND__RUN__DESC = '在工程中执行脚本'
@@ -103,15 +87,34 @@ export const COMMAND__RUN__SELECT_SCRIPT = '请选择要运行的脚本。'
 
 // command run-multi
 export const COMMAND__RUN_MULTI__DESC = '在多个工程中执行脚本'
-export const COMMAND__RUN_MULTI__SELECT_PROJECT = '请选择一个工程来运行脚本。'
-export const COMMAND__RUN_MULTI__WARN_NOT_FOUND_PROJECT = '在工程#{2}中找不到脚本#{1}。'
+export const COMMAND__RUN_MULTI__OPTION_PROJECT = '指定需要执行脚本的项目'
+export const COMMAND__RUN_MULTI__SELECT_PROJECT = '请选择需要执行脚本的工程。'
+export const COMMAND__RUN_MULTI__WARN_NOT_FOUND_PROJECT = '在工程 #{2} 中找不到脚本 #{1}。'
 
-// command tag
-export const COMMAND__TAG__DESC = '为工程打 Tag'
-export const COMMAND__TAG__SELECT_PROJECTS = '请选择要打 Tag 的工程。'
-export const COMMAND__TAG__CONFIRM_DIFF_BRANCHES = '工程在不同的分支中，确定要继续吗？\n#{1} \n'
-export const COMMAND__TAG__ERROR_NOT_SUBMIT = '工程中的某些文件位于临时存储中（未提交），请先提交。\n#{1}'
-export const COMMAND__TAG__ERROR_RELEASE_BRANCH = '工程 #{1} 不在发布分支 #{2} 中，请在打 Tag 之前将其全部切换到发布分支；发布分支在配置文件中已声明。'
+// command exec
+export const COMMAND__EXEC__DESC = '在工程中执行命令'
+export const COMMAND__EXEC__OPTION_PROJECT = '指定要执行命令的工程'
+export const COMMAND__EXEC__SELECT_PROJECT = '请选择要执行的工程。'
+export const COMMAND__EXEC__ERROR_NOT_FOUND_COMMAND = '找不到 #{1} 命令。'
+
+// command exec-multi
+export const COMMAND__EXEC_MULTI__DESC = '在多个工程中执行命令'
+export const COMMAND__EXEC_MULTI__OPTION_PROJECT = '指定要执行命令的工程'
+export const COMMAND__EXEC_MULTI__SELECT_PROJECT = '请选择需要执行命令的工程。'
+export const COMMAND__EXEC_MULTI__ERROR_NOT_FOUND_COMMAND = '找不到 #{1} 命令。'
+
+// command it
+export const COMMAND__IT__DESC = '选择一个工程以输入命令'
+export const COMMAND__IT__OPTION_PROJECT = '指定工程以输入命令'
+export const COMMAND__CHECKOUT__OPTION_PROJECTS = '请选择要执行命令的工程。'
+export const COMMAND__IT__ERROR_FOLDER_NOT_FOUND = '不是 Kerberos 工程（或未添加到 kerberos.json 文件中）。'
+export const COMMAND__IT__ERROR_COMMAND_NOT_FOUND = '找不到命令1。'
+export const COMMAND__IT__HELP_EXIT = '按 `Ctrl + C` 或输入 `exit` 退出。'
+
+// command support
+export const COMMAND__SUPPORT__DESC = '确定是否已安装所有依赖项'
+export const COMMAND__SUPPORT__ERROR_INSTALL_FIRST = '请先安装#{1}。'
+export const COMMAND__SUPPORT__SUCCESS = '所有依赖项已准备就绪，您可以正常使用 Kerberos。'
 
 // command/share
 // -------------
