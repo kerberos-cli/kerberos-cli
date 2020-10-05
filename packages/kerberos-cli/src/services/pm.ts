@@ -1,11 +1,28 @@
+import os from 'os'
 import { promisify } from 'util'
 import flatten from 'lodash/flatten'
 import commandExists from 'command-exists'
+import { getStdout } from './process'
 import * as Types from '../types'
 
 /** 判断是否支持 YARN */
 export async function supportedYarn(): Promise<boolean> {
   return await promisify(commandExists)('yarn')
+}
+
+/** 获取 Yarn 版本 */
+export async function getYarnVersion(): Promise<string> {
+  if (!(await supportedYarn())) {
+    return ''
+  }
+
+  const stdout = await getStdout('yarn --version')
+  if (stdout) {
+    const [version] = stdout.trim().split(os.EOL)
+    return version
+  }
+
+  return ''
 }
 
 /**

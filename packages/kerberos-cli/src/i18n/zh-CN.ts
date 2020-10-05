@@ -107,6 +107,10 @@ export const COMMAND__EXEC_MULTI__OPTION_PROJECT = '指定要执行命令的工�
 export const COMMAND__EXEC_MULTI__SELECT_PROJECT = '请选择需要执行命令的工程。'
 export const COMMAND__EXEC_MULTI__ERROR_NOT_FOUND_COMMAND = '找不到 #{1} 命令。'
 
+// command run
+export const COMMAND__SCRIPT__DESC = '在工作区根目录中执行脚本'
+export const COMMAND__SCRIPT__SELECT_SCRIPT = '请选择要运行的脚本。'
+
 // command it
 export const COMMAND__IT__DESC = '选择一个工程以输入命令'
 export const COMMAND__IT__OPTION_PROJECT = '指定工程以输入命令'

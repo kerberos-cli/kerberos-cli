@@ -7,7 +7,7 @@ import tryGetProject from './share/tryGetProject'
 import i18n from '../i18n'
 import * as Types from '../types'
 
-async function takeAction(command?: string, options?: Types.CLIExecOptions): Promise<void> {
+async function takeAction(command: string, options?: Types.CLIExecOptions): Promise<void> {
   const project = await tryGetProject(i18n.COMMAND__EXEC__SELECT_PROJECT``, options?.project)
   const { folder } = project || {}
   const [cli, ...params] = command.split(' ')
@@ -30,7 +30,7 @@ async function takeAction(command?: string, options?: Types.CLIExecOptions): Pro
 }
 
 program
-  .command('exec [command]')
+  .command('exec <command>')
   .description(i18n.COMMAND__EXEC__DESC``)
   .option('-p, --project <project>', i18n.COMMAND__EXEC__OPTION_PROJECT``)
   .action((command: string, options?: Types.CLIExecOptions) => intercept()(takeAction)(command, options))

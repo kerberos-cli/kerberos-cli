@@ -14,6 +14,22 @@ export async function supportedGit(): Promise<boolean> {
   return await promisify(commandExists)('git')
 }
 
+/** 获取 Git 版本 */
+export async function getGitVersion(): Promise<string> {
+  if (!(await supportedGit())) {
+    return ''
+  }
+
+  const stdout = await getStdout('git --version')
+  if (stdout) {
+    const [line] = stdout.trim().split(os.EOL)
+    const [, version] = line.match(/^git\s+version\s+(.+?)\s\((?:.+?)\)$/)
+    return version
+  }
+
+  return ''
+}
+
 /**
  * 判断仓库是否干净
  * @param folder 文件名

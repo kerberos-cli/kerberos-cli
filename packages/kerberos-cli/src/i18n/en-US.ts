@@ -108,6 +108,10 @@ export const COMMAND__EXEC_MULTI__OPTION_PROJECT = 'specify projects to excute c
 export const COMMAND__EXEC_MULTI__SELECT_PROJECT = 'Please select the projects to excute command.'
 export const COMMAND__EXEC_MULTI__ERROR_NOT_FOUND_COMMAND = 'Command #{1} not found.'
 
+// command run
+export const COMMAND__SCRIPT__DESC = 'execute the script in the root directory of the workspace'
+export const COMMAND__SCRIPT__SELECT_SCRIPT = 'Please select a script to run.'
+
 // command it
 export const COMMAND__IT__DESC = 'select an project to input the commands'
 export const COMMAND__IT__OPTION_PROJECT = 'specify the project to input the commands'

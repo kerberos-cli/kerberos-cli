@@ -46,7 +46,7 @@ async function takeAction(command: string, options?: Types.CLIExecMultiOptions):
 }
 
 program
-  .command('exec-multi [command]')
+  .command('exec-multi <command>')
   .alias('mexec')
   .description(i18n.COMMAND__EXEC_MULTI__DESC``)
   .option('-p, --project <projects...>', i18n.COMMAND__EXEC_MULTI__OPTION_PROJECT``)

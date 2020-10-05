@@ -1,25 +1,28 @@
 import chalk from 'chalk'
 import { program } from 'commander'
-import { supportedGit } from '../services/git'
-import { supportedYarn } from '../services/pm'
+import { upperFirst } from 'lodash'
+import { getGitVersion } from '../services/git'
+import { getYarnVersion } from '../services/pm'
+import { success, fail } from '../services/logger'
 import i18n from '../i18n'
 
 async function takeAction(): Promise<void> {
-  const supports = {
-    git: await supportedGit(),
-    yarn: await supportedYarn(),
+  const versions = {
+    git: await getGitVersion(),
+    yarn: await getYarnVersion(),
   }
 
-  const allSupported = Object.keys(supports).filter((name) => {
-    const supported = supports[name]
-    console.log(` ${chalk.green.bold(supported ? '✓' : '✗')} ${chalk.white.bold(name)}`)
-    return !supported
+  const supported = Object.keys(versions).filter((name) => {
+    const version = versions[name]
+    const icon = version ? '✓' : '✗'
+    console.log(chalk.gray(` ${chalk.green.bold(icon)} ${chalk.white.bold(upperFirst(name))}@${chalk.magenta.bold(version)}`))
+    return !version
   })
 
-  if (allSupported.length === 0) {
-    console.log(chalk.cyan(i18n.COMMAND__SUPPORT__SUCCESS``))
+  if (supported.length === 0) {
+    success(chalk.cyan(i18n.COMMAND__SUPPORT__SUCCESS``))
   } else {
-    console.log(i18n.COMMAND__SUPPORT__ERROR_INSTALL_FIRST`${allSupported.join(', ')}`)
+    fail(i18n.COMMAND__SUPPORT__ERROR_INSTALL_FIRST`${supported.join(', ')}`)
   }
 }
 

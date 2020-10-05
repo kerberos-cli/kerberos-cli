@@ -9,7 +9,7 @@ import intercept from '../interceptors'
 import i18n from '../i18n'
 import * as Types from '../types'
 
-async function takeAction(script: string, options?: Types.CLIRunMultiOptions): Promise<void> {
+async function takeAction(scriptName: string, options?: Types.CLIRunMultiOptions): Promise<void> {
   const projects = await tryGetProjects(i18n.COMMAND__RUN_MULTI__SELECT_PROJECT``, options.projects)
   if (projects.length === 0) {
     return
@@ -30,15 +30,17 @@ async function takeAction(script: string, options?: Types.CLIRunMultiOptions): P
   await waterfall(
     queue.map((group) => async () => {
       return Promise.all(
-        group.map(async (name) => {
-          const { folder, package: pkgJSON } = projects.find((project) => project.name === name)
+        group.map(async (projectName) => {
+          const { folder, package: pkgJSON } = projects.find((project) => project.name === projectName)
           const { scripts = {} } = pkgJSON || {}
-          if (typeof scripts[script] !== 'string') {
-            warn(i18n.COMMAND__RUN_MULTI__WARN_NOT_FOUND_PROJECT`${script} ${name}`)
+          if (typeof scripts[scriptName] !== 'string') {
+            warn(i18n.COMMAND__RUN_MULTI__WARN_NOT_FOUND_PROJECT`${scriptName} ${projectName}`)
             return
           }
 
-          await spawn('yarn', ['run', script], { cwd: folder })
+          const command = scripts[scriptName]
+          const [cli, ...params] = command.split(' ')
+          await spawn(cli, params, { cwd: folder, shell: true })
         })
       )
     })
