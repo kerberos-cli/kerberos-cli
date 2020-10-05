@@ -2,7 +2,7 @@ import fs from 'fs-extra'
 import path from 'path'
 import { PromiseType } from 'utility-types'
 import { warn, fail } from '../services/logger'
-import { configFileName } from '../constants/config'
+import { configFileName } from '../constants/conf'
 import i18n from '../i18n'
 import * as Types from '../types'
 

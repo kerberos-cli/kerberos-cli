@@ -1,8 +1,8 @@
 import chalk from 'chalk'
-import { getConfigInfo, getWorkspaceInfoCollection, getProjectInfoCollection } from '../project'
+import { getConfig, getWorkspaceInfoCollection, getProjectInfoCollection } from '../project'
 import { getBranchNames, getBranchTracking } from '../git'
 import { warn } from '../logger'
-import { configFileName } from '../../constants/config'
+import { configFileName } from '../../constants/conf'
 import i18n from '../../i18n'
 import * as Types from '../../types'
 
@@ -59,7 +59,7 @@ export async function script(scripts: { [name: string]: string }): Promise<Types
 
 /** 获取项目选项(包含未初始化, 仅存在于配置中) */
 export async function projectInConfig(projects?: Types.CProject[]): Promise<Types.DProjectInConfChoice[]> {
-  const choices = projects || (await getConfigInfo())?.projects || []
+  const choices = projects || (await getConfig())?.projects || []
   if (!(Array.isArray(choices) && choices.length > 0)) {
     warn(i18n.UI_SELECT_OPTIONS__PROJECT_IN_CONFIG__WARN_NOT_FOUND_PROJECTS`${configFileName}`)
     return

@@ -73,11 +73,12 @@ export const COMMAND__BRANCH__OPTION_PROJECT = '指定工程以显示分支'
 export const COMMAND__BRANCH__SELECT_PROJECT = '请选择工程以查看分支。'
 
 // command tag
-export const COMMAND__TAG__DESC = '为工程打 Tag'
-export const COMMAND__TAG__SELECT_PROJECTS = '请选择要打 Tag 的工程。'
-export const COMMAND__TAG__CONFIRM_DIFF_BRANCHES = '工程在不同的分支中，确定要继续吗？\n#{1} \n'
-export const COMMAND__TAG__ERROR_NOT_SUBMIT = '工程中的某些文件位于临时存储中（未提交），请先提交。\n#{1}'
-export const COMMAND__TAG__ERROR_RELEASE_BRANCH = '工程 #{1} 不在发布分支 #{2} 中，请在打 Tag 之前将其全部切换到发布分支；发布分支在配置文件中已声明。'
+export const COMMAND__VERSION__DESC = '为工程打 Tag'
+export const COMMAND__VERSION__SELECT_PROJECTS = '请选择要打 Tag 的工程。'
+export const COMMAND__VERSION__CONFIRM_DIFF_BRANCHES = '工程在不同的分支中，确定要继续吗？\n#{1} \n'
+export const COMMAND__VERSION__ERROR_NOT_SUBMIT = '工程中的某些文件位于临时存储中（未提交），请先提交。\n#{1}'
+export const COMMAND__VERSION__INPUT_VERSION = '请输入新的版本号'
+export const COMMAND__VERSION__ERROR_RELEASE_BRANCH = '工程 #{1} 不在发布分支 #{2} 中，请在打 Tag 之前将其全部切换到发布分支；发布分支在配置文件中已声明。'
 
 // command run
 export const COMMAND__RUN__DESC = '在工程中执行脚本'
@@ -156,3 +157,10 @@ export const UI_SELECT_OPTIONS__PROJECT_IN_CONFIG__WARN_NOT_FOUND_PROJECTS = '�
 export const UI__GSEL__ERROR_NOT_FOUND_SELECTOR = '找不到#{1}选择器。'
 export const UI__G_MULTI_SEL__ERROR_NOT_FOUND_SELECTOR = '找不到#{1}选择器。'
 export const UI__CONFIRM__DEFAULT_MESSAGE = '确定吗？'
+
+export const UI__SELECT_VERSION__DEFAULT_MESSAGE = '请选择新版本'
+export const UI__SELECT_VERSION__INPUT_CUSTOM_PRE_VERSION = '请输入自定义的预发行版本'
+export const UI__SELECT_VERSION__INPUT_CUSTOM_VERSION = '请输入自定义版本'
+
+export const UI__INPUT_VERSION__DEFAULT_MESSAGE = '请输入一个新的版本号'
+export const UI__INPUT_VERSION__ERROR_INVALID_VERSION = '版本号 #{1} 错误，请确认格式；例如：`1.0.0-alpha.1`'

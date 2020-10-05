@@ -3,7 +3,8 @@ import inquirer from 'inquirer'
 import inquirerSearchList from 'inquirer-search-list'
 import inquirerSearchCheckbox from 'inquirer-search-checkbox'
 import inquirerCommandPrompt from 'inquirer-command-prompt'
-import { rootPath } from '../constants/config'
+import inquirerAutoCompletePrompt from 'inquirer-autocomplete-prompt'
+import { rootPath } from '../constants/conf'
 
 inquirerCommandPrompt.setConfig({
   history: {
@@ -17,3 +18,4 @@ inquirerCommandPrompt.setConfig({
 inquirer.registerPrompt('search-list', inquirerSearchList)
 inquirer.registerPrompt('search-checkbox', inquirerSearchCheckbox)
 inquirer.registerPrompt('command', inquirerCommandPrompt)
+inquirer.registerPrompt('autocomplete', inquirerAutoCompletePrompt)

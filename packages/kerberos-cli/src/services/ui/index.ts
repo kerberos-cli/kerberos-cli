@@ -1,4 +1,7 @@
+import chalk from 'chalk'
+import upperFirst from 'lodash/upperFirst'
 import inquirer from 'inquirer'
+import semver, { ReleaseType } from 'semver'
 import { PromiseType, ValuesType } from 'utility-types'
 import commonCommands from '../../constants/command'
 import * as SelectOptions from './selectOptions'
@@ -95,6 +98,7 @@ export function gMultiSel<C, S extends Types.ChoicesGenerators<C>>(initialOption
 /**
  * 单选
  * @param name 选择器名称
+ * @param initialOptions 配置
  */
 export function select<T extends keyof typeof SelectOptions>(type: T, initialOptions?: inquirer.ListQuestionOptions) {
   return gSel(initialOptions, SelectOptions)(type)
@@ -103,6 +107,7 @@ export function select<T extends keyof typeof SelectOptions>(type: T, initialOpt
 /**
  * 多选
  * @param name 选择器名称
+ * @param initialOptions 配置
  */
 export function multiSelect<T extends keyof typeof SelectOptions>(type: T, initialOptions?: inquirer.CheckboxQuestionOptions) {
   return gMultiSel(initialOptions, SelectOptions)(type)
@@ -138,4 +143,94 @@ export async function inputCommand(message: string = '>'): Promise<string> {
 
   const { command } = await inquirer.prompt(promptOptions as any)
   return command
+}
+
+/**
+ * 输入版本号
+ * @param version 版本号
+ * @param initialOptions 配置
+ */
+export async function inputVersion(message: string = i18n.UI__INPUT_VERSION__DEFAULT_MESSAGE``, initialOptions?: inquirer.InputQuestion): Promise<string> {
+  const promptOptions: inquirer.InputQuestion = {
+    ...initialOptions,
+    type: 'input',
+    name: 'version',
+    message: message,
+    validate: (version) => {
+      if (semver.valid(version)) {
+        return true
+      }
+
+      return i18n.UI__INPUT_VERSION__ERROR_INVALID_VERSION`${chalk.red(version)}`
+    },
+  }
+
+  const { version } = await inquirer.prompt(promptOptions)
+  return version
+}
+
+/**
+ * 选择版本号
+ * @param message 输出信息
+ * @param curVer 当前版本号
+ * @param identifier 预发布版本字段
+ */
+export async function selectVersion(message: string = i18n.UI__SELECT_VERSION__DEFAULT_MESSAGE``, curVer: string = '1.0.0', identifier?: string): Promise<string> {
+  const { major, minor, patch, prerelease } = semver.parse(curVer)
+  const isPrerelease = prerelease.length > 0
+
+  let tarIdentifier: string
+  if (!identifier) {
+    const [curIdentifier = 'alpha'] = prerelease
+    tarIdentifier = typeof curIdentifier === 'string' ? curIdentifier : 'alpha'
+  }
+
+  // 主版本
+  const normalTypes: ReleaseType[] = ['patch', 'minor', 'major']
+  const normalChoices = normalTypes.map((type) => {
+    const version = `${major}.${minor}.${patch}`
+    const value = semver.inc(version, type)
+    const name = `${upperFirst(type)} (${value})`
+    return { name, value }
+  })
+
+  // 预发布版本
+  const preTypes: ReleaseType[] = ['prepatch', 'preminor', 'premajor']
+  const preChoices = preTypes.map((type) => {
+    const version = isPrerelease ? `${major}.${minor}.${patch}-${prerelease.join('.')}` : `${major}.${minor}.${patch}`
+    const value = semver.inc(version, type, tarIdentifier)
+    const name = `${upperFirst(type)} (${value})`
+    return { name, value }
+  })
+
+  // 总选项
+  const choices = (isPrerelease ? [...preChoices, ...normalChoices] : [...normalChoices, ...preChoices]).concat([
+    { name: 'Custom Preprelease', value: 'cp' },
+    { name: 'Custom Version', value: 'cv' },
+  ])
+
+  const promptOptions: inquirer.ListQuestion = {
+    type: 'list',
+    name: 'version',
+    message: message,
+    choices: choices,
+    pageSize: 8,
+  }
+
+  const { version: result } = await inquirer.prompt(promptOptions)
+  switch (result) {
+    case 'cp': {
+      const next = isPrerelease ? `${major}.${minor}.${patch}-${prerelease.join('.')}` : `${major}.${minor}.${patch}`
+      const value = semver.inc(next, 'prerelease', tarIdentifier)
+      const version = await inputVersion(i18n.UI__SELECT_VERSION__INPUT_CUSTOM_PRE_VERSION``, { default: value })
+      return version
+    }
+
+    case 'cv': {
+      const version = await inputVersion(i18n.UI__SELECT_VERSION__INPUT_CUSTOM_VERSION``)
+      return version
+    }
+  }
+
+  return result
 }

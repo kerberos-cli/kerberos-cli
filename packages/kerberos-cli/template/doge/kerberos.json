@@ -1,13 +1,15 @@
 {
+  "version": "1.0.0",
+  "release": {
+    "type": "tag",
+    "branch": "master",
+    "message": "chore(release): Kerberos Tag"
+  },
   "projects": [
     {
       "name": "@kerberos/doge",
       "workspace": "@kerberos",
       "optional": false
     }
-  ],
-  "release": {
-    "type": "tag",
-    "branch": "master"
-  }
+  ]
 }

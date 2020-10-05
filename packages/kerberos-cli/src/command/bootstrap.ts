@@ -1,7 +1,7 @@
 import fs from 'fs-extra'
 import path from 'path'
 import { program } from 'commander'
-import { getConfigInfo, getProjectInfoCollection } from '../services/project'
+import { getConfig, getProjectInfoCollection } from '../services/project'
 import { spawn } from '../services/process'
 import { success } from '../services/logger'
 import { confirm, multiSelect } from '../services/ui'
@@ -11,7 +11,7 @@ import * as Types from '../types'
 
 async function takeAction(options?: Types.CLIBootstrapOptions): Promise<void> {
   const { yes, optional } = options
-  const config = await getConfigInfo()
+  const config = await getConfig()
   const pkgFile = path.join(process.cwd(), 'package.json')
   if (!(await fs.pathExists(pkgFile))) {
     throw new Error(i18n.COMMAND__BOOTSTRAP__ERROR_INVALID_PACKAGE``)

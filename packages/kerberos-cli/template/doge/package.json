@@ -1,6 +1,6 @@
 {
   "name": "@kerberos/doge",
   "version": "0.0.1",
-  "description": "Cerberus configuration.",
+  "description": "Kerberos Configuration",
   "license": "MIT"
 }

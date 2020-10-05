@@ -2,9 +2,9 @@ import os from 'os'
 import fs from 'fs-extra'
 import path from 'path'
 import { promisify } from 'util'
+import isGitUrl from 'is-git-url'
 import uniq from 'lodash/uniq'
 import commandExists from 'command-exists'
-import isGitUrl from 'is-git-url'
 import { spawn, getStdout } from './process'
 
 /**

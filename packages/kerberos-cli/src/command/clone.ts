@@ -2,7 +2,7 @@ import fs from 'fs-extra'
 import path from 'path'
 import { program } from 'commander'
 import isGitUrl from 'is-git-url'
-import { addProjects, getConfigInfo } from '../services/project'
+import { getConfig, addProjectsToConfig } from '../services/project'
 import { gitClone } from '../services/git'
 import { success } from '../services/logger'
 import intercept from '../interceptors'
@@ -16,7 +16,7 @@ async function takeAction(repository: string, name: string = path.basename(repos
   }
 
   const { name: workspace, folder } = await tryGetWorkspace(i18n.COMMAND__CLONE__SELECT_WORKSPACE``, optoins?.workspace)
-  const config = await getConfigInfo()
+  const config = await getConfig()
   const projects = config?.projects || []
   if (-1 !== projects.findIndex((item) => item.name === name && item.workspace)) {
     throw new Error(i18n.COMMAND__CLONE__ERROR_EXISTS_PROJECT``)
@@ -38,7 +38,7 @@ async function takeAction(repository: string, name: string = path.basename(repos
   }
 
   const optional = typeof optoins?.optional === 'boolean' ? optoins?.optional : false
-  await addProjects([{ name: realname, repository, workspace, optional }])
+  await addProjectsToConfig([{ name: realname, repository, workspace, optional }])
   success(i18n.COMMAND__CLONE__SUCCESS_COMPLETE``)
 }
 

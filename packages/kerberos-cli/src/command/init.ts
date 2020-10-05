@@ -7,7 +7,7 @@ import { spawn } from '../services/process'
 import { confirm } from '../services/ui'
 import { success, info } from '../services/logger'
 import intercept from '../interceptors'
-import { configTemplate, configProjectFolderName, configFileName, packageFileName, defaultWorkspaceName } from '../constants/config'
+import { configTemplate, configProjectFolderName, configFileName, packageFileName, defaultWorkspaceName } from '../constants/conf'
 import i18n from '../i18n'
 
 async function takeAction(folder: string, repo?: string): Promise<void> {

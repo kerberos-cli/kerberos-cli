@@ -21,8 +21,8 @@ export type CProject = {
 
 /** 全局配置 */
 export type CConfig = {
-  /** 项目信息 */
-  projects?: CProject[]
+  /** 版本号 */
+  version: string
   /** 发布配置 */
   release?: {
     /** 发布类型 */
@@ -30,6 +30,8 @@ export type CConfig = {
     /** 发布分支 */
     branch?: string
   }
+  /** 项目信息 */
+  projects?: CProject[]
 }
 
 /** package json */

@@ -73,11 +73,12 @@ export const COMMAND__BRANCH__OPTION_PROJECT = 'specify the project to display t
 export const COMMAND__BRANCH__SELECT_PROJECT = 'Please select the project to view the branch.'
 
 // command tag
-export const COMMAND__TAG__DESC = 'Git tag for the projects'
-export const COMMAND__TAG__SELECT_PROJECTS = 'Please select projects to tag.'
-export const COMMAND__TAG__CONFIRM_DIFF_BRANCHES = 'The project is in different branches, are you sure you want to continue?\n#{1}\n'
-export const COMMAND__TAG__ERROR_NOT_SUBMIT = 'Some files in the projects are in temporary storage (not submitted), please submit first.\n#{1}'
-export const COMMAND__TAG__ERROR_RELEASE_BRANCH =
+export const COMMAND__VERSION__DESC = 'Git tag for the projects'
+export const COMMAND__VERSION__SELECT_PROJECTS = 'Please select projects to tag.'
+export const COMMAND__VERSION__CONFIRM_DIFF_BRANCHES = 'The project is in different branches, are you sure you want to continue?\n#{1}\n'
+export const COMMAND__VERSION__ERROR_NOT_SUBMIT = 'Some files in the projects are in temporary storage (not submitted), please submit first.\n#{1}'
+export const COMMAND__VERSION__INPUT_VERSION = 'Please type a new version.'
+export const COMMAND__VERSION__ERROR_RELEASE_BRANCH =
   'Projects #{1} are not in the release branch #{2}, please switch all of it to the release branch before tagging; The release branch is defined by the configuration file.'
 
 // command run
@@ -157,3 +158,10 @@ export const UI_SELECT_OPTIONS__PROJECT_IN_CONFIG__WARN_NOT_FOUND_PROJECTS = 'No
 export const UI__GSEL__ERROR_NOT_FOUND_SELECTOR = 'Selector #{1} not found.'
 export const UI__G_MULTI_SEL__ERROR_NOT_FOUND_SELECTOR = 'Selector #{1} not found.'
 export const UI__CONFIRM__DEFAULT_MESSAGE = 'Are you sure?'
+
+export const UI__SELECT_VERSION__DEFAULT_MESSAGE = 'Please select new version'
+export const UI__SELECT_VERSION__INPUT_CUSTOM_PRE_VERSION = 'Please type a custom prerelease version'
+export const UI__SELECT_VERSION__INPUT_CUSTOM_VERSION = 'Please type a custom version'
+
+export const UI__INPUT_VERSION__DEFAULT_MESSAGE = 'Please type new version'
+export const UI__INPUT_VERSION__ERROR_INVALID_VERSION = 'Version #{1} is invalid, please confirm the version format; eg: `1.0.0-alpha.1`'
