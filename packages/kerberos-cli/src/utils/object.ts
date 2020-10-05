@@ -28,5 +28,11 @@ export function sequence<T extends Record<string, any>>(source: T, getSequence?:
     }
   })
 
+  Object.keys(source).forEach((name: string) => {
+    if (-1 === keys.indexOf(name)) {
+      object[name] = source[name]
+    }
+  })
+
   return object
 }

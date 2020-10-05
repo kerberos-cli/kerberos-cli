@@ -29,6 +29,8 @@ export type CConfig = {
     type?: string
     /** 发布分支 */
     branch?: string
+    /** 发布信息 */
+    message?: string
   }
   /** 项目信息 */
   projects?: CProject[]
@@ -132,16 +134,12 @@ export type CLIBootstrapOptions = {
   optional?: boolean
 }
 
-/** branch 命令选项 */
-export type CLIBranchOptions = {
+/** ls 命令选项 */
+export type CLILsOptions = {
   /** 指定项目 */
   project?: string
-}
-
-/** checkout 命令选项 */
-export type CLICheckoutOptions = {
-  /** 指定项目 */
-  projects?: string[]
+  /** 显示依赖列表 */
+  dependencies?: boolean
 }
 
 /** clone 命令选项 */
@@ -152,16 +150,22 @@ export type CLICloneOptions = {
   optional?: boolean
 }
 
-/** exec 命令选项 */
-export type CLIExecOptions = {
+/** checkout 命令选项 */
+export type CLICheckoutOptions = {
+  /** 指定项目 */
+  projects?: string[]
+}
+
+/** branch 命令选项 */
+export type CLIBranchOptions = {
   /** 指定项目 */
   project?: string
 }
 
-/** exec-multi 命令选项 */
-export type CLIExecMultiOptions = {
-  /** 指定项目 */
-  projects?: string[]
+/** version 命令选项 */
+export type CLIVersionOptions = {
+  /** 不推送 */
+  noPush?: boolean
 }
 
 /** run 命令选项 */
@@ -176,20 +180,24 @@ export type CLIRunMultiOptions = {
   projects?: string[]
 }
 
+/** exec 命令选项 */
+export type CLIExecOptions = {
+  /** 指定项目 */
+  project?: string
+}
+
+/** exec-multi 命令选项 */
+export type CLIExecMultiOptions = {
+  /** 指定项目 */
+  projects?: string[]
+}
+
 /** it 命令选项 */
 export type CLIItOptions = {
   /** 显示全部 */
   all?: string
   /** 指定项目 */
   project?: string
-}
-
-/** ls 命令选项 */
-export type CLILsOptions = {
-  /** 指定项目 */
-  project?: string
-  /** 显示依赖列表 */
-  dependencies?: boolean
 }
 
 // 其他

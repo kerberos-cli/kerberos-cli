@@ -12,6 +12,10 @@ import * as Types from '../types'
 
 async function takeAction(command: string, options?: Types.CLIExecMultiOptions): Promise<void> {
   const projects = await tryGetProjects(i18n.COMMAND__EXEC_MULTI__SELECT_PROJECT``, options?.projects)
+  if (projects.length === 0) {
+    return
+  }
+
   const dependencyGraph = await getDependencyGraph(projects)
   const weightGraph = getDependencyWeight(dependencyGraph)
 

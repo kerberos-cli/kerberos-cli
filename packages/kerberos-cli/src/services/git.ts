@@ -122,3 +122,20 @@ export async function getBranchTracking(folder: string): Promise<{ [N: string]: 
 
   return tracking
 }
+
+export async function getRemotes(folder: string): Promise<Array<{ name: string; url: string; type: string }>> {
+  const stdout = await getStdout('git remote -v', { cwd: folder })
+  const remotes = []
+
+  if (stdout) {
+    const lines = stdout.trim().split(os.EOL)
+    const regexp = /^([\w\d_-]+?)\s+(.+?)\s+\((fetch|push)\)$/
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i].trim()
+      const [, name, url, type] = line.match(regexp)
+      remotes.push({ name, url, type })
+    }
+  }
+
+  return remotes
+}

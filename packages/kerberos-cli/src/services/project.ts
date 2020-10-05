@@ -101,7 +101,7 @@ export async function updatePackage(options: Partial<Types.CPackage>, file: stri
   }
 
   /** 更新依赖中所有可能出现的版本 */
-  const { dependencies, devDependencies, optionalDependencies, bundleDependencies, bundledDependencies } = source
+  const { dependencies, devDependencies, optionalDependencies, bundleDependencies, bundledDependencies } = options
   if (dependencies) {
     source.dependencies = dependencies
   }

@@ -72,13 +72,16 @@ export const COMMAND__BRANCH__DESC = '显示工程的所有分支（本地和远
 export const COMMAND__BRANCH__OPTION_PROJECT = '指定工程以显示分支'
 export const COMMAND__BRANCH__SELECT_PROJECT = '请选择工程以查看分支。'
 
-// command tag
-export const COMMAND__VERSION__DESC = '为工程打 Tag'
+// command version
+export const COMMAND__VERSION__DESC = '为工程打 Git Tag'
+export const COMMAND__VERSION__OPTION_NO_PUSH = '只更新不提交'
 export const COMMAND__VERSION__SELECT_PROJECTS = '请选择要打 Tag 的工程。'
 export const COMMAND__VERSION__CONFIRM_DIFF_BRANCHES = '工程在不同的分支中，确定要继续吗？\n#{1} \n'
 export const COMMAND__VERSION__ERROR_NOT_SUBMIT = '工程中的某些文件位于临时存储中（未提交），请先提交。\n#{1}'
 export const COMMAND__VERSION__INPUT_VERSION = '请输入新的版本号'
 export const COMMAND__VERSION__ERROR_RELEASE_BRANCH = '工程 #{1} 不在发布分支 #{2} 中，请在打 Tag 之前将其全部切换到发布分支；发布分支在配置文件中已声明。'
+export const COMMAND__VERSION__WARN_NO_REMOTE = '工程 #{1} 没有指定 Origin 远程主机，请手动将其推送到远程主机。'
+export const COMMAND__VERSION__WARN_NO_BRANCH = '工程 #{1} 未指定任何分支，请手动推送到远程主机。'
 
 // command run
 export const COMMAND__RUN__DESC = '在工程中执行脚本'

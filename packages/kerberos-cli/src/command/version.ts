@@ -5,14 +5,14 @@ import uniq from 'lodash/uniq'
 import groupBy from 'lodash/groupBy'
 import isGitUrl from 'is-git-url'
 import { program } from 'commander'
-import { getConfig, updateConfig, getDependencyGraph, getDirtyProjectInfoCollection, getProjectInfoCollection } from '../services/project'
+import { getConfig, updateConfig, getDependencyGraph, getDirtyProjectInfoCollection, getProjectInfoCollection, updatePackage } from '../services/project'
 import intercept from '../interceptors'
 import tryGetProjects from './share/tryGetProjects'
-import { getBranch } from '../services/git'
+import { spawn } from '../services/process'
+import { getBranch, getRemotes } from '../services/git'
 import { confirm, selectVersion } from '../services/ui'
-import { openJsonFile, updateJsonFile } from '../services/fileMemory'
-import { randomHex } from '../services/logger'
-import { sequence } from '../utils/object'
+import { openJsonFile } from '../services/fileMemory'
+import { randomHex, warn } from '../services/logger'
 import i18n from '../i18n'
 import * as Types from '../types'
 
@@ -24,7 +24,7 @@ function updateVersion(curVer: string, version: string): string {
   return version
 }
 
-async function takeAction(version: string) {
+async function takeAction(version: string, options: Types.CLIVersionOptions = {}) {
   const configs = await getConfig()
   const curVer = configs.version || '1.0.0'
 
@@ -86,7 +86,8 @@ async function takeAction(version: string) {
   const graph = await getDependencyGraph()
   graph.forEach(({ dependencies }) => related.push(...dependencies))
 
-  // 更改依赖
+  // 更新依赖
+  const commitMessage = configs?.release?.message || 'chore(release): Kerberos Tag'
   const relatedProjects = uniq(related)
   const finalProjects = (await getProjectInfoCollection()).filter((item) => relatedProjects.indexOf(item.name) !== -1)
   await Promise.all(
@@ -94,7 +95,6 @@ async function takeAction(version: string) {
       const { dependencies: deps = [] } = graph.find((item) => item.name === name) || {}
       const file = path.join(folder, 'package.json')
       const source: Types.CPackage = await openJsonFile(file)
-      const keys = Object.keys(source)
       source.version = finalVersion
 
       /** 更新依赖中所有可能出现的版本 */
@@ -123,18 +123,46 @@ async function takeAction(version: string) {
         })
       }
 
-      const sortedSource = sequence(source, () => keys)
-      const json = JSON.stringify(sortedSource, null, 2)
-      await updateJsonFile(file, json)
+      // 更新配置
+      await updatePackage(source, file)
     })
   )
 
-  // 更新当前版本
+  // 更新工作区版本
   await updateConfig({ version: finalVersion })
+
+  /** 提交代码 */
+  await Promise.all(
+    finalProjects.map(async ({ name, folder }) => {
+      // 自动提交代码
+      await spawn('git', ['add', '.'], { cwd: folder })
+      await spawn('git', ['commit', '-m', commitMessage], { cwd: folder })
+      await spawn('git', ['tag', finalVersion], { cwd: folder })
+
+      // 代码推送
+      if (typeof options.noPush === 'undefined' || options.noPush !== false) {
+        const remotes = await getRemotes(folder)
+        const { name: remote } = remotes.find((item) => item.name === 'origin') || {}
+        const { branch } = branches.find((item) => item.name === name) || {}
+        if (!remote) {
+          warn(i18n.COMMAND__VERSION__WARN_NO_REMOTE`${name}`)
+          return
+        }
+
+        if (!branch || branch === 'HEAD') {
+          warn(i18n.COMMAND__VERSION__WARN_NO_BRANCH`${name}`)
+          return
+        }
+
+        await spawn('git', ['push', '--atomic', remote, branch, finalVersion], { cwd: folder })
+      }
+    })
+  )
 }
 
 program
   .command('version [version]')
   .description(i18n.COMMAND__VERSION__DESC``)
-  .action((version: string) => intercept()(takeAction)(version))
+  .option('--no-push [noPush]', i18n.COMMAND__VERSION__OPTION_NO_PUSH``)
+  .action((version: string, options: Types.CLIVersionOptions) => intercept()(takeAction)(version, options))
   .helpOption('-h, --help', i18n.COMMAND__OPTION__HELP_DESC``)

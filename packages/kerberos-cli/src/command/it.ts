@@ -1,5 +1,4 @@
 import path from 'path'
-import fs from 'fs-extra'
 import { program } from 'commander'
 import chalk from 'chalk'
 import { promisify } from 'util'
@@ -7,11 +6,12 @@ import commandExists from 'command-exists'
 import { spawn } from '../services/process'
 import { getProjectInfoCollection } from '../services/project'
 import { inputCommand } from '../services/ui'
-import intercept from '../interceptors'
-import { execPath } from '../constants/conf'
-import tryGetProject from './share/tryGetProject'
+import { openJsonFile } from '../services/fileMemory'
 import { fail } from '../services/logger'
+import tryGetProject from './share/tryGetProject'
+import { execPath } from '../constants/conf'
 import i18n from '../i18n'
+import intercept from '../interceptors'
 import * as Types from '../types'
 
 async function takeAction(options?: Types.CLIItOptions): Promise<void> {
@@ -51,7 +51,7 @@ async function takeAction(options?: Types.CLIItOptions): Promise<void> {
     }
   }
 
-  const pkgJSON: Types.CPackage = await fs.readJSON(path.join(folder, 'package.json'))
+  const pkgJSON: Types.CPackage = await openJsonFile(path.join(folder, 'package.json'))
   console.log(chalk.gray(i18n.COMMAND__IT__HELP_EXIT``))
 
   InputLoop: while (true) {

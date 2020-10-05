@@ -2,9 +2,10 @@ import fs from 'fs-extra'
 import path from 'path'
 import { program } from 'commander'
 import { confirm } from '../services/ui'
-import { configFileName, packageFileName, configProjectFolderName } from '../constants/conf'
+import { openJsonFile } from '../services/fileMemory'
 import intercept from '../interceptors'
 import i18n from '../i18n'
+import { configFileName, packageFileName, configProjectFolderName } from '../constants/conf'
 import * as Types from '../types'
 
 async function takeAction(): Promise<void> {
@@ -19,8 +20,8 @@ async function takeAction(): Promise<void> {
     throw new Error(i18n.COMMAND__INSTALL__ERROR_NO_PACKAGE``)
   }
 
-  const config: Types.CConfig = await fs.readJSON(cfg)
-  const source: Types.CPackage = await fs.readJSON(pkg)
+  const config: Types.CConfig = await openJsonFile(cfg)
+  const source: Types.CPackage = await openJsonFile(pkg)
   const project = config.projects.find((item) => item.name === source.name)
   if (!project) {
     throw new Error(i18n.COMMAND__INSTALL__ERROR_NO_SETTINGS`${configFileName}`)
