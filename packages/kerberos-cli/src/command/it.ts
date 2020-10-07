@@ -80,4 +80,3 @@ program
   .description(i18n.COMMAND__IT__DESC``)
   .option('-p, --project <project>', i18n.COMMAND__IT__OPTION_PROJECT``)
   .action((options?: Types.CLIItOptions) => intercept()(takeAction)(options))
-  .helpOption('-h, --help', i18n.COMMAND__OPTION__HELP_DESC``)

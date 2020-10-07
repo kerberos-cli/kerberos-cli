@@ -53,4 +53,3 @@ program
   .description(i18n.COMMAND__RUN_MULTI__DESC``)
   .option('-p, --project <projects...>', i18n.COMMAND__RUN_MULTI__OPTION_PROJECT``)
   .action((script: string) => intercept()(takeAction)(script))
-  .helpOption('-h, --help', i18n.COMMAND__OPTION__HELP_DESC``)

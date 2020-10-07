@@ -1,6 +1,8 @@
 import chalk from 'chalk'
 import PrettyError from 'pretty-error'
 
+const isVerbose = -1 !== process.argv.indexOf('--verbose') ? true : false
+
 function pretty(info: string | Error, verbose?: boolean) {
   const reason = info instanceof Error ? info : new Error(info)
   const pe = new PrettyError()
@@ -9,22 +11,31 @@ function pretty(info: string | Error, verbose?: boolean) {
   return { message, reason, prettyMessage }
 }
 
-export function success(info: string, verbose: boolean = false) {
-  const { message } = pretty(info, verbose)
-  console.log('✨', chalk.green.bold(message))
-}
+export function debug(info: string | Error, verbose: boolean = false) {
+  if (!isVerbose) {
+    return
+  }
 
-export function info(info: string, verbose: boolean = false) {
   const { message } = pretty(info, verbose)
   console.log(chalk.cyan(message))
 }
 
-export function warn(info: string | Error, verbose: boolean = false) {
+export function success(info: string | Error, verbose: boolean = false) {
+  const { message } = pretty(info, verbose)
+  console.log(chalk.green.bold(`✨ ${message}`))
+}
+
+export function info(info: string | Error, verbose: boolean = false) {
+  const { message } = pretty(info, verbose)
+  console.log(chalk.cyan(`${message}`))
+}
+
+export function warn(info: string | Error | Error, verbose: boolean = false) {
   const { message } = pretty(info, verbose)
   console.log(chalk.yellow.bold(`⚠️ ${message}`))
 }
 
-export function fail(info: string | Error, verbose: boolean = true) {
+export function fail(info: string | Error | Error, verbose: boolean = isVerbose) {
   const { message } = pretty(info, verbose)
   console.log(chalk.red.bold(`✗ ${message}`))
 }

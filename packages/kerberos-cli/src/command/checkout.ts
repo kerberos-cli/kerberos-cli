@@ -54,4 +54,3 @@ program
   .description(i18n.COMMAND__CHECKOUT__DESC``)
   .option('-p, --project <projects...>', i18n.COMMAND__CHECKOUT__OPTION_PROJECT``)
   .action((branch: string, options?: Types.CLICheckoutOptions) => intercept()(takeAction)(branch, options))
-  .helpOption('-h, --help', i18n.COMMAND__OPTION__HELP_DESC``)

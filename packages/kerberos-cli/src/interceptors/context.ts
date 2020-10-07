@@ -13,7 +13,18 @@ type Context = {
   folder: string
 }
 
-async function lookupContext(context: string = process.cwd()): Promise<Context> {
+/** 状态机 */
+const state: { context?: Context } = {}
+
+/**
+ * 查找上下文
+ * @param context 所在目录
+ */
+export async function lookupContext(context: string = process.cwd()): Promise<Context> {
+  if (state.context) {
+    return state.context
+  }
+
   while (true) {
     const cfg = path.join(context, configFileName)
     const pkg = path.join(context, 'package.json')
@@ -21,7 +32,8 @@ async function lookupContext(context: string = process.cwd()): Promise<Context> 
       try {
         const cfgSource = await openJsonFile(cfg)
         const pkgSource = await openJsonFile(pkg)
-        return { config: cfgSource, package: pkgSource, folder: context }
+        state.context = { config: cfgSource, package: pkgSource, folder: context }
+        return state.context
       } catch (error) {
         warn(error.message)
         // nothing todo...

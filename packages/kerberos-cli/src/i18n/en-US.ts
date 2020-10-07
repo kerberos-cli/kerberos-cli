@@ -1,9 +1,12 @@
 // commands
 // --------
 
+export const alias = 'English'
+
 // options
 export const COMMAND__OPTION__VERSION_DESC = 'show Kerberos version'
 export const COMMAND__OPTION__HELP_DESC = 'show more Kerberos cli information'
+export const COMMAND__OPTION__VERBOSE = 'show execution details'
 
 // command help
 export const COMMAND__HELP__DESC = 'display help for command'
@@ -120,6 +123,11 @@ export const COMMAND__IT__ERROR_FOLDER_NOT_FOUND = 'Not a kerberos project (or n
 export const COMMAND__IT__ERROR_COMMAND_NOT_FOUND = 'Command #{1} is not found.'
 export const COMMAND__IT__HELP_EXIT = 'Press `Ctrl+C` or type `exit` to exit.'
 
+// command language
+export const COMMAND__LANGUAGE__DESC = 'Specify CLI language (Cur Language: #{1})'
+export const COMMAND__LANGUAGE__ERROR_NOT_EXISTS = 'Language #{1} is temporarily not supported.'
+export const COMMAND__LANGUAGE__SUCCESS_MESSAGE = 'Specify language #{1} successfully.'
+
 // command support
 export const COMMAND__SUPPORT__DESC = 'determine whether all dependencies have been installed'
 export const COMMAND__SUPPORT__ERROR_INSTALL_FIRST = 'Please install #{1} first.'
@@ -131,6 +139,9 @@ export const COMMAND__SUPPORT__SUCCESS = 'All dependencies are ready, you can us
 // tryGetBranch
 export const COMMAND_SHARE__TRY_GET_BRANCH__SELECT_BRANCH = '#{1} (Cur Branch: #{2})'
 export const COMMAND_SHARE__TRY_GET_BRANCH__ERROR_NOT_FOUND_BRANCH = 'Branch #{1} not found.'
+
+// tryGetLanguage
+export const COMMAND_SHARE__TRY_GET_LANGUAGE__ERROR_NOT_FOUND_LANGUAGE = 'Language #{1} is temporarily not supported.'
 
 // tryGetProject
 export const COMMAND_SHARE__TRY_GET_PROJECT__ERROR_NOT_FOUND_BRANCH = 'Project #{1} not found.'

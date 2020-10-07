@@ -1,5 +1,6 @@
 import fs from 'fs-extra'
 import { cloneDeep } from 'lodash'
+import JSON from 'comment-json'
 
 type FileMemory = Array<{
   file: string
@@ -19,7 +20,8 @@ export async function openJsonFile(file: string) {
     return cloneDeep(content)
   }
 
-  const content = (await fs.readJSON(file)) || {}
+  const json = await fs.readFile(file, 'utf-8')
+  const content = JSON.parse(json)
   fileMemory.push({ file, content })
   return content
 }
@@ -48,6 +50,7 @@ export async function updateJsonFile(file: string, data: any) {
  * @param file 文件路径
  */
 export async function syncJsonFile(file: string) {
-  const content = (await fs.readJSON(file)) || {}
+  const json = await fs.readFile(file, 'utf-8')
+  const content = JSON.parse(json)
   await updateJsonFile(file, content)
 }

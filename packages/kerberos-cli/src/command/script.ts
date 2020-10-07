@@ -22,4 +22,3 @@ program
   .command('script [scriptName]')
   .description(i18n.COMMAND__SCRIPT__DESC``)
   .action((script: string) => intercept()(takeAction)(script))
-  .helpOption('-h, --help', i18n.COMMAND__OPTION__HELP_DESC``)

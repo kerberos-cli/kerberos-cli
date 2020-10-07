@@ -49,4 +49,3 @@ program
   .option('-w, --workspace <workspace>', i18n.COMMAND__CLONE__OPTION_WORKSPACE``)
   .option('-o, --optional [optional]', i18n.COMMAND__CLONE__OPTION_OPTIONAL``)
   .action((repo: string, name?: string, options?: Types.CLICloneOptions) => intercept()(takeAction)(repo, name, options))
-  .helpOption('-h, --help', i18n.COMMAND__OPTION__HELP_DESC``)

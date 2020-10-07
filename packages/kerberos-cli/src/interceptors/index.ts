@@ -3,6 +3,16 @@ import tryAction from './tryAction'
 import supported from './supported'
 import context from './context'
 
+/**
+ * 拦截器集合
+ * @description
+ * 注意顺序, 越后越早执行,
+ * 因为越早执行会按顺序返回回调函数,
+ * 而回调函数则是反过来执行:
+ * a(b() => bCallback) => aCallback;
+ * bCallback() -> aCallback();
+ * 因此 context 正常情况需要放最后.
+ */
 const interceptors = {
   tryAction,
   supported,

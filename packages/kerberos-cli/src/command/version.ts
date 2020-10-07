@@ -165,4 +165,3 @@ program
   .description(i18n.COMMAND__VERSION__DESC``)
   .option('--no-push [noPush]', i18n.COMMAND__VERSION__OPTION_NO_PUSH``)
   .action((version: string, options: Types.CLIVersionOptions) => intercept()(takeAction)(version, options))
-  .helpOption('-h, --help', i18n.COMMAND__OPTION__HELP_DESC``)

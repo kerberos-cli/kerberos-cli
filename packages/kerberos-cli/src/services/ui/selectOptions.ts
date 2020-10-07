@@ -3,8 +3,9 @@ import { getConfig, getWorkspaceInfoCollection, getProjectInfoCollection } from 
 import { getBranchNames, getBranchTracking } from '../git'
 import { warn } from '../logger'
 import { configFileName } from '../../constants/conf'
-import i18n from '../../i18n'
+import i18n, { languages as Languages } from '../../i18n'
 import * as Types from '../../types'
+import * as I18nTypes from '../../i18n/types'
 
 /** 获取工作区选项 */
 export async function workspace(): Promise<Types.DWorkspaceChoice[]> {
@@ -54,6 +55,14 @@ export async function script(scripts: { [name: string]: string }): Promise<Types
   return Object.keys(scripts).map((name) => {
     const command = scripts[name]
     return { name, command }
+  })
+}
+
+/** 语言 */
+export async function languages(): Promise<I18nTypes.DLanguageChoice[]> {
+  return i18n.supported.map((value) => {
+    const { alias: name } = Languages[value] || {}
+    return { name, value }
   })
 }
 

@@ -1,14 +1,33 @@
 {
+  /* 版本号
+    版本号定义请遵守 Semver 语义化版本号规则, 相关规则请参考 https://semver.org/.
+    所有子项目版本号均以该版本为准, 且不能大于此版本.
+   */
   "version": "1.0.0",
+  /* 发布(通过 `version` 命令的配置项) */
   "release": {
+    /* 发布类型, 只支持 tag */
     "type": "tag",
+    /* 指定发布分支, 不填为均可 */
     "branch": "master",
+    /* 指定发布时的 git commit 信息 */
     "message": "chore(release): Kerberos Tag"
   },
+  /* 子项目
+    默认有一个子项目为自身.
+    `@kerberos/doge` 项目为保存工作区配置信息项目.
+   */
   "projects": [
     {
+      /* 子项目名称
+        该名称请与子项目中 `package.json` 文件中的 `name` 对应起来.
+       */
       "name": "@kerberos/doge",
+      /* 子项目所在的工作区名称 */
       "workspace": "@kerberos",
+      /* 是否为可选
+        若为可选, 则在执行 `install` 命令时, 不会自动安装, 但会提示选择性安装.
+       */
       "optional": false
     }
   ]

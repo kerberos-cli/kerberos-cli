@@ -1,3 +1,4 @@
+import { CheckboxQuestionOptions } from 'inquirer'
 import { getProjectInfoByName } from '../../services/project'
 import { multiSelect } from '../../services/ui'
 import i18n from '../../i18n'
@@ -5,9 +6,10 @@ import i18n from '../../i18n'
 /**
  * 如果未指定项目则提示选择
  * @param message 信息
- * @param name 项目名称
+ * @param specified 指定子项目名称
+ * @param initialOptions 选择器配置
  */
-export default async function tryGetProjects(message: string, specified?: string[]) {
+export default async function tryGetProjects(message: string, specified?: string[], initialOptions?: CheckboxQuestionOptions) {
   if (Array.isArray(specified)) {
     const projects = await Promise.all(
       specified.map(async (name) => {
@@ -28,6 +30,6 @@ export default async function tryGetProjects(message: string, specified?: string
     return finalProjects
   }
 
-  const project = await multiSelect('project')(message)
+  const project = await multiSelect('project', initialOptions)(message)
   return project
 }

@@ -62,4 +62,3 @@ program
   .command('install')
   .description(i18n.COMMAND__INSTALL__DESC``)
   .action(() => intercept(['tryAction', 'supported', 'context'])(takeAction)())
-  .helpOption('-h, --help', i18n.COMMAND__OPTION__HELP_DESC``)

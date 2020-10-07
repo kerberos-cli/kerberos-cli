@@ -1,15 +1,18 @@
 // commands
 // --------
 
+export const alias = '中文'
+
 // options
 export const COMMAND__OPTION__VERSION_DESC = '显示当前版本号'
 export const COMMAND__OPTION__HELP_DESC = '显示更多用法'
+export const COMMAND__OPTION__VERBOSE = '显示执行详情'
 
 // command help
 export const COMMAND__HELP__DESC = '显示命令的详细用法'
 
 // command init
-export const COMMAND__INIT__DESC = '初始化 Kerberos 工作区'
+export const COMMAND__INIT__DESC = '初始化Kerberos工作区'
 export const COMMAND__INIT__CONFIRM_CLEAN_MESSAGE = '文件夹不为空，我可以帮您清理一下吗？'
 export const COMMAND__INIT__CONFIRM_CREATE_CONFIG_PROJECT = '我可以创建一个新的Kerberos配置工程吗？'
 export const COMMAND__INIT__ERROR_INVALID_FOLDER = '文件不是目录。'
@@ -46,7 +49,7 @@ export const COMMAND__LS__OPTIONS_DEPENDENCIES = '显示依赖关系列表'
 export const COMMAND__LS__WARNING_CIRCULAR_MESSAGE = '工程之间存在循环引用。'
 
 // command clone
-export const COMMAND__CLONE__DESC = '将 Git 仓库克隆到工作区'
+export const COMMAND__CLONE__DESC = '将Git仓库克隆到工作区'
 export const COMMAND__CLONE__OPTION_WORKSPACE = '指定 Git 克隆的工作区'
 export const COMMAND__CLONE__OPTION_OPTIONAL = '将存储库指定为选择性安装'
 export const COMMAND__CLONE__SELECT_WORKSPACE = '请选择一个工作区来克隆存储库。'
@@ -73,7 +76,7 @@ export const COMMAND__BRANCH__OPTION_PROJECT = '指定工程以显示分支'
 export const COMMAND__BRANCH__SELECT_PROJECT = '请选择工程以查看分支。'
 
 // command version
-export const COMMAND__VERSION__DESC = '为工程打 Git Tag'
+export const COMMAND__VERSION__DESC = '为工程打Tag'
 export const COMMAND__VERSION__OPTION_NO_PUSH = '只更新不提交'
 export const COMMAND__VERSION__SELECT_PROJECTS = '请选择要打 Tag 的工程。'
 export const COMMAND__VERSION__CONFIRM_DIFF_BRANCHES = '工程在不同的分支中，确定要继续吗？\n#{1} \n'
@@ -119,6 +122,11 @@ export const COMMAND__IT__ERROR_FOLDER_NOT_FOUND = '不是 Kerberos 工程（或
 export const COMMAND__IT__ERROR_COMMAND_NOT_FOUND = '找不到命令1。'
 export const COMMAND__IT__HELP_EXIT = '按 `Ctrl + C` 或输入 `exit` 退出。'
 
+// command language
+export const COMMAND__LANGUAGE__DESC = '指定CLI语言（当前语言: #{1}）'
+export const COMMAND__LANGUAGE__ERROR_NOT_EXISTS = '暂时不支持#{1}语言.'
+export const COMMAND__LANGUAGE__SUCCESS_MESSAGE = '成功指定#{1}語言。'
+
 // command support
 export const COMMAND__SUPPORT__DESC = '确定是否已安装所有依赖项'
 export const COMMAND__SUPPORT__ERROR_INSTALL_FIRST = '请先安装#{1}。'
@@ -147,7 +155,7 @@ export const COMMAND_SHARE__TRY_GET_WORKSPACE__ERROR_NOT_FOUND_PROJECT = '找不
 // ------------
 
 // context
-export const INTERCEPTORS__CONTEXT__ERROR_INVALID_PROJECT = '不是 Kerberos 工作空间（或任何父目录）。'
+export const INTERCEPTORS__CONTEXT__ERROR_INVALID_PROJECT = '当前目录及其任意父级目录均不是 Kerberos 工作区。'
 
 // supported
 export const INTERCEPTORS__SUPPORTED__ERROR_NOT_INSTALL_GIT = '不支持 Git，请先安装 Git。'
@@ -171,3 +179,11 @@ export const UI__SELECT_VERSION__INPUT_CUSTOM_VERSION = '请输入自定义版�
 
 export const UI__INPUT_VERSION__DEFAULT_MESSAGE = '请输入一个新的版本号'
 export const UI__INPUT_VERSION__ERROR_INVALID_VERSION = '版本号 #{1} 错误，请确认格式；例如：`1.0.0-alpha.1`'
+
+// comments
+export const COMMENTS__CONFIG_JSON__VERSION = `
+/* 版本号
+  版本号定义请遵守 Semver 语义化版本号规则, 相关规则请参考 https://semver.org/.
+  所有子项目版本号均以该版本为准, 且不能大于此版本.
+ */
+`
