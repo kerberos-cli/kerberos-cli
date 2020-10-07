@@ -2,6 +2,7 @@ import path from 'path'
 import { program } from 'commander'
 import chalk from 'chalk'
 import { promisify } from 'util'
+import { flatten } from 'lodash'
 import commandExists from 'command-exists'
 import { spawn } from '../services/process'
 import { getProjectInfoCollection } from '../services/project'
@@ -54,8 +55,10 @@ async function takeAction(options?: Types.CLIItOptions): Promise<void> {
   const pkgJSON: Types.CPackage = await openJsonFile(path.join(folder, 'package.json'))
   console.log(chalk.gray(i18n.COMMAND__IT__HELP_EXIT``))
 
+  const scripts = Object.keys(pkgJSON.scripts || {})
+  const autoCompletion = flatten(scripts.map((name) => [`npm run ${name}`, `yarn ${name}`]))
   InputLoop: while (true) {
-    const command = await inputCommand(`${pkgJSON.name} ${chalk.green.bold('>')}`)
+    const command = await inputCommand(`${pkgJSON.name} ${chalk.green.bold('>')}`, autoCompletion)
     if (command === 'exit') {
       break
     }

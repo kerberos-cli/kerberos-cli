@@ -1,5 +1,5 @@
 import chalk from 'chalk'
-import upperFirst from 'lodash/upperFirst'
+import { upperFirst } from 'lodash'
 import inquirer from 'inquirer'
 import semver, { ReleaseType } from 'semver'
 import { PromiseType, ValuesType } from 'utility-types'
@@ -133,12 +133,12 @@ export async function confirm(message: string = i18n.UI__CONFIRM__DEFAULT_MESSAG
  * 输入命令
  * @param message 输出信息
  */
-export async function inputCommand(message: string = '>'): Promise<string> {
+export async function inputCommand(message: string = '>', autoCompletion?: string[]): Promise<string> {
   const promptOptions = {
     type: 'command',
     name: 'command',
     message: message,
-    autoCompletion: commonCommands,
+    autoCompletion: [].concat(commonCommands, Array.isArray(autoCompletion) ? autoCompletion : []),
   }
 
   const { command } = await inquirer.prompt(promptOptions as any)
