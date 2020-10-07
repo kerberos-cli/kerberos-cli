@@ -20,7 +20,7 @@ async function takeAction(options?: Types.CLIItOptions): Promise<void> {
     const initialOptions = {}
     if (execPath !== cwd) {
       const defaultProject = (await getProjectInfoCollection()).find((project) => -1 !== execPath.indexOf(project.folder))
-      Object.assign(initialOptions, { default: defaultProject.name })
+      defaultProject && Object.assign(initialOptions, { default: defaultProject.name })
     }
 
     const project = await tryGetProject(i18n.COMMAND__IT__SELECT_PROJECT``, options?.project, initialOptions)
