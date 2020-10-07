@@ -1,6 +1,6 @@
 {
   "name": "kerberos-cli",
-  "version": "1.0.0-alpha.7",
+  "version": "1.0.0-alpha.8",
   "description": "a mono-repo workspace tool",
   "author": "DavidJones <qowera@gmail.com>",
   "license": "MIT",
