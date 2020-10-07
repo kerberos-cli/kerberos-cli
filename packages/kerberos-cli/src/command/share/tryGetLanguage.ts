@@ -11,7 +11,7 @@ import * as I18nTypes from '../../i18n/types'
  */
 export default async function tryGetLanguage(message: string, specified?: I18nTypes.Language, initialOptions?: ListQuestionOptions): Promise<I18nTypes.Language> {
   if (typeof specified === 'string') {
-    if (-1 === i18n.languages.indexOf(specified)) {
+    if (-1 === i18n.supported.indexOf(specified)) {
       throw new Error(i18n.COMMAND_SHARE__TRY_GET_LANGUAGE__ERROR_NOT_FOUND_LANGUAGE`${specified}`)
     }
 

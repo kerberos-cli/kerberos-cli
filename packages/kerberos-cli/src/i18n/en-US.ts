@@ -124,7 +124,8 @@ export const COMMAND__IT__ERROR_COMMAND_NOT_FOUND = 'Command #{1} is not found.'
 export const COMMAND__IT__HELP_EXIT = 'Press `Ctrl+C` or type `exit` to exit.'
 
 // command language
-export const COMMAND__LANGUAGE__DESC = 'Specify CLI language (Cur Language: #{1})'
+export const COMMAND__LANGUAGE__DESC = 'Specify CLI language'
+export const COMMAND__LANGUAGE__SELECT_LANGUAGE = 'Please select language for CLI. (Cur Language: #{1})'
 export const COMMAND__LANGUAGE__ERROR_NOT_EXISTS = 'Language #{1} is temporarily not supported.'
 export const COMMAND__LANGUAGE__SUCCESS_MESSAGE = 'Specify language #{1} successfully.'
 

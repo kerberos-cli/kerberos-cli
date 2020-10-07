@@ -123,7 +123,8 @@ export const COMMAND__IT__ERROR_COMMAND_NOT_FOUND = '找不到命令1。'
 export const COMMAND__IT__HELP_EXIT = '按 `Ctrl + C` 或输入 `exit` 退出。'
 
 // command language
-export const COMMAND__LANGUAGE__DESC = '指定CLI语言（当前语言: #{1}）'
+export const COMMAND__LANGUAGE__DESC = '指定CLI语言'
+export const COMMAND__LANGUAGE__SELECT_LANGUAGE = '请选择CLI语言.（当前语言: #{1}）'
 export const COMMAND__LANGUAGE__ERROR_NOT_EXISTS = '暂时不支持#{1}语言.'
 export const COMMAND__LANGUAGE__SUCCESS_MESSAGE = '成功指定#{1}語言。'
 
