@@ -119,7 +119,7 @@ export const COMMAND__IT__DESC = '选择一个工程以输入命令'
 export const COMMAND__IT__OPTION_PROJECT = '指定工程以输入命令'
 export const COMMAND__CHECKOUT__OPTION_PROJECTS = '请选择要执行命令的工程。'
 export const COMMAND__IT__ERROR_FOLDER_NOT_FOUND = '不是 Kerberos 工程（或未添加到 kerberos.json 文件中）。'
-export const COMMAND__IT__ERROR_COMMAND_NOT_FOUND = '找不到命令1。'
+export const COMMAND__IT__ERROR_COMMAND_NOT_FOUND = '找不到命令#{1}。'
 export const COMMAND__IT__HELP_EXIT = '按 `Ctrl + C` 或输入 `exit` 退出。'
 
 // command language
@@ -180,11 +180,3 @@ export const UI__SELECT_VERSION__INPUT_CUSTOM_VERSION = '请输入自定义版�
 
 export const UI__INPUT_VERSION__DEFAULT_MESSAGE = '请输入一个新的版本号'
 export const UI__INPUT_VERSION__ERROR_INVALID_VERSION = '版本号 #{1} 错误，请确认格式；例如：`1.0.0-alpha.1`'
-
-// comments
-export const COMMENTS__CONFIG_JSON__VERSION = `
-/* 版本号
-  版本号定义请遵守 Semver 语义化版本号规则, 相关规则请参考 https://semver.org/.
-  所有子项目版本号均以该版本为准, 且不能大于此版本.
- */
-`

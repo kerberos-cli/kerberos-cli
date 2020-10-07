@@ -13,16 +13,57 @@ Kerberos, a mono-repo workspace tool. It mainly provides a workspace for develop
 
 ```bash
 $ npm i -g kerberos-cli
+# or
+$ yarn global add kerberos-cli
+$ kerberos-cli -v
+$ kerber -v
 ```
 
 ## Quick Overview
 
 ```bash
-$ kerberos init my-project
+$ kerbe init my-project
 ```
 
 ## Add New Git Repository
 
 ```bash
-$ kerberos clone <MyGitRepo>
+$ kerbe clone <MyGitRepo>
+```
+
+## Config
+
+```json
+{
+  /*
+    For version number definitions, please follow Semver's semantic version number rules. For related rules, please refer to https://semver.org/. All sub-project version numbers are subject to this version, and cannot be greater than this version.
+   */
+  "version": "1.0.0",
+  "release": {
+    /* Release type, only supports tag */
+    "type": "tag",
+    /* Specify the release branch, all branches are allowed by default */
+    "branch": "master",
+    /* Specify git commit information when release */
+    "message": "chore(release): Kerberos Tag"
+  },
+  /* Subprojects
+    By default, it has a subproject.
+    The @kerberos/doge project is a project for saving configuration information of the workspace.
+   */
+  "projects": [
+    {
+      /* The name of subproject
+        Please match the name with the name in the package.json file of the subproject.
+       */
+      "name": "@kerberos/doge",
+      /* The name of the workspace where the subproject is located. */
+      "workspace": "@kerberos",
+      /*
+        If true, it will not be installed automatically when the ʻinstall` command is executed, but an optional installation will be prompted.
+       */
+      "optional": false
+    }
+  ]
+}
 ```
