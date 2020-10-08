@@ -95,6 +95,7 @@ export const COMMAND__RUN__SELECT_SCRIPT = '请选择要运行的脚本。'
 // command run-multi
 export const COMMAND__RUN_MULTI__DESC = '在多个工程中执行脚本'
 export const COMMAND__RUN_MULTI__OPTION_PROJECT = '指定需要执行脚本的项目'
+export const COMMAND__RUN_MULTI__OPTION_PARALLEL = '并行执行脚本'
 export const COMMAND__RUN_MULTI__SELECT_PROJECT = '请选择需要执行脚本的工程。'
 export const COMMAND__RUN_MULTI__WARN_NOT_FOUND_PROJECT = '在工程 #{2} 中找不到脚本 #{1}。'
 
@@ -107,6 +108,7 @@ export const COMMAND__EXEC__ERROR_NOT_FOUND_COMMAND = '找不到 #{1} 命令。'
 // command exec-multi
 export const COMMAND__EXEC_MULTI__DESC = '在多个工程中执行命令'
 export const COMMAND__EXEC_MULTI__OPTION_PROJECT = '指定要执行命令的工程'
+export const COMMAND__EXEC_MULTI__OPTION_PARALLEL = '并行执行命令'
 export const COMMAND__EXEC_MULTI__SELECT_PROJECT = '请选择需要执行命令的工程。'
 export const COMMAND__EXEC_MULTI__ERROR_NOT_FOUND_COMMAND = '找不到 #{1} 命令。'
 

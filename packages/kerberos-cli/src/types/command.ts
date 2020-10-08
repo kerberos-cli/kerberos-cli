@@ -50,6 +50,8 @@ export type CLIRunOptions = {
 export type CLIRunMultiOptions = {
   /** 指定项目 */
   projects?: string[]
+  /** 并行执行脚本 */
+  parallel?: boolean
 }
 
 /** exec 命令选项 */
@@ -62,6 +64,8 @@ export type CLIExecOptions = {
 export type CLIExecMultiOptions = {
   /** 指定项目 */
   projects?: string[]
+  /** 并行执行命令 */
+  parallel?: boolean
 }
 
 /** it 命令选项 */

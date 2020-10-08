@@ -96,6 +96,7 @@ export const COMMAND__RUN__SELECT_SCRIPT = 'Please select a script to run.'
 // command run-multi
 export const COMMAND__RUN_MULTI__DESC = 'run script in multiple projects'
 export const COMMAND__RUN_MULTI__OPTION_PROJECT = 'specify projects to run script'
+export const COMMAND__RUN_MULTI__OPTION_PARALLEL = 'execute scripts in parallel'
 export const COMMAND__RUN_MULTI__SELECT_PROJECT = 'Please select the projects to run script.'
 export const COMMAND__RUN_MULTI__WARN_NOT_FOUND_PROJECT = 'Script #{1} not found in project #{2}.'
 
@@ -108,6 +109,7 @@ export const COMMAND__EXEC__ERROR_NOT_FOUND_COMMAND = 'Command #{1} not found.'
 // command exec-multi
 export const COMMAND__EXEC_MULTI__DESC = 'execute command in multiple projects'
 export const COMMAND__EXEC_MULTI__OPTION_PROJECT = 'specify projects to excute command'
+export const COMMAND__EXEC_MULTI__OPTION_PARALLEL = 'execute commands in parallel'
 export const COMMAND__EXEC_MULTI__SELECT_PROJECT = 'Please select the projects to excute command.'
 export const COMMAND__EXEC_MULTI__ERROR_NOT_FOUND_COMMAND = 'Command #{1} not found.'
 

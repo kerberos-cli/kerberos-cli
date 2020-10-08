@@ -16,33 +16,41 @@ async function takeAction(command: string, options?: Types.CLIExecMultiOptions):
     return
   }
 
-  const dependencyGraph = await getDependencyGraph(projects)
-  const weightGraph = getDependencyWeight(dependencyGraph)
-
-  const queue: string[][] = []
-  weightGraph.forEach(({ name, weight }) => {
-    if (!Array.isArray(queue[weight])) {
-      queue[weight] = []
-    }
-
-    queue[weight].push(name)
-  })
-
   const [cli, ...params] = command.split(' ')
   if (!(await promisify(commandExists)(cli))) {
     throw new Error(i18n.COMMAND__EXEC_MULTI__ERROR_NOT_FOUND_COMMAND`${cli}`)
   }
 
-  await waterfall(
-    queue.map((group) => async () => {
-      return Promise.all(
-        group.map(async (name) => {
-          const { folder } = projects.find((project) => project.name === name)
-          await spawn(cli, params, { cwd: folder })
-        })
-      )
+  if (options?.parallel) {
+    await Promise.all(
+      projects.map(async ({ folder }) => {
+        await spawn(cli, params, { cwd: folder })
+      })
+    )
+  } else {
+    const dependencyGraph = await getDependencyGraph(projects)
+    const weightGraph = getDependencyWeight(dependencyGraph)
+
+    const queue: string[][] = []
+    weightGraph.forEach(({ name, weight }) => {
+      if (!Array.isArray(queue[weight])) {
+        queue[weight] = []
+      }
+
+      queue[weight].push(name)
     })
-  )
+
+    await waterfall(
+      queue.map((group) => async () => {
+        return Promise.all(
+          group.map(async (name) => {
+            const { folder } = projects.find((project) => project.name === name)
+            await spawn(cli, params, { cwd: folder })
+          })
+        )
+      })
+    )
+  }
 }
 
 program
@@ -50,4 +58,5 @@ program
   .alias('mexec')
   .description(i18n.COMMAND__EXEC_MULTI__DESC``)
   .option('-p, --project <projects...>', i18n.COMMAND__EXEC_MULTI__OPTION_PROJECT``)
+  .option('--parallel [parallel]', i18n.COMMAND__EXEC_MULTI__OPTION_PARALLEL``)
   .action((command: string, options?: Types.CLIExecMultiOptions) => intercept()(takeAction)(command, options))
