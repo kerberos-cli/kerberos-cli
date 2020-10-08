@@ -1,7 +1,7 @@
 import { program } from 'commander'
 import { spawn } from '../services/process'
 import { warn } from '../services/logger'
-import lineup from './share/lineup'
+import lineUp from './share/lineUp'
 import tryGetProjects from './share/tryGetProjects'
 import intercept from '../interceptors'
 import i18n from '../i18n'
@@ -28,7 +28,7 @@ async function takeAction(scriptName: string, options?: Types.CLIRunMultiOptions
       })
     )
   } else {
-    await lineup(projects, async ({ name, folder, package: pkgJSON }) => {
+    await lineUp(projects, async ({ name, folder, package: pkgJSON }) => {
       const { scripts = {} } = pkgJSON || {}
       if (typeof scripts[scriptName] !== 'string') {
         warn(i18n.COMMAND__RUN_MULTI__WARN_NOT_FOUND_PROJECT`${scriptName} ${name}`)

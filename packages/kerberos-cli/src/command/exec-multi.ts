@@ -2,7 +2,7 @@ import { promisify } from 'util'
 import { program } from 'commander'
 import commandExists from 'command-exists'
 import { spawn } from '../services/process'
-import lineup from './share/lineup'
+import lineUp from './share/lineUp'
 import intercept from '../interceptors'
 import tryGetProjects from './share/tryGetProjects'
 import i18n from '../i18n'
@@ -26,7 +26,7 @@ async function takeAction(command: string, options?: Types.CLIExecMultiOptions):
       })
     )
   } else {
-    await lineup(projects, async ({ folder }) => {
+    await lineUp(projects, async ({ folder }) => {
       await spawn(cli, params, { cwd: folder })
     })
   }

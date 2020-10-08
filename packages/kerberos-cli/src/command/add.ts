@@ -1,6 +1,6 @@
 import { program } from 'commander'
 import { spawn } from '../services/process'
-import lineup from './share/lineup'
+import lineUp from './share/lineUp'
 import tryGetProjects from './share/tryGetProjects'
 import intercept from '../interceptors'
 import i18n from '../i18n'
@@ -25,7 +25,7 @@ async function takeAction(dependencies: string[], options: Types.CLIAddOptions =
     params.push('--optional')
   }
 
-  await lineup(projects, async ({ folder }) => {
+  await lineUp(projects, async ({ folder }) => {
     const options = { cwd: folder, shell: true }
     const args = ['add', ...params, ...dependencies]
     await spawn('yarn', args, options)
