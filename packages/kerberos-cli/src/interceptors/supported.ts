@@ -3,6 +3,9 @@ import { supportedYarn } from '../services/pm'
 import { supportedGit } from '../services/git'
 import i18n from '../i18n'
 
+/**
+ * 检查必要的依赖是否都安装了
+ */
 export default function supported<T extends (...args: any[]) => Promise<any>, A extends Parameters<T>, R extends PromiseType<ReturnType<T>>>(
   callback: T
 ): (...args: A) => Promise<R> {

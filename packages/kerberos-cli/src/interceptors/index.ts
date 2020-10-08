@@ -5,22 +5,22 @@ import context from './context'
 
 /**
  * 拦截器集合
+ */
+const interceptors = {
+  tryAction,
+  supported,
+  /** 注意 context 应该最早执行, 需要放最底下 */
+  context,
+}
+
+/**
+ * 拦截命令(默认使用全部)
  * @description
  * 注意顺序, 越后越早执行,
  * 因为越早执行会按顺序返回回调函数,
  * 而回调函数则是反过来执行:
  * a(b() => bCallback) => aCallback;
  * bCallback() -> aCallback();
- * 因此 context 正常情况需要放最后.
- */
-const interceptors = {
-  tryAction,
-  supported,
-  context,
-}
-
-/**
- * 拦截命令(默认使用全部)
  * @param useInterceptors 使用拦截器名称, 不填默认全开启
  * @param unuseInterceptors 不使用的拦截器名称, 不填默认不开启
  */
