@@ -2,12 +2,19 @@ import { program } from 'commander'
 import { promisify } from 'util'
 import commandExists from 'command-exists'
 import { spawn } from '../services/process'
-import intercept from '../interceptors'
+import { rootPath } from '../constants/conf'
 import tryGetProject from './share/tryGetProject'
+import intercept from '../interceptors'
 import i18n from '../i18n'
 import * as Types from '../types'
 
 async function takeAction(command: string, options?: Types.CLIExecOptions): Promise<void> {
+  if (options?.root) {
+    const [cli, ...params] = command.split(' ')
+    await spawn(cli, params, { cwd: rootPath, shell: true })
+    return
+  }
+
   const project = await tryGetProject(i18n.COMMAND__EXEC__SELECT_PROJECT``, options?.project)
   const { folder } = project || {}
   const [cli, ...params] = command.split(' ')
@@ -31,6 +38,9 @@ async function takeAction(command: string, options?: Types.CLIExecOptions): Prom
 
 program
   .command('exec <command>')
-  .description(i18n.COMMAND__EXEC__DESC``)
+  .description(i18n.COMMAND__EXEC__DESC``, {
+    command: i18n.COMMAND__EXEC__ARGS_COMMAND``,
+  })
   .option('-p, --project <project>', i18n.COMMAND__EXEC__OPTION_PROJECT``)
+  .option('-r, --root', i18n.COMMAND__EXEC__OPTION_ROOT``)
   .action((command: string, options?: Types.CLIExecOptions) => intercept()(takeAction)(command, options))

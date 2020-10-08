@@ -69,6 +69,6 @@ async function takeAction(options?: Types.CLIBootstrapOptions): Promise<void> {
 program
   .command('bootstrap')
   .description(i18n.COMMAND__BOOTSTRAP__DESC``)
-  .option('-y, --yes [yes]', i18n.COMMAND__BOOTSTRAP__OPTION_YES``)
-  .option('-o, --optional [optional]', i18n.COMMAND__BOOTSTRAP__OPTION_OPTIONAL``)
+  .option('-y, --yes', i18n.COMMAND__BOOTSTRAP__OPTION_YES``)
+  .option('-o, --optional', i18n.COMMAND__BOOTSTRAP__OPTION_OPTIONAL``)
   .action((options: Types.CLIBootstrapOptions) => intercept()(takeAction)(options))

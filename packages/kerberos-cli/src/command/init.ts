@@ -75,5 +75,8 @@ async function takeAction(folder: string, repo?: string): Promise<void> {
 
 program
   .command('init <folder> [repo]')
-  .description(i18n.COMMAND__INIT__DESC``)
+  .description(i18n.COMMAND__INIT__DESC``, {
+    folder: i18n.COMMAND__INIT__ARGS_FOLDER``,
+    repo: i18n.COMMAND__INIT__ARGS_REPO``,
+  })
   .action((folder: string, repo?: string) => intercept(['tryAction', 'supported'])(takeAction)(folder, repo))

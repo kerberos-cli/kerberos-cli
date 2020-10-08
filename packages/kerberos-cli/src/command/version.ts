@@ -162,6 +162,8 @@ async function takeAction(version: string, options: Types.CLIVersionOptions = {}
 
 program
   .command('version [version]')
-  .description(i18n.COMMAND__VERSION__DESC``)
-  .option('--no-push [noPush]', i18n.COMMAND__VERSION__OPTION_NO_PUSH``)
+  .description(i18n.COMMAND__VERSION__DESC``, {
+    version: i18n.COMMAND__VERSION__ARGS_VERSION``,
+  })
+  .option('--no-push', i18n.COMMAND__VERSION__OPTION_NO_PUSH``)
   .action((version: string, options: Types.CLIVersionOptions) => intercept()(takeAction)(version, options))

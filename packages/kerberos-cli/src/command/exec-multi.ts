@@ -1,10 +1,8 @@
 import { promisify } from 'util'
 import { program } from 'commander'
 import commandExists from 'command-exists'
-import waterfall from 'promise-waterfall'
 import { spawn } from '../services/process'
-import { getDependencyGraph } from '../services/project'
-import { getDependencyWeight } from '../services/pm'
+import lineup from './share/lineup'
 import intercept from '../interceptors'
 import tryGetProjects from './share/tryGetProjects'
 import i18n from '../i18n'
@@ -28,35 +26,18 @@ async function takeAction(command: string, options?: Types.CLIExecMultiOptions):
       })
     )
   } else {
-    const dependencyGraph = await getDependencyGraph(projects)
-    const weightGraph = getDependencyWeight(dependencyGraph)
-
-    const queue: string[][] = []
-    weightGraph.forEach(({ name, weight }) => {
-      if (!Array.isArray(queue[weight])) {
-        queue[weight] = []
-      }
-
-      queue[weight].push(name)
+    await lineup(projects, async ({ folder }) => {
+      await spawn(cli, params, { cwd: folder })
     })
-
-    await waterfall(
-      queue.map((group) => async () => {
-        return Promise.all(
-          group.map(async (name) => {
-            const { folder } = projects.find((project) => project.name === name)
-            await spawn(cli, params, { cwd: folder })
-          })
-        )
-      })
-    )
   }
 }
 
 program
   .command('exec-multi <command>')
   .alias('mexec')
-  .description(i18n.COMMAND__EXEC_MULTI__DESC``)
+  .description(i18n.COMMAND__EXEC_MULTI__DESC``, {
+    command: i18n.COMMAND__EXEC_MULTI__ARGS_COMMAND``,
+  })
   .option('-p, --project <projects...>', i18n.COMMAND__EXEC_MULTI__OPTION_PROJECT``)
-  .option('--parallel [parallel]', i18n.COMMAND__EXEC_MULTI__OPTION_PARALLEL``)
+  .option('--parallel', i18n.COMMAND__EXEC_MULTI__OPTION_PARALLEL``)
   .action((command: string, options?: Types.CLIExecMultiOptions) => intercept()(takeAction)(command, options))

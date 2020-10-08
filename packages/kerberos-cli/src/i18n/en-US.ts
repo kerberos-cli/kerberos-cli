@@ -13,6 +13,8 @@ export const COMMAND__HELP__DESC = 'display help for command'
 
 // command init
 export const COMMAND__INIT__DESC = 'initalize kerberos workspace'
+export const COMMAND__INIT__ARGS_FOLDER = 'specify the directory that needs to be initialized'
+export const COMMAND__INIT__ARGS_REPO = 'specify the git repository that needs to be initialized'
 export const COMMAND__INIT__CONFIRM_CLEAN_MESSAGE = 'Folder is not empty, can I clean it up for you?'
 export const COMMAND__INIT__CONFIRM_CREATE_CONFIG_PROJECT = 'Can I create a new kerberos configuration project?'
 export const COMMAND__INIT__ERROR_INVALID_FOLDER = 'File is not a directory.'
@@ -50,6 +52,8 @@ export const COMMAND__LS__WARNING_CIRCULAR_MESSAGE = 'There are circular referen
 
 // command clone
 export const COMMAND__CLONE__DESC = 'clone the git repository to the workspace'
+export const COMMAND__CLONE__ARGS_REPO = 'specify the Git-Repo to clone'
+export const COMMAND__CLONE__ARGS_NAME = 'Specify the cloned name'
 export const COMMAND__CLONE__OPTION_WORKSPACE = 'specify the workspace of git clone'
 export const COMMAND__CLONE__OPTION_OPTIONAL = 'specify the repository as selective installation'
 export const COMMAND__CLONE__SELECT_WORKSPACE = 'Please select a workspace to clone the repository.'
@@ -62,10 +66,9 @@ export const COMMAND__CLONE__SUCCESS_COMPLETE = 'Git clone project completed.'
 
 // command checkout
 export const COMMAND__CHECKOUT__DESC = 'check out the branch in the package'
-export const COMMAND__CHECKOUT__OPTION_BRANCH = 'specify the branch to switch'
-export const COMMAND__CHECKOUT__OPTION_PROJECTS = 'specify the projects to switch'
+export const COMMAND__CHECKOUT__ARGS_BRANCH = 'specify the branch to checkout'
+export const COMMAND__CHECKOUT__OPTION_PROJECT = 'specify the project to switch'
 export const COMMAND__CHECKOUT__SELECT_PROJECT = 'Please select the projects to switch branch.'
-export const COMMAND__CHECKOUT__SELECT_BRANCH = 'Please select the branch to checkout branch.'
 export const COMMAND__CHECKOUT__ERROR_NOT_SUBMIT = 'Some files in the projects are in temporary storage (not submitted), please submit first.\n#{1}'
 export const COMMAND__CHECKOUT__ERROR_FAIL_CHECKOUT = 'Project #{1} failed to switch branches, please complete the switch manually.'
 export const COMMAND__CHECKOUT__SUCCESS_COMPLETE = 'Projects have been change branch to #{1}.'
@@ -77,6 +80,7 @@ export const COMMAND__BRANCH__SELECT_PROJECT = 'Please select the project to vie
 
 // command version
 export const COMMAND__VERSION__DESC = 'update project version'
+export const COMMAND__VERSION__ARGS_VERSION = 'specify the version number'
 export const COMMAND__VERSION__OPTION_NO_PUSH = 'do not git push'
 export const COMMAND__VERSION__SELECT_PROJECTS = 'Please select projects to tag.'
 export const COMMAND__VERSION__CONFIRM_DIFF_BRANCHES = 'The project is in different branches, are you sure you want to continue?\n#{1}\n'
@@ -87,14 +91,33 @@ export const COMMAND__VERSION__ERROR_RELEASE_BRANCH =
 export const COMMAND__VERSION__WARN_NO_REMOTE = 'Project #{1} does not specify origin remote host, please manually push to the remote host.'
 export const COMMAND__VERSION__WARN_NO_BRANCH = 'Project #{1} does not specify any branch, please manually push to the remote host.'
 
+// command add
+export const COMMAND__ADD__DESC = 'install a package and any packages that it depends on'
+export const COMMAND__ADD__ARGS_DEPENDENCIES = 'specify the dependencies that need to be installed'
+export const COMMAND__ADD__OPTION_PROJECT = 'specify projects to install packages'
+export const COMMAND__ADD__OPTION_DEV = 'save package to your `devDependencies`'
+export const COMMAND__ADD__OPTION_PEER = 'save package to your `peerDependencies`'
+export const COMMAND__ADD__OPTION_OPTIONAL = 'save package to your `optionalDependencies`'
+
+// command remove
+export const COMMAND__REMOVE__DESC = 'uninstall a package and any packages that it depends on'
+export const COMMAND__REMOVE__ARGS_DEPENDENCIES = 'specify the dependencies that need to be uninstalled'
+export const COMMAND__REMOVE__OPTION_PROJECT = 'specify projects to uninstall packages'
+export const COMMAND__REMOVE__OPTION_DEV = 'remove package from your `devDependencies`'
+export const COMMAND__REMOVE__OPTION_PEER = 'remove package from your `peerDependencies`'
+export const COMMAND__REMOVE__OPTION_OPTIONAL = 'remove package from your `optionalDependencies`'
+
 // command run
 export const COMMAND__RUN__DESC = 'execute script in project'
+export const COMMAND__RUN__ARGS_SCRIPT = 'specify the script to be executed'
 export const COMMAND__RUN__OPTION_PROJECT = 'specify the project to run npm-scripts'
+export const COMMAND__RUN__OPTION_ROOT = 'specify the root workspace to execute the script (it will be ignore option `--project`)'
 export const COMMAND__RUN__SELECT_PROJECT = 'Please select the project to be executed.'
 export const COMMAND__RUN__SELECT_SCRIPT = 'Please select a script to run.'
 
 // command run-multi
 export const COMMAND__RUN_MULTI__DESC = 'run script in multiple projects'
+export const COMMAND__RUN_MULTI__ARGS_SCRIPT = 'specify the script to be executed'
 export const COMMAND__RUN_MULTI__OPTION_PROJECT = 'specify projects to run script'
 export const COMMAND__RUN_MULTI__OPTION_PARALLEL = 'execute scripts in parallel'
 export const COMMAND__RUN_MULTI__SELECT_PROJECT = 'Please select the projects to run script.'
@@ -102,12 +125,15 @@ export const COMMAND__RUN_MULTI__WARN_NOT_FOUND_PROJECT = 'Script #{1} not found
 
 // command exec
 export const COMMAND__EXEC__DESC = 'execute commands in the project'
+export const COMMAND__EXEC__ARGS_COMMAND = 'specify the command to be executed (please use double quotes to wrap the command)'
 export const COMMAND__EXEC__OPTION_PROJECT = 'specify the project to execute command'
+export const COMMAND__EXEC__OPTION_ROOT = 'specify the root workspace to execute the command (it will be ignore option `--project`)'
 export const COMMAND__EXEC__SELECT_PROJECT = 'Please select the project to be executed.'
 export const COMMAND__EXEC__ERROR_NOT_FOUND_COMMAND = 'Command #{1} not found.'
 
 // command exec-multi
 export const COMMAND__EXEC_MULTI__DESC = 'execute command in multiple projects'
+export const COMMAND__EXEC_MULTI__ARGS_COMMAND = 'specify the command to be executed (please use double quotes to wrap the command)'
 export const COMMAND__EXEC_MULTI__OPTION_PROJECT = 'specify projects to excute command'
 export const COMMAND__EXEC_MULTI__OPTION_PARALLEL = 'execute commands in parallel'
 export const COMMAND__EXEC_MULTI__SELECT_PROJECT = 'Please select the projects to excute command.'
@@ -126,7 +152,8 @@ export const COMMAND__IT__ERROR_COMMAND_NOT_FOUND = 'Command #{1} is not found.'
 export const COMMAND__IT__HELP_EXIT = 'Press `Ctrl+C` or type `exit` to exit.'
 
 // command language
-export const COMMAND__LANGUAGE__DESC = 'Specify CLI language'
+export const COMMAND__LANGUAGE__DESC = 'specify CLI language (Cur Language: #{1})'
+export const COMMAND__LANGUAGE__ARGS_LANG = 'specify the language to be switched'
 export const COMMAND__LANGUAGE__SELECT_LANGUAGE = 'Please select language for CLI. (Cur Language: #{1})'
 export const COMMAND__LANGUAGE__ERROR_NOT_EXISTS = 'Language #{1} is temporarily not supported.'
 export const COMMAND__LANGUAGE__SUCCESS_MESSAGE = 'Specify language #{1} successfully.'

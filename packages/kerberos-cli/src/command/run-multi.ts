@@ -1,9 +1,7 @@
 import { program } from 'commander'
-import waterfall from 'promise-waterfall'
 import { spawn } from '../services/process'
-import { getDependencyGraph } from '../services/project'
-import { getDependencyWeight } from '../services/pm'
 import { warn } from '../services/logger'
+import lineup from './share/lineup'
 import tryGetProjects from './share/tryGetProjects'
 import intercept from '../interceptors'
 import i18n from '../i18n'
@@ -30,43 +28,26 @@ async function takeAction(scriptName: string, options?: Types.CLIRunMultiOptions
       })
     )
   } else {
-    const dependencyGraph = await getDependencyGraph(projects)
-    const weightGraph = getDependencyWeight(dependencyGraph)
-
-    const queue: string[][] = []
-    weightGraph.forEach(({ name, weight }) => {
-      if (!Array.isArray(queue[weight])) {
-        queue[weight] = []
+    await lineup(projects, async ({ name, folder, package: pkgJSON }) => {
+      const { scripts = {} } = pkgJSON || {}
+      if (typeof scripts[scriptName] !== 'string') {
+        warn(i18n.COMMAND__RUN_MULTI__WARN_NOT_FOUND_PROJECT`${scriptName} ${name}`)
+        return
       }
 
-      queue[weight].push(name)
+      const command = scripts[scriptName]
+      const [cli, ...params] = command.split(' ')
+      await spawn(cli, params, { cwd: folder, shell: true })
     })
-
-    await waterfall(
-      queue.map((group) => async () => {
-        return Promise.all(
-          group.map(async (projectName) => {
-            const { folder, package: pkgJSON } = projects.find((project) => project.name === projectName)
-            const { scripts = {} } = pkgJSON || {}
-            if (typeof scripts[scriptName] !== 'string') {
-              warn(i18n.COMMAND__RUN_MULTI__WARN_NOT_FOUND_PROJECT`${scriptName} ${projectName}`)
-              return
-            }
-
-            const command = scripts[scriptName]
-            const [cli, ...params] = command.split(' ')
-            await spawn(cli, params, { cwd: folder, shell: true })
-          })
-        )
-      })
-    )
   }
 }
 
 program
   .command('run-multi <script>')
   .alias('mrun')
-  .description(i18n.COMMAND__RUN_MULTI__DESC``)
+  .description(i18n.COMMAND__RUN_MULTI__DESC``, {
+    script: i18n.COMMAND__RUN_MULTI__ARGS_SCRIPT``,
+  })
   .option('-p, --project <projects...>', i18n.COMMAND__RUN_MULTI__OPTION_PROJECT``)
-  .option('--parallel [parallel]', i18n.COMMAND__RUN_MULTI__OPTION_PARALLEL``)
+  .option('--parallel', i18n.COMMAND__RUN_MULTI__OPTION_PARALLEL``)
   .action((script: string) => intercept()(takeAction)(script))

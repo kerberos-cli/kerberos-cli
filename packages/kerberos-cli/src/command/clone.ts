@@ -45,7 +45,10 @@ async function takeAction(repository: string, name: string = path.basename(repos
 
 program
   .command('clone <repo> [name]')
-  .description(i18n.COMMAND__CLONE__DESC``)
+  .description(i18n.COMMAND__CLONE__DESC``, {
+    repo: i18n.COMMAND__CLONE__ARGS_REPO``,
+    name: i18n.COMMAND__CLONE__ARGS_NAME``,
+  })
   .option('-w, --workspace <workspace>', i18n.COMMAND__CLONE__OPTION_WORKSPACE``)
-  .option('-o, --optional [optional]', i18n.COMMAND__CLONE__OPTION_OPTIONAL``)
+  .option('-o, --optional', i18n.COMMAND__CLONE__OPTION_OPTIONAL``)
   .action((repo: string, name?: string, options?: Types.CLICloneOptions) => intercept()(takeAction)(repo, name, options))

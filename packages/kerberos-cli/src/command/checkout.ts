@@ -51,6 +51,8 @@ async function takeAction(branch: string, options?: Types.CLICheckoutOptions) {
 
 program
   .command('checkout <branch>')
-  .description(i18n.COMMAND__CHECKOUT__DESC``)
+  .description(i18n.COMMAND__CHECKOUT__DESC``, {
+    branch: i18n.COMMAND__CHECKOUT__ARGS_BRANCH``,
+  })
   .option('-p, --project <projects...>', i18n.COMMAND__CHECKOUT__OPTION_PROJECT``)
   .action((branch: string, options?: Types.CLICheckoutOptions) => intercept()(takeAction)(branch, options))

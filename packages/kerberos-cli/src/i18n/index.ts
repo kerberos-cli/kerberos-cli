@@ -24,6 +24,12 @@ export function setLanguage(language: Language): boolean {
   return false
 }
 
+/** 获取当前使用的语言信息 */
+export function getCurrent(): ValuesType<typeof languages> {
+  const { language = Object.keys(languages)[0] } = getVariables() || {}
+  return languages[language]
+}
+
 /**
  * 混淆国际化
  * @param languages 各种语言的模板集合

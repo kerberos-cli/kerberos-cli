@@ -59,5 +59,5 @@ program
   .command('ls')
   .description(i18n.COMMAND__LS__DESC``)
   .option('-p, --project <project>', i18n.COMMAND__LS__OPTIONS_PROJECT``)
-  .option('-d, --dependencies [dependencies]', i18n.COMMAND__LS__OPTIONS_DEPENDENCIES``)
+  .option('-d, --dependencies', i18n.COMMAND__LS__OPTIONS_DEPENDENCIES``)
   .action((options?: Types.CLILsOptions) => intercept()(takeAction)(options))

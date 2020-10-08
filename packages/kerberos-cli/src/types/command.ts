@@ -40,10 +40,30 @@ export type CLIVersionOptions = {
   noPush?: boolean
 }
 
+/** add 命令选项 */
+export type CLIAddOptions = {
+  /** 指定项目 */
+  projects?: string[]
+  dev?: boolean
+  peer?: boolean
+  optional?: boolean
+}
+
+/** remove 命令选项 */
+export type CLIRemoveOptions = {
+  /** 指定项目 */
+  projects?: string[]
+  dev?: boolean
+  peer?: boolean
+  optional?: boolean
+}
+
 /** run 命令选项 */
 export type CLIRunOptions = {
   /** 指定项目 */
   project?: string
+  /** 使用根工作区 */
+  root?: boolean
 }
 
 /** run-multi 命令选项 */
@@ -58,6 +78,8 @@ export type CLIRunMultiOptions = {
 export type CLIExecOptions = {
   /** 指定项目 */
   project?: string
+  /** 使用根工作区 */
+  root?: boolean
 }
 
 /** exec-multi 命令选项 */
