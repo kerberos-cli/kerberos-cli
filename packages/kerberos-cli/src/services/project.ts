@@ -126,7 +126,9 @@ export async function getPackagePathCollection(specifyConfig?: Types.CPackage): 
   const { workspaces } = specifyConfig || (await getPackage())
 
   let patterns = []
-  if (!Array.isArray(workspaces)) {
+  if (Array.isArray(workspaces)) {
+    patterns = workspaces
+  } else {
     if (!Array.isArray(workspaces.packages)) {
       return []
     }
