@@ -2,7 +2,6 @@ import path from 'path'
 import { promisify } from 'util'
 import { glob } from 'glob'
 import semver from 'semver'
-import isGitUrl from 'is-git-url'
 import { flatten, uniq } from 'lodash'
 import { isPristine } from './git'
 import { openJsonFile, updateJsonFile } from './fileMemory'
@@ -41,12 +40,8 @@ export async function updateConfig(options: Partial<Types.CConfig>, file: string
 
   if (Array.isArray(projects)) {
     source.projects = projects.filter((project) => {
-      const { name, repository, workspace } = project || {}
+      const { name, workspace } = project || {}
       if (!(typeof name === 'string' && name)) {
-        return false
-      }
-
-      if (!(typeof repository === 'string' && isGitUrl(repository))) {
         return false
       }
 
@@ -69,8 +64,9 @@ export async function updateConfig(options: Partial<Types.CConfig>, file: string
 export async function addProjectsToConfig(projects: Types.CProject[]): Promise<void> {
   const source = await getConfig()
   const exists = source?.projects || []
-  const finalProjects = projects.filter(({ name }) => -1 === exists.findIndex((project) => project.name === name))
-  await updateConfig({ projects: finalProjects })
+  const addition = projects.filter(({ name }) => -1 === exists.findIndex((project) => project.name === name))
+  const final = [].concat(exists, addition)
+  await updateConfig({ projects: final })
 }
 
 /** 读取工作区 package.json 文件路径 */
