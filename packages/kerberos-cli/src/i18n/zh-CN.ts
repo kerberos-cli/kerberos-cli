@@ -100,9 +100,6 @@ export const COMMAND__ADD__OPTION_OPTIONAL = '将软件包保存到`optionalDepe
 export const COMMAND__REMOVE__DESC = '卸载软件包及其依赖的任何软件包'
 export const COMMAND__REMOVE__ARGS_DEPENDENCIES = '指定需要卸载的依赖'
 export const COMMAND__REMOVE__OPTION_PROJECT = '指定要卸载软件包的项目'
-export const COMMAND__REMOVE__OPTION_DEV = '将包从`devDependencies`中卸载'
-export const COMMAND__REMOVE__OPTION_PEER = '将包从`peerDependencies`中卸载'
-export const COMMAND__REMOVE__OPTION_OPTIONAL = '将包从`optionalDependencies`中卸载'
 
 // command run
 export const COMMAND__RUN__DESC = '在项目中执行脚本'

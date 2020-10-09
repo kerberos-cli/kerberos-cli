@@ -53,9 +53,6 @@ export type CLIAddOptions = {
 export type CLIRemoveOptions = {
   /** 指定项目 */
   projects?: string[]
-  dev?: boolean
-  peer?: boolean
-  optional?: boolean
 }
 
 /** run 命令选项 */

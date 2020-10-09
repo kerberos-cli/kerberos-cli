@@ -101,9 +101,6 @@ export const COMMAND__ADD__OPTION_OPTIONAL = 'save package to your `optionalDepe
 export const COMMAND__REMOVE__DESC = 'uninstall a package and any packages that it depends on'
 export const COMMAND__REMOVE__ARGS_DEPENDENCIES = 'specify the dependencies that need to be uninstalled'
 export const COMMAND__REMOVE__OPTION_PROJECT = 'specify projects to uninstall packages'
-export const COMMAND__REMOVE__OPTION_DEV = 'remove package from your `devDependencies`'
-export const COMMAND__REMOVE__OPTION_PEER = 'remove package from your `peerDependencies`'
-export const COMMAND__REMOVE__OPTION_OPTIONAL = 'remove package from your `optionalDependencies`'
 
 // command run
 export const COMMAND__RUN__DESC = 'execute script in project'

@@ -12,22 +12,9 @@ async function takeAction(dependencies: string[], options: Types.CLIRemoveOption
     return
   }
 
-  const params = []
-  if (options?.dev) {
-    params.push('--dev')
-  }
-
-  if (options?.peer) {
-    params.push('--peer')
-  }
-
-  if (options?.optional) {
-    params.push('--optional')
-  }
-
   await lineUp(projects, async ({ folder }) => {
     const options = { cwd: folder, shell: true }
-    const args = ['remove', ...params, ...dependencies]
+    const args = ['remove', ...dependencies]
     await spawn('yarn', args, options)
   })
 }
@@ -38,7 +25,4 @@ program
     dependencies: i18n.COMMAND__REMOVE__ARGS_DEPENDENCIES``,
   })
   .option('-p, --project <projects...>', i18n.COMMAND__REMOVE__OPTION_PROJECT``)
-  .option('-D, --dev', i18n.COMMAND__REMOVE__OPTION_DEV``)
-  .option('-P, --peer', i18n.COMMAND__REMOVE__OPTION_PEER``)
-  .option('-O, --optional', i18n.COMMAND__REMOVE__OPTION_OPTIONAL``)
   .action((dependencies: string[], options: Types.CLIRemoveOptions) => intercept()(takeAction)(dependencies, options))
