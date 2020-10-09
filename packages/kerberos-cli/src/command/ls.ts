@@ -35,6 +35,8 @@ function showDependencies(
       if (Array.isArray(subGraph?.dependencies) && subGraph.dependencies.length > 0) {
         showDependencies(subGraph.dependencies, projects, dependencyGraph, queue.concat([name]), shown, spaces * 2)
       }
+
+      shown = []
     })
   }
 }
