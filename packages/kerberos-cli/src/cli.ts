@@ -5,7 +5,6 @@ import './extends/inquirer'
 
 import './command/init'
 import './command/bootstrap'
-import './command/install'
 import './command/ls'
 import './command/clone'
 import './command/checkout'

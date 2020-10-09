@@ -24,8 +24,9 @@ async function takeAction(options?: Types.CLIBootstrapOptions): Promise<void> {
   const optionals: Types.CProject[] = []
   const codes: number[] = []
   const install = (projects: Types.DProjectInConfChoice[]) => {
-    return projects.map(({ name, workspace, repository }) => {
+    return projects.map(async ({ name, workspace, repository }) => {
       const wsFolder = path.join(process.cwd(), workspace)
+      await fs.ensureDir(wsFolder)
       return spawn('git', ['clone', repository, name], { cwd: wsFolder })
     })
   }

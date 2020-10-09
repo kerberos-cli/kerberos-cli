@@ -17,6 +17,12 @@ export const COMMAND__INIT__ARGS_FOLDER = 'specify the directory that needs to b
 export const COMMAND__INIT__ARGS_REPO = 'specify the git repository that needs to be initialized'
 export const COMMAND__INIT__CONFIRM_CLEAN_MESSAGE = 'Folder is not empty, can I clean it up for you?'
 export const COMMAND__INIT__CONFIRM_CREATE_CONFIG_PROJECT = 'Can I create a new kerberos configuration project?'
+export const COMMAND__INIT__CONFIRM_MOVE_FILES = 'This action will move your files, are you sure you want to perform this action?'
+export const COMMAND__INIT__WARN_IS_KBPROJECT = 'This project is already a Kerberos project.'
+export const COMMAND__INIT__ERROR_SOFT_LINK = 'The file #{1} is a soft link and cannot be initialized.'
+export const COMMAND__INIT__ERROR_NO_PACKAGE = 'The file package.json is not found.'
+export const COMMAND__INIT__ERROR_NO_SETTINGS = 'The settings of this project could not be found in the #{1}.'
+export const COMMAND__INIT__ERROR_INVALID_SETTINGS = 'Workspace configuration setting error in the #{1}.'
 export const COMMAND__INIT__ERROR_INVALID_FOLDER = 'File is not a directory.'
 export const COMMAND__INIT__ERROR_EMPTY_FOLDER = 'Folder is not empty.'
 export const COMMAND__INIT__ERROR_INVALID_REPO = 'Repo is invalid.'
@@ -35,14 +41,6 @@ export const COMMAND__BOOTSTRAP__CONFIRM_INSTALL_OPTIONAL = 'It was found that s
 export const COMMAND__BOOTSTRAP__CONFIRM_INSTALL_DEPEDENCIES = 'Do you need to install dependencies.'
 export const COMMAND__BOOTSTRAP__ERROR_INVALID_PACKAGE = 'Package.json is invalid.'
 export const COMMAND__BOOTSTRAP__SUCCESS_COMPLETE = 'Bootstrap has been completed.'
-
-// command install
-export const COMMAND__INSTALL__DESC = 'initialize the workspace with configuration project'
-export const COMMAND__INSTALL__CONFIRM_MOVE_FILES = 'This action will move your files, are you sure you want to perform this action?'
-export const COMMAND__INSTALL__ERROR_SOFT_LINK = 'The file #{1} is a soft link and cannot be installed.'
-export const COMMAND__INSTALL__ERROR_NO_PACKAGE = 'The file package.json is not found.'
-export const COMMAND__INSTALL__ERROR_NO_SETTINGS = 'The settings of this project could not be found in the #{1}.'
-export const COMMAND__INSTALL__ERROR_INVALID_SETTINGS = 'Workspace configuration setting error in the #{1}.'
 
 // command ls
 export const COMMAND__LS__DESC = 'show all project information'

@@ -17,6 +17,12 @@ export const COMMAND__INIT__ARGS_FOLDER = '指定需要初始化的目录'
 export const COMMAND__INIT__ARGS_REPO = '指定需要初始化的Git-Repo'
 export const COMMAND__INIT__CONFIRM_CLEAN_MESSAGE = '文件夹不为空，我可以帮您清理一下吗？'
 export const COMMAND__INIT__CONFIRM_CREATE_CONFIG_PROJECT = '我可以创建一个新的Kerberos配置项目吗？'
+export const COMMAND__INIT__CONFIRM_MOVE_FILES = '此操作将移动您的文件，确定要执行此操作吗？'
+export const COMMAND__INIT__WARN_IS_KBPROJECT = '该项目已经是 Kerberos 项目。'
+export const COMMAND__INIT__ERROR_SOFT_LINK = '文件#{1}是软链，无法初始化。'
+export const COMMAND__INIT__ERROR_NO_PACKAGE = '找不到 package.json 文件。'
+export const COMMAND__INIT__ERROR_NO_SETTINGS = '在#{1}中找不到此项目的设置。'
+export const COMMAND__INIT__ERROR_INVALID_SETTINGS = '#{1}中的工作区配置设置错误。'
 export const COMMAND__INIT__ERROR_INVALID_FOLDER = '文件不是目录。'
 export const COMMAND__INIT__ERROR_EMPTY_FOLDER = '文件夹不为空。'
 export const COMMAND__INIT__ERROR_INVALID_REPO = '回购无效。'
@@ -35,14 +41,6 @@ export const COMMAND__BOOTSTRAP__CONFIRM_INSTALL_OPTIONAL = '发现未安装某�
 export const COMMAND__BOOTSTRAP__CONFIRM_INSTALL_DEPEDENCIES = '是否需要安装依赖项。'
 export const COMMAND__BOOTSTRAP__ERROR_INVALID_PACKAGE = 'Package.json 无效。'
 export const COMMAND__BOOTSTRAP__SUCCESS_COMPLETE = 'Boostrap 已完成。'
-
-// command install
-export const COMMAND__INSTALL__DESC = '使用配置项目初始化工作区'
-export const COMMAND__INSTALL__CONFIRM_MOVE_FILES = '此操作将移动您的文件，确定要执行此操作吗？'
-export const COMMAND__INSTALL__ERROR_SOFT_LINK = '文件#{1}是软链，无法安装。'
-export const COMMAND__INSTALL__ERROR_NO_PACKAGE = '找不到 package.json 文件。'
-export const COMMAND__INSTALL__ERROR_NO_SETTINGS = '在#{1}中找不到此项目的设置。'
-export const COMMAND__INSTALL__ERROR_INVALID_SETTINGS = '#{1}中的工作区配置设置错误。'
 
 // command ls
 export const COMMAND__LS__DESC = '显示所有项目信息'

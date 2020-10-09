@@ -16,14 +16,14 @@ export const configTemplate = path.join(rootPath, 'template/doge')
 /** 配置文件名称 */
 export const configFileName = 'kerberos.json'
 
-/** 工作区 package.json 名称 */
-export const packageFileName = 'package.workspace.json'
-
 /** 配置项目名称 */
 export const configProjectFolderName = 'doge'
 
+/** 工作区 package.json 名称 */
+export const workspacePackageFileName = 'package.workspace.json'
+
 /** 默认工作区名称 */
-export const defaultWorkspaceName = '@kerberos'
+export const workspaceDefaultName = '@kerberos'
 
 /** 版本号 */
 const project = fs.readJSONSync(path.join(rootPath, 'package.json'))
