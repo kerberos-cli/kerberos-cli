@@ -67,6 +67,10 @@ export type CLIRunOptions = {
 export type CLIRunMultiOptions = {
   /** 指定项目 */
   projects?: string[]
+  /** 过滤项目 */
+  exclude?: string[]
+  /** 全部项目 */
+  all?: boolean
   /** 并行执行脚本 */
   parallel?: boolean
 }
@@ -83,6 +87,10 @@ export type CLIExecOptions = {
 export type CLIExecMultiOptions = {
   /** 指定项目 */
   projects?: string[]
+  /** 过滤项目 */
+  exclude?: string[]
+  /** 全部项目 */
+  all?: boolean
   /** 并行执行命令 */
   parallel?: boolean
 }

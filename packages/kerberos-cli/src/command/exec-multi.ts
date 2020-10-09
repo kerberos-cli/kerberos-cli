@@ -2,6 +2,7 @@ import { promisify } from 'util'
 import { program } from 'commander'
 import commandExists from 'command-exists'
 import { spawn } from '../services/process'
+import { getProjectInfoCollection } from '../services/project'
 import lineUp from './share/lineUp'
 import intercept from '../interceptors'
 import tryGetProjects from './share/tryGetProjects'
@@ -9,7 +10,11 @@ import i18n from '../i18n'
 import * as Types from '../types'
 
 async function takeAction(command: string, options?: Types.CLIExecMultiOptions): Promise<void> {
-  const projects = await tryGetProjects(i18n.COMMAND__EXEC_MULTI__SELECT_PROJECT``, options?.projects)
+  let projects = options?.all ? await getProjectInfoCollection() : await tryGetProjects(i18n.COMMAND__EXEC_MULTI__SELECT_PROJECT``, options?.projects)
+  if (Array.isArray(options?.exclude)) {
+    projects = projects.filter(({ name }) => options.exclude.indexOf(name))
+  }
+
   if (projects.length === 0) {
     return
   }
@@ -38,6 +43,8 @@ program
   .description(i18n.COMMAND__EXEC_MULTI__DESC``, {
     command: i18n.COMMAND__EXEC_MULTI__ARGS_COMMAND``,
   })
-  .option('-p, --project <projects...>', i18n.COMMAND__EXEC_MULTI__OPTION_PROJECT``)
+  .option('-p, --projects <projects...>', i18n.COMMAND__EXEC_MULTI__OPTION_PROJECT``)
+  .option('-e, --exclude <projects...>', i18n.COMMAND__EXEC_MULTI__OPTION_EXCLUDE``)
+  .option('-a, --all', i18n.COMMAND__EXEC_MULTI__OPTION_ALL``)
   .option('--parallel', i18n.COMMAND__EXEC_MULTI__OPTION_PARALLEL``)
   .action((command: string, options?: Types.CLIExecMultiOptions) => intercept()(takeAction)(command, options))
