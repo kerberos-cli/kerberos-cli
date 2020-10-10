@@ -24,18 +24,27 @@ async function takeAction(options?: Types.CLIBootstrapOptions): Promise<void> {
   const necessaries: Types.CProject[] = []
   const optionals: Types.CProject[] = []
   const codes: number[] = []
-  const install = (projects: Types.DProjectInConfChoice[]) => {
+  const install = async (projects: Types.DProjectInConfChoice[]) => {
+    const codes = []
     const tasks = projects.map(({ name, workspace, repository }) => async () => {
       const wsFolder = path.join(process.cwd(), workspace)
       await fs.ensureDir(wsFolder)
-      return spawn('git', ['clone', repository, name], { cwd: wsFolder })
+
+      const code = await spawn('git', ['clone', repository, name], { cwd: wsFolder })
+      codes.push(code)
     })
 
-    if (options?.sequence) {
-      return waterfall(tasks)
+    if (tasks.length === 0) {
+      return codes
     }
 
-    return Promise.all(tasks.map((exec) => exec()))
+    if (options?.sequence) {
+      await waterfall(tasks)
+      return codes
+    }
+
+    Promise.all(tasks.map((exec) => exec()))
+    return codes
   }
 
   projects.forEach((project) => {
