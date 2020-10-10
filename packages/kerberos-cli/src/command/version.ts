@@ -9,7 +9,7 @@ import { getConfig, updateConfig, getDependencyGraph, getDirtyProjectInfoCollect
 import intercept from '../interceptors'
 import tryGetProjects from './share/tryGetProjects'
 import { spawn } from '../services/process'
-import { getBranch, getRemotes } from '../services/git'
+import { getBranch, getRemotes, isPristine } from '../services/git'
 import { confirm, selectVersion } from '../services/ui'
 import { openJsonFile } from '../services/fileMemory'
 import { randomHex, warn } from '../services/logger'
@@ -137,6 +137,11 @@ async function takeAction(version: string, options: Types.CLIVersionOptions = {}
       // 自动提交代码
       await spawn('git', ['add', '.'], { cwd: folder })
       await spawn('git', ['commit', '-m', commitMessage], { cwd: folder })
+      if (!(await isPristine(folder))) {
+        warn(i18n.COMMAND__VERSION__WARN_COMMIT_FAIL``)
+        return
+      }
+
       await spawn('git', ['tag', finalVersion], { cwd: folder })
 
       // 代码推送

@@ -63,7 +63,7 @@ export function mix<
   }
 >(languages: LL): LRU {
   const env = process.env
-  const lang = env.LC_ALL || env.LC_MESSAGES || env.LANG || env.LANGUAGE
+  const lang = env.LC_ALL || env.LC_MESSAGES || env.LANG || env.LANGUAGE || 'en_US.UTF-8'
   const [userLanguage] = lang.split('.')
 
   const keys = []

@@ -82,12 +82,13 @@ export const COMMAND__VERSION__ARGS_VERSION = 'specify the version number'
 export const COMMAND__VERSION__OPTION_NO_PUSH = 'do not git push'
 export const COMMAND__VERSION__SELECT_PROJECTS = 'Please select projects to tag.'
 export const COMMAND__VERSION__CONFIRM_DIFF_BRANCHES = 'The project is in different branches, are you sure you want to continue?\n#{1}\n'
-export const COMMAND__VERSION__ERROR_NOT_SUBMIT = 'Some files in the projects are in temporary storage (not submitted), please submit first.\n#{1}'
 export const COMMAND__VERSION__INPUT_VERSION = 'Please type a new version.'
+export const COMMAND__VERSION__ERROR_NOT_SUBMIT = 'Some files in the projects are in temporary storage (not submitted), please submit first.\n#{1}'
 export const COMMAND__VERSION__ERROR_RELEASE_BRANCH =
   'Projects #{1} are not in the release branch #{2}, please switch all of it to the release branch before tagging; The release branch is defined by the configuration file.'
 export const COMMAND__VERSION__WARN_NO_REMOTE = 'Project #{1} does not specify origin remote host, please manually push to the remote host.'
 export const COMMAND__VERSION__WARN_NO_BRANCH = 'Project #{1} does not specify any branch, please manually push to the remote host.'
+export const COMMAND__VERSION__WARN_COMMIT_FAIL = 'Project #{1} failed to submit, please re-tag after submission.'
 
 // command add
 export const COMMAND__ADD__DESC = 'install a package and any packages that it depends on'
