@@ -25,6 +25,7 @@
     "chalk": "^4.1.0",
     "command-exists": "^1.2.9",
     "commander": "^6.1.0",
+    "comment-json": "^4.1.0",
     "dotenv": "^8.2.0",
     "fs-extra": "^9.0.1",
     "glob": "^7.1.6",
@@ -36,9 +37,11 @@
     "lodash": "^4.17.20",
     "pretty-error": "^2.1.1",
     "promise-waterfall": "^0.1.0",
-    "semver": "^7.3.2"
+    "semver": "^7.3.2",
+    "inquirer-autocomplete-prompt": "^1.1.0"
   },
   "devDependencies": {
+    "@types/comment-json": "^1.1.1",
     "@types/chalk": "^2.2.0",
     "@types/command-exists": "^1.2.0",
     "@types/commander": "^2.12.2",
