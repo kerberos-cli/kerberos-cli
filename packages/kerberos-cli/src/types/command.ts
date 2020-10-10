@@ -4,6 +4,8 @@ export type CLIBootstrapOptions = {
   yes?: boolean
   /** 只安装可选 */
   optional?: boolean
+  /** 按顺序安装 */
+  sequence?: boolean
 }
 
 /** ls 命令选项 */

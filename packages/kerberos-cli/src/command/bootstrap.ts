@@ -1,6 +1,7 @@
 import fs from 'fs-extra'
 import path from 'path'
 import { program } from 'commander'
+import waterfall from 'promise-waterfall'
 import { getConfig, getProjectInfoCollection } from '../services/project'
 import { spawn } from '../services/process'
 import { success } from '../services/logger'
@@ -24,11 +25,17 @@ async function takeAction(options?: Types.CLIBootstrapOptions): Promise<void> {
   const optionals: Types.CProject[] = []
   const codes: number[] = []
   const install = (projects: Types.DProjectInConfChoice[]) => {
-    return projects.map(async ({ name, workspace, repository }) => {
+    const tasks = projects.map(({ name, workspace, repository }) => async () => {
       const wsFolder = path.join(process.cwd(), workspace)
       await fs.ensureDir(wsFolder)
       return spawn('git', ['clone', repository, name], { cwd: wsFolder })
     })
+
+    if (options?.sequence) {
+      return waterfall(tasks)
+    }
+
+    return Promise.all(tasks.map((exec) => exec()))
   }
 
   projects.forEach((project) => {
@@ -42,26 +49,26 @@ async function takeAction(options?: Types.CLIBootstrapOptions): Promise<void> {
   })
 
   // 安装依赖
-  const nCodes = await Promise.all(install(necessaries))
+  const nCodes = await install(necessaries)
   codes.push(...nCodes)
 
   if (optionals.length > 0) {
     if (yes) {
       if (optional) {
-        const oCodes = await Promise.all(install(optionals))
+        const oCodes = await install(optionals)
         codes.push(...oCodes)
       }
     } else {
       if (await confirm(i18n.COMMAND__BOOTSTRAP__CONFIRM_INSTALL_OPTIONAL``, false)) {
         const selectedProjects = await multiSelect('projectInConfig')(i18n.COMMAND__BOOTSTRAP__SELECT_CLONE_PROJECT``, optionals)
-        const oCodes = await Promise.all(install(selectedProjects))
+        const oCodes = await install(selectedProjects)
         codes.push(...oCodes)
       }
     }
   }
 
   if (await confirm(i18n.COMMAND__BOOTSTRAP__CONFIRM_INSTALL_DEPEDENCIES``)) {
-    await spawn('yarn')
+    await spawn('yarn', [], { shell: true })
   }
 
   success(i18n.COMMAND__BOOTSTRAP__SUCCESS_COMPLETE``)
@@ -72,4 +79,5 @@ program
   .description(i18n.COMMAND__BOOTSTRAP__DESC``)
   .option('-y, --yes', i18n.COMMAND__BOOTSTRAP__OPTION_YES``)
   .option('-o, --optional', i18n.COMMAND__BOOTSTRAP__OPTION_OPTIONAL``)
+  .option('-S, --sequence', i18n.COMMAND__BOOTSTRAP__OPTION_SEQUENCE``)
   .action((options: Types.CLIBootstrapOptions) => intercept()(takeAction)(options))

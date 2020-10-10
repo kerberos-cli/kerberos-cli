@@ -36,6 +36,7 @@ export const COMMAND__INIT__HELP_OPERATION = 'Type <cd #{1}> and enter the works
 export const COMMAND__BOOTSTRAP__DESC = 'initialize yarn workspace and install depedencies of all projects'
 export const COMMAND__BOOTSTRAP__OPTION_YES = 'skip all questions'
 export const COMMAND__BOOTSTRAP__OPTION_OPTIONAL = 'specify to install all optional dependencies when specifying the --yes option'
+export const COMMAND__BOOTSTRAP__OPTION_SEQUENCE = 'specify clones by sequence'
 export const COMMAND__BOOTSTRAP__SELECT_CLONE_PROJECT = 'Please select the project to clone.'
 export const COMMAND__BOOTSTRAP__CONFIRM_INSTALL_OPTIONAL = 'It was found that some optional items were not installed. Do I need to install these items?'
 export const COMMAND__BOOTSTRAP__CONFIRM_INSTALL_DEPEDENCIES = 'Do you need to install dependencies.'

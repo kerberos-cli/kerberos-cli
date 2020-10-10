@@ -36,6 +36,7 @@ export const COMMAND__INIT__HELP_OPERATION = '输入 <cd #{1}> 进入工作区�
 export const COMMAND__BOOTSTRAP__DESC = '初始化工作区并安装所有项目的依赖'
 export const COMMAND__BOOTSTRAP__OPTION_YES = '跳过所有问题并以确认作为选项'
 export const COMMAND__BOOTSTRAP__OPTION_OPTIONAL = '指定在指定 --yes 选项时安装所有可选依赖项'
+export const COMMAND__BOOTSTRAP__OPTION_SEQUENCE = '指定按顺序克隆'
 export const COMMAND__BOOTSTRAP__SELECT_CLONE_PROJECT = '请选择要克隆的项目。'
 export const COMMAND__BOOTSTRAP__CONFIRM_INSTALL_OPTIONAL = '发现未安装某些可选项目，需要为您安装这些项目吗？'
 export const COMMAND__BOOTSTRAP__CONFIRM_INSTALL_DEPEDENCIES = '是否需要安装依赖项。'
