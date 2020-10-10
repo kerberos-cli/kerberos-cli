@@ -1,5 +1,6 @@
 import { EventEmitter } from 'events'
-import { spawn as cpSpawn, exec, SpawnOptions, ExecOptions } from 'child_process'
+import { exec, SpawnOptions, ExecOptions } from 'child_process'
+import cpSpawn from 'cross-spawn'
 import Queue from '../libs/Queue'
 
 const EXIT_TOKEN = 'processExit'
