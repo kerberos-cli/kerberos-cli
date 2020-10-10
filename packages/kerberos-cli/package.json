@@ -1,6 +1,6 @@
 {
   "name": "kerberos-cli",
-  "version": "1.0.0-alpha.17",
+  "version": "1.0.0-alpha.18",
   "description": "a mono-repo workspace tool",
   "author": "DavidJones <qowera@gmail.com>",
   "license": "MIT",
@@ -30,6 +30,7 @@
     "fs-extra": "^9.0.1",
     "glob": "^7.1.6",
     "inquirer": "^7.3.3",
+    "inquirer-autocomplete-prompt": "^1.1.0",
     "inquirer-command-prompt": "^0.0.29",
     "inquirer-search-checkbox": "^1.0.0",
     "inquirer-search-list": "^1.2.6",
@@ -37,14 +38,13 @@
     "lodash": "^4.17.20",
     "pretty-error": "^2.1.1",
     "promise-waterfall": "^0.1.0",
-    "semver": "^7.3.2",
-    "inquirer-autocomplete-prompt": "^1.1.0"
+    "semver": "^7.3.2"
   },
   "devDependencies": {
-    "@types/comment-json": "^1.1.1",
     "@types/chalk": "^2.2.0",
     "@types/command-exists": "^1.2.0",
     "@types/commander": "^2.12.2",
+    "@types/comment-json": "^1.1.1",
     "@types/dotenv": "^8.2.0",
     "@types/fs-extra": "^9.0.1",
     "@types/glob": "^7.1.3",
