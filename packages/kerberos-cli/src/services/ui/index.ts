@@ -13,7 +13,11 @@ import * as Types from '../../types'
  * @param initialOptions 初始配置
  * @param choicesGenerator 选项生成器
  */
-export function gSel<C, S extends Types.ChoicesGenerators<C>>(initialOptions: inquirer.ListQuestionOptions = {}, choicesGenerator: C = SelectOptions as any) {
+export function gSel<C, S extends Types.ChoicesGenerators<C>>(
+  promptType: 'list' | 'search-list' = 'list',
+  initialOptions: inquirer.ListQuestionOptions = {},
+  choicesGenerator: C = SelectOptions as any
+) {
   return function <
     /** 类型 */
     T extends keyof C,
@@ -39,7 +43,7 @@ export function gSel<C, S extends Types.ChoicesGenerators<C>>(initialOptions: in
 
       const { selected } = await inquirer.prompt({
         ...initialOptions,
-        type: 'list',
+        type: (promptType as 'list') || 'list',
         name: 'selected',
         message: message,
         choices: choices,
@@ -101,7 +105,16 @@ export function gMultiSel<C, S extends Types.ChoicesGenerators<C>>(initialOption
  * @param initialOptions 配置
  */
 export function select<T extends keyof typeof SelectOptions>(type: T, initialOptions?: inquirer.ListQuestionOptions) {
-  return gSel(initialOptions, SelectOptions)(type)
+  return gSel('list', initialOptions, SelectOptions)(type)
+}
+
+/**
+ * 单选(带搜索)
+ * @param name 选择器名称
+ * @param initialOptions 配置
+ */
+export function selectWithSearch<T extends keyof typeof SelectOptions>(type: T, initialOptions?: inquirer.ListQuestionOptions) {
+  return gSel('search-list', initialOptions, SelectOptions)(type)
 }
 
 /**

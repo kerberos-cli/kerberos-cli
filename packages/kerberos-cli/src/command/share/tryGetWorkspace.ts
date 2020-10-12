@@ -1,6 +1,6 @@
 import { ListQuestionOptions } from 'inquirer'
 import { getWorkspaceInfoCollection } from '../../services/project'
-import { select } from '../../services/ui'
+import { select, selectWithSearch } from '../../services/ui'
 import i18n from '../../i18n'
 import * as Types from '../../types'
 
@@ -10,7 +10,7 @@ import * as Types from '../../types'
  * @param specified 指定工作区
  * @param initialOptions 选择器配置
  */
-export default async function tryGetWrokspace(message: string, specified?: string, initialOptions?: ListQuestionOptions): Promise<Types.DWorkspace> {
+export default async function tryGetWrokspace(message: string, specified?: string, initialOptions?: ListQuestionOptions, enableSearch: boolean = false): Promise<Types.DWorkspace> {
   if (typeof specified === 'string') {
     const workspaces = await getWorkspaceInfoCollection()
     const index = workspaces.findIndex((item) => item.name === specified)
@@ -21,6 +21,6 @@ export default async function tryGetWrokspace(message: string, specified?: strin
     return workspaces[index]
   }
 
-  const workspace = await select('workspace', initialOptions)(message)
+  const workspace = enableSearch ? await selectWithSearch('workspace', initialOptions)(message) : await select('workspace', initialOptions)(message)
   return workspace
 }

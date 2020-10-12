@@ -1,6 +1,6 @@
 import { ListQuestionOptions } from 'inquirer'
 import { getProjectInfoByName } from '../../services/project'
-import { select } from '../../services/ui'
+import { select, selectWithSearch } from '../../services/ui'
 import i18n from '../../i18n'
 
 /**
@@ -9,7 +9,7 @@ import i18n from '../../i18n'
  * @param specified 指定项目名称
  * @param initialOptions 选择器配置
  */
-export default async function tryGetProject(message: string, specified?: string, initialOptions?: ListQuestionOptions) {
+export default async function tryGetProject(message: string, specified?: string, initialOptions?: ListQuestionOptions, enableSearch: boolean = false) {
   if (typeof specified === 'string') {
     const project = await getProjectInfoByName(specified)
     if (!project) {
@@ -19,6 +19,6 @@ export default async function tryGetProject(message: string, specified?: string,
     return project
   }
 
-  const project = await select('project', initialOptions)(message)
+  const project = enableSearch ? await selectWithSearch('project', initialOptions)(message) : await select('project', initialOptions)(message)
   return project
 }

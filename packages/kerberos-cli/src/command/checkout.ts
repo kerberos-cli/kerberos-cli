@@ -34,6 +34,8 @@ async function takeAction(branch: string, options?: Types.CLICheckoutOptions) {
       const params = ['checkout']
       if (locals.indexOf(branch) === -1) {
         params.push('-b')
+      } else {
+        params.push('--track')
       }
 
       const code = await spawn('git', [...params, branch], { cwd: folder })

@@ -75,7 +75,7 @@ export async function gitClone(repo: string, name: string, folder: string): Prom
  * @param cwd 执行路径
  */
 export async function getBranch(folder: string): Promise<string> {
-  const stdout = await getStdout('git branch --show-current', { cwd: folder })
+  const stdout = await getStdout('git rev-parse --abbrev-ref HEAD', { cwd: folder })
   return stdout.split(os.EOL).shift()
 }
 

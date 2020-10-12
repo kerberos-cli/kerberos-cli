@@ -17,17 +17,18 @@ import * as Types from '../types'
 
 async function takeAction(options?: Types.CLIItOptions): Promise<void> {
   const cwd = process.cwd()
-  const folder: string = await (async () => {
+  const selFolder = async () => {
     const initialOptions = {}
     if (execPath !== cwd) {
       const defaultProject = (await getProjectInfoCollection()).find((project) => -1 !== execPath.indexOf(project.folder))
       defaultProject && Object.assign(initialOptions, { default: defaultProject.name })
     }
 
-    const project = await tryGetProject(i18n.COMMAND__IT__SELECT_PROJECT``, options?.project, initialOptions)
+    const project = await tryGetProject(i18n.COMMAND__IT__SELECT_PROJECT``, options?.project, initialOptions, true)
     return project?.folder
-  })()
+  }
 
+  let folder: string = await selFolder()
   if (!folder) {
     throw new Error(i18n.COMMAND__IT__ERROR_FOLDER_NOT_FOUND``)
   }
@@ -59,11 +60,10 @@ async function takeAction(options?: Types.CLIItOptions): Promise<void> {
   const autoCompletion = flatten(scripts.map((name) => [`npm run ${name}`, `yarn ${name}`]))
   InputLoop: while (true) {
     const command = await inputCommand(`${pkgJSON.name} ${chalk.green.bold('>')}`, autoCompletion)
-    if (command === 'exit') {
-      break
-    }
-
     switch (command) {
+      case ':q':
+        folder = await selFolder()
+        break InputLoop
       case 'exit':
         break InputLoop
     }

@@ -1,5 +1,5 @@
 import { ListQuestionOptions } from 'inquirer'
-import { select } from '../../services/ui'
+import { select, selectWithSearch } from '../../services/ui'
 import i18n from '../../i18n'
 
 /**
@@ -13,7 +13,8 @@ export default async function tryGetScript(
   message: string,
   scripts?: { [N: string]: string },
   specified?: string,
-  initialOptions?: ListQuestionOptions
+  initialOptions?: ListQuestionOptions,
+  enableSearch: boolean = false
 ): Promise<{ name: string; command: string }> {
   if (specified) {
     if (!(typeof scripts[specified] === 'string' && scripts[specified])) {
@@ -24,6 +25,6 @@ export default async function tryGetScript(
     return { name: specified, command }
   }
 
-  const script = await select('script', initialOptions)(message, scripts)
+  const script = enableSearch ? await selectWithSearch('script', initialOptions)(message, scripts) : await select('script', initialOptions)(message, scripts)
   return script
 }
