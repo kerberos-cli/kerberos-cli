@@ -22,7 +22,7 @@ export async function exec(commands: string[], options?: Types.CommandOptions): 
   const scopes = packages.map((name) => ['--scope', name])
   const scopeParams = command.split(' ').concat(flattenDeep(scopes))
   const params = ['exec', ...scopeParams]
-  await spawn('lerna', params, { cwd: rootPath, stdio: 'inherit' })
+  await spawn('lerna', params, { cwd: rootPath, stdio: 'inherit', shell: true })
 }
 
 program

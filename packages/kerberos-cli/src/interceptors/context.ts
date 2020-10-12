@@ -28,7 +28,7 @@ export async function lookupContext(context: string = process.cwd()): Promise<Co
   while (true) {
     const cfg = path.join(context, configFileName)
     const pkg = path.join(context, 'package.json')
-    if ((await fs.pathExists(cfg)) && (await fs.lstat(cfg)).isSymbolicLink() && (await fs.pathExists(pkg))) {
+    if ((await fs.pathExists(cfg)) && (await fs.pathExists(pkg))) {
       try {
         const cfgSource = await openJsonFile(cfg)
         const pkgSource = await openJsonFile(pkg)

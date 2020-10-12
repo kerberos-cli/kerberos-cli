@@ -7,10 +7,31 @@ import { openJsonFile } from '../services/fileMemory'
 import { spawn } from '../services/process'
 import { confirm } from '../services/ui'
 import { success, warn, info } from '../services/logger'
+import { isWindows } from '../utils/os'
 import intercept from '../interceptors'
 import { configTemplate, configProjectFolderName, configFileName, workspacePackageFileName, workspaceDefaultName } from '../constants/conf'
 import i18n from '../i18n'
 import * as Types from '../types'
+
+async function linkFile(target: string, linkPath: string) {
+  const folder = path.dirname(linkPath)
+  await fs.ensureDir(folder)
+
+  if (isWindows()) {
+    // 因为 Windows 下创建文件软链需要管理员权限，
+    // 而这里创建的软链均与Git无直接关系，
+    // 主要给予本地使用，
+    // 因此可以极大限度创建超链接，
+    // 软链失败则尝试硬链。
+    try {
+      await fs.symlink(target, linkPath, 'file')
+    } catch (error) {
+      await fs.link(target, linkPath)
+    }
+  } else {
+    await fs.symlink(target, linkPath)
+  }
+}
 
 async function isKerberosProject(folder: string): Promise<boolean> {
   const cfg = path.join(folder, configFileName)
@@ -94,8 +115,8 @@ async function install(folder: string): Promise<void> {
   )
 
   // 创建配置软链
-  await fs.symlink(path.join(dest, configFileName), path.join(folder, configFileName))
-  await fs.symlink(path.join(dest, workspacePackageFileName), path.join(folder, 'package.json'))
+  await linkFile(path.join(dest, configFileName), path.join(folder, configFileName))
+  await linkFile(path.join(dest, workspacePackageFileName), path.join(folder, 'package.json'))
 
   success(i18n.COMMAND__INIT__SUCCESS_COMPLETE``)
 }
@@ -143,8 +164,8 @@ async function init(folder: string, repo?: string): Promise<void> {
   }
 
   // 添加软链到外层
-  await fs.symlink(defaultConfigFile, path.join(folder, configFileName))
-  await fs.symlink(defaultPackageFile, path.join(folder, 'package.json'))
+  await linkFile(defaultConfigFile, path.join(folder, configFileName))
+  await linkFile(defaultPackageFile, path.join(folder, 'package.json'))
 
   success(i18n.COMMAND__INIT__SUCCESS_COMPLETE``)
 }
