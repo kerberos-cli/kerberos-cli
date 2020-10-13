@@ -76,9 +76,40 @@ async function takeAction(options?: Types.CLIBootstrapOptions): Promise<void> {
     }
   }
 
-  if (await confirm(i18n.COMMAND__BOOTSTRAP__CONFIRM_INSTALL_DEPEDENCIES``)) {
+  if (yes || (await confirm(i18n.COMMAND__BOOTSTRAP__CONFIRM_INSTALL_DEPEDENCIES``))) {
     await spawn('yarn', [], { shell: true })
   }
+
+  /**
+   * 在 Yarn Workspace 中,
+   * 如果 package 存在 postinstall 脚本,
+   * 则会出现依赖不使用软链而安装到里面的情况,
+   * 但 workspace 根目录仍然拥有子项目的软链,
+   * 因此这里需要确保依赖都是顶级, 而删除子项目中
+   * 所有引用到 workspace 中已经存在的子项目.
+   */
+  const projectInfo = await getProjectInfoCollection()
+  await Promise.all(
+    projectInfo.map(async ({ name, folder }) => {
+      const softlink = path.join(process.cwd(), 'node_modules', name)
+      if (!(await fs.pathExists(softlink))) {
+        await fs.link(folder, softlink)
+      }
+
+      await Promise.all(
+        projectInfo.map(async ({ name: cName, folder: cFolder }) => {
+          if (cName === name) {
+            return
+          }
+
+          const dep = path.join(cFolder, 'node_modules', name)
+          if (await fs.pathExists(dep)) {
+            await fs.remove(dep)
+          }
+        })
+      )
+    })
+  )
 
   success(i18n.COMMAND__BOOTSTRAP__SUCCESS_COMPLETE``)
 }
@@ -86,6 +117,7 @@ async function takeAction(options?: Types.CLIBootstrapOptions): Promise<void> {
 program
   .command('bootstrap')
   .description(i18n.COMMAND__BOOTSTRAP__DESC``)
+  .option('--only-install')
   .option('-y, --yes', i18n.COMMAND__BOOTSTRAP__OPTION_YES``)
   .option('-o, --optional', i18n.COMMAND__BOOTSTRAP__OPTION_OPTIONAL``)
   .option('-S, --sequence', i18n.COMMAND__BOOTSTRAP__OPTION_SEQUENCE``)
