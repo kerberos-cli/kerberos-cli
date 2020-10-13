@@ -1,3 +1,9 @@
+/** install 命令选项 */
+export type CLIInstallOptions = {
+  /** 指定分支 */
+  branch?: string
+}
+
 /** bootstrap 命令选项 */
 export type CLIBootstrapOptions = {
   /** 跳过提问 */

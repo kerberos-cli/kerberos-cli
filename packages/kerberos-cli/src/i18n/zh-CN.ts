@@ -32,6 +32,12 @@ export const COMMAND__INIT__SUCCESS_INIT_GIT = 'Kerberos 配置项目的生成�
 export const COMMAND__INIT__SUCCESS_COMPLETE = 'Kerberos 工作区的初始设置已完成。'
 export const COMMAND__INIT__HELP_OPERATION = '输入 <cd #{1}> 进入工作区。'
 
+// command install
+export const COMMAND__INSTALL__DESC = '安装工作区'
+export const COMMAND__INSTALL__ARGS_REPO = '指定需要初始化的Git-Repo'
+export const COMMAND__INSTALL__OPTION_BRANCH = '指定Git分支'
+export const COMMAND__INSTALL__SUCCESS_COMPLETE = '工作区的初始设置已完成。'
+
 // command bootstrap
 export const COMMAND__BOOTSTRAP__DESC = '初始化工作区并安装所有项目的依赖'
 export const COMMAND__BOOTSTRAP__OPTION_NO_INSTALL = '跳过 Yarn 安装依赖'

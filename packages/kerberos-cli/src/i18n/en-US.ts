@@ -32,6 +32,12 @@ export const COMMAND__INIT__SUCCESS_INIT_GIT = 'The generation of the kerberos c
 export const COMMAND__INIT__SUCCESS_COMPLETE = 'The initial setup of the kerberos workspace has been completed.'
 export const COMMAND__INIT__HELP_OPERATION = 'Type <cd #{1}> and enter the workspace.'
 
+// command install
+export const COMMAND__INSTALL__DESC = 'install workspace'
+export const COMMAND__INSTALL__ARGS_REPO = 'specify the git repository that needs to be initialized'
+export const COMMAND__INSTALL__OPTION_BRANCH = 'specify the git branch'
+export const COMMAND__INSTALL__SUCCESS_COMPLETE = 'The initial setup of the workspace has been completed.'
+
 // command bootstrap
 export const COMMAND__BOOTSTRAP__DESC = 'initialize yarn workspace and install depedencies of all projects'
 export const COMMAND__BOOTSTRAP__OPTION_NO_INSTALL = 'skip yarn install'

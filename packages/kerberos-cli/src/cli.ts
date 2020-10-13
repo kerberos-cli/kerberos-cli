@@ -4,6 +4,7 @@ import { version } from './constants/conf'
 import './extends/inquirer'
 
 import './command/init'
+import './command/install'
 import './command/bootstrap'
 import './command/ls'
 import './command/clone'
