@@ -3,5 +3,11 @@
   "version": "0.0.1",
   "description": "Kerberos Workspace",
   "private": true,
-  "workspaces": ["@kerberos/*"]
+  "workspaces": ["@kerberos/*"],
+  "scripts": {
+    "postinstall": "kerberos-cli bootstrap"
+  },
+  "peerDependencies": {
+    "kerberos-cli": "^1.0.0-alpha.15"
+  }
 }

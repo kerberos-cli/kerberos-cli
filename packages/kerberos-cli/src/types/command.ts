@@ -2,6 +2,8 @@
 export type CLIBootstrapOptions = {
   /** 跳过提问 */
   yes?: boolean
+  /** 不安装依赖 */
+  install?: boolean
   /** 只安装可选 */
   optional?: boolean
   /** 按顺序安装 */

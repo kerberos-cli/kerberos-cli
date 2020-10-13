@@ -11,7 +11,7 @@ import i18n from '../i18n'
 import * as Types from '../types'
 
 async function takeAction(options?: Types.CLIBootstrapOptions): Promise<void> {
-  const { yes, optional } = options
+  const { yes, install: yarnInstall, optional } = options
   const config = await getConfig()
   const pkgFile = path.join(process.cwd(), 'package.json')
   if (!(await fs.pathExists(pkgFile))) {
@@ -76,8 +76,10 @@ async function takeAction(options?: Types.CLIBootstrapOptions): Promise<void> {
     }
   }
 
-  if (yes || (await confirm(i18n.COMMAND__BOOTSTRAP__CONFIRM_INSTALL_DEPEDENCIES``))) {
-    await spawn('yarn', [], { shell: true })
+  if (yarnInstall === true) {
+    if (yes || (await confirm(i18n.COMMAND__BOOTSTRAP__CONFIRM_INSTALL_DEPEDENCIES``))) {
+      await spawn('yarn', [], { shell: true })
+    }
   }
 
   /**
@@ -117,7 +119,7 @@ async function takeAction(options?: Types.CLIBootstrapOptions): Promise<void> {
 program
   .command('bootstrap')
   .description(i18n.COMMAND__BOOTSTRAP__DESC``)
-  .option('--only-install')
+  .option('--no-install', i18n.COMMAND__BOOTSTRAP__OPTION_NO_INSTALL``)
   .option('-y, --yes', i18n.COMMAND__BOOTSTRAP__OPTION_YES``)
   .option('-o, --optional', i18n.COMMAND__BOOTSTRAP__OPTION_OPTIONAL``)
   .option('-S, --sequence', i18n.COMMAND__BOOTSTRAP__OPTION_SEQUENCE``)

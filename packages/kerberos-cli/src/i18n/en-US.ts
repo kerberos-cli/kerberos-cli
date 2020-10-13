@@ -34,6 +34,7 @@ export const COMMAND__INIT__HELP_OPERATION = 'Type <cd #{1}> and enter the works
 
 // command bootstrap
 export const COMMAND__BOOTSTRAP__DESC = 'initialize yarn workspace and install depedencies of all projects'
+export const COMMAND__BOOTSTRAP__OPTION_NO_INSTALL = 'skip yarn install'
 export const COMMAND__BOOTSTRAP__OPTION_YES = 'skip all questions'
 export const COMMAND__BOOTSTRAP__OPTION_OPTIONAL = 'specify to install all optional dependencies when specifying the --yes option'
 export const COMMAND__BOOTSTRAP__OPTION_SEQUENCE = 'specify clones by sequence'
