@@ -60,6 +60,7 @@ export const COMMAND__CLONE__SELECT_WORKSPACE = '请选择一个工作区来克�
 export const COMMAND__CLONE__ERROR_INVALID_REPO = '存储库不是有效的 Git 地址。'
 export const COMMAND__CLONE__ERROR_EXISTS_PROJECT = '已经存在一个具有相同名称的项目。'
 export const COMMAND__CLONE__ERROR_FAILE_CLONE = 'Git 克隆错误。'
+export const COMMAND__CLONE__ERROR_PROJECT_NOT_FOUND = '找不到#{1}项目。'
 export const COMMAND__CLONE__ERROR_INVALID_NODE_PROJECT = '存储库不是 NodeJS 项目。'
 export const COMMAND__CLONE__ERROR_INVALID_PROJECT_NAME = '密码名称无效。'
 export const COMMAND__CLONE__SUCCESS_COMPLETE = 'Git 克隆项目已完成。'

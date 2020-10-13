@@ -55,15 +55,17 @@ export async function exists(folder: string) {
  * @param name 名称
  * @param cwd 执行路径
  */
-export async function gitClone(repo: string, folder: string, name: string): Promise<boolean> {
+export async function gitClone(repo: string, folder: string, name: string, branch?: string): Promise<boolean> {
   if (!isGitUrl(repo)) {
     throw new Error('Repo is not a valid git url')
   }
 
   await fs.ensureDir(folder)
 
-  const args = ['clone', repo, name]
-  if (await spawn('git', args, { cwd: folder })) {
+  const params = ['clone', repo, path.basename(name)]
+  branch && params.push('-b', branch)
+
+  if (await spawn('git', params, { cwd: folder })) {
     return false
   }
 

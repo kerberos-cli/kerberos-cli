@@ -2,16 +2,16 @@ import fs from 'fs-extra'
 import path from 'path'
 import isGitUrl from 'is-git-url'
 import { program } from 'commander'
-import { gitClone } from '../services/git'
 import { openJsonFile } from '../services/fileMemory'
 import { spawn } from '../services/process'
+import { getDependencies } from '../services/pm'
+import { gitClone, getBranch } from '../services/git'
+import { getConfig } from '../services/project'
 import { confirm } from '../services/ui'
 import { success, warn, info } from '../services/logger'
 import { isWindows } from '../utils/os'
-import isKerberosProject from './share/isKerberosProject'
-import isDogeProject from './share/isDogeProject'
 import intercept from '../interceptors'
-import { configTemplate, configProjectFolderName, configFileName, workspacePackageFileName, workspaceDefaultName } from '../constants/conf'
+import { configTemplate, configProjectFolderName, configFileName, workspacePackageFileName, workspaceDefaultName, tmpPath } from '../constants/conf'
 import i18n from '../i18n'
 import * as Types from '../types'
 
@@ -35,6 +35,25 @@ async function linkFile(target: string, linkPath: string) {
   }
 }
 
+async function isDogeProject(folder: string): Promise<boolean> {
+  const cfg = path.join(folder, configFileName)
+  const pkg = path.join(folder, 'package.json')
+  const wkg = path.join(folder, workspacePackageFileName)
+  return (await fs.pathExists(cfg)) && (await fs.pathExists(pkg)) && (await fs.pathExists(wkg))
+}
+
+async function isKerberosProject(folder: string): Promise<boolean> {
+  const cfg = path.join(folder, configFileName)
+  const pkg = path.join(folder, 'package.json')
+  if ((await fs.pathExists(cfg)) && (await fs.pathExists(pkg))) {
+    if ((await fs.lstat(cfg)).isSymbolicLink() && (await fs.lstat(pkg)).isSymbolicLink()) {
+      return true
+    }
+  }
+
+  return false
+}
+
 async function ensureContext(folder: string): Promise<string> {
   const context = path.isAbsolute(folder) ? folder : path.join(process.cwd(), folder)
   if (await fs.pathExists(context)) {
@@ -48,7 +67,7 @@ async function ensureContext(folder: string): Promise<string> {
   return context
 }
 
-async function install(folder: string): Promise<void> {
+async function dogeInit(folder: string): Promise<void> {
   const cfg = path.join(folder, configFileName)
   const pkg = path.join(folder, 'package.json')
 
@@ -102,9 +121,10 @@ async function install(folder: string): Promise<void> {
   await linkFile(path.join(dest, workspacePackageFileName), path.join(folder, 'package.json'))
 
   success(i18n.COMMAND__INIT__SUCCESS_COMPLETE``)
+  info(i18n.COMMAND__INIT__HELP_OPERATION`${folder}`)
 }
 
-async function init(folder: string, repo?: string): Promise<void> {
+async function emptyInit(folder: string, repo?: string): Promise<void> {
   // 清除原有文件(默认不清除)
   if ((await fs.readdir(folder)).length > 0) {
     if (await confirm(`${i18n.COMMAND__INIT__CONFIRM_CLEAN_MESSAGE} ${folder}`, false)) {
@@ -151,6 +171,90 @@ async function init(folder: string, repo?: string): Promise<void> {
   await linkFile(defaultPackageFile, path.join(folder, 'package.json'))
 
   success(i18n.COMMAND__INIT__SUCCESS_COMPLETE``)
+  info(i18n.COMMAND__INIT__HELP_OPERATION`${folder}`)
+}
+
+async function projectInit(folder: string, repo?: string): Promise<void> {
+  const branch = await getBranch(folder)
+  const tmpFolder = path.join(tmpPath, workspaceDefaultName)
+  await fs.remove(tmpFolder)
+
+  if (!(await gitClone(repo, tmpFolder, configProjectFolderName, branch))) {
+    throw new Error(i18n.COMMAND__CLONE__ERROR_FAILE_CLONE``)
+  }
+
+  // 拉取配置项目
+  const cfgTmpFolder = path.join(tmpFolder, configProjectFolderName)
+  const cfgSource = await getConfig(path.join(cfgTmpFolder, configFileName))
+  const projects = cfgSource?.projects || []
+  const pkgFile = path.join(folder, 'package.json')
+  const pkgSource: Types.CPackage = await openJsonFile(pkgFile)
+  const curProject = projects.find(({ name }) => pkgSource.name === name)
+  if (!curProject?.workspace) {
+    throw new Error(i18n.COMMAND__CLONE__ERROR_PROJECT_NOT_FOUND``)
+  }
+
+  // 移动本地项目
+  const files = await fs.readdir(folder)
+  const curProjectFolder = path.join(folder, curProject.workspace, pkgSource.name)
+
+  await fs.ensureDir(curProject.workspace)
+  await Promise.all(
+    files.map(async (name) => {
+      const file = path.join(folder, name)
+      const dest = path.join(curProjectFolder, name)
+      await fs.move(file, dest)
+    })
+  )
+
+  // 移动配置项目
+  const cfgPkgSource: Types.CPackage = await openJsonFile(path.join(cfgTmpFolder, 'package.json'))
+  const cfgProject = projects.find(({ name }) => cfgPkgSource.name === name)
+  const cfgProjectFolder = path.join(folder, cfgProject.workspace, configProjectFolderName)
+  await fs.move(cfgTmpFolder, cfgProjectFolder)
+
+  // 拉取子项目
+  const existsProjects = [pkgSource.name]
+  const gitCloneDeps = async (dependencies: string[]): Promise<void> => {
+    await Promise.all(
+      dependencies.map(async (name: string) => {
+        if (existsProjects.indexOf(name) !== -1) {
+          return
+        }
+
+        const project = projects.find((project) => project.name === name)
+        if (!project) {
+          return
+        }
+
+        existsProjects.push(name)
+
+        const { repository, workspace } = project
+        if (!repository) {
+          return
+        }
+
+        const destFolder = path.join(folder, workspace)
+        await gitClone(repository, destFolder, name, branch)
+
+        const pkgSource: Types.CPackage = await openJsonFile(path.join(destFolder, name, 'package.json'))
+        const dependencies = getDependencies(pkgSource)
+        await gitCloneDeps(dependencies)
+      })
+    )
+  }
+
+  const dependencies = getDependencies(pkgSource)
+  await gitCloneDeps(dependencies)
+
+  // 添加软链到外层
+  const configFile = path.join(cfgProjectFolder, configFileName)
+  const packageFile = path.join(cfgProjectFolder, workspacePackageFileName)
+  await linkFile(configFile, path.join(folder, configFileName))
+  await linkFile(packageFile, path.join(folder, 'package.json'))
+
+  success(i18n.COMMAND__INIT__SUCCESS_COMPLETE``)
+  info(i18n.COMMAND__INIT__HELP_OPERATION`${folder}`)
 }
 
 async function takeAction(folder: string, repo?: string): Promise<void> {
@@ -161,8 +265,18 @@ async function takeAction(folder: string, repo?: string): Promise<void> {
 
   const context = await ensureContext(folder)
   process.chdir(context)
-  ;(await isDogeProject(context)) ? await install(context) : await init(context, repo)
-  info(i18n.COMMAND__INIT__HELP_OPERATION`${folder}`)
+
+  if (repo) {
+    if (await fs.pathExists(path.join(context, '.git'))) {
+      await projectInit(context, repo)
+    } else {
+      await emptyInit(context, repo)
+    }
+  } else {
+    if (await isDogeProject(context)) {
+      await dogeInit(context)
+    }
+  }
 }
 
 program

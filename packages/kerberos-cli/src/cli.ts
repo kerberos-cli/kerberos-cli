@@ -17,7 +17,6 @@ import './command/run-multi'
 import './command/exec'
 import './command/exec-multi'
 import './command/it'
-import './command/launch'
 import './command/language'
 import './command/support'
 

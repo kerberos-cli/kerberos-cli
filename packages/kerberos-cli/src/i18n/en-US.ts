@@ -60,6 +60,7 @@ export const COMMAND__CLONE__SELECT_WORKSPACE = 'Please select a workspace to cl
 export const COMMAND__CLONE__ERROR_INVALID_REPO = 'Repo is not a valid git url.'
 export const COMMAND__CLONE__ERROR_EXISTS_PROJECT = 'There is a project with the same name already exists.'
 export const COMMAND__CLONE__ERROR_FAILE_CLONE = 'Git clone error.'
+export const COMMAND__CLONE__ERROR_PROJECT_NOT_FOUND = 'Project #{1} not found.'
 export const COMMAND__CLONE__ERROR_INVALID_NODE_PROJECT = 'Repository is not a nodejs project.'
 export const COMMAND__CLONE__ERROR_INVALID_PROJECT_NAME = 'Pacakge name is invalid.'
 export const COMMAND__CLONE__SUCCESS_COMPLETE = 'Git clone project completed.'
