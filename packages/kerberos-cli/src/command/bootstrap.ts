@@ -6,6 +6,7 @@ import { getConfig, getProjectInfoCollection } from '../services/project'
 import { spawn } from '../services/process'
 import { success } from '../services/logger'
 import { confirm, multiSelect } from '../services/ui'
+import { isWindows } from '../utils/os'
 import intercept from '../interceptors'
 import i18n from '../i18n'
 import * as Types from '../types'
@@ -95,7 +96,8 @@ async function takeAction(options?: Types.CLIBootstrapOptions): Promise<void> {
     projectInfo.map(async ({ name, folder }) => {
       const softlink = path.join(process.cwd(), 'node_modules', name)
       if (!(await fs.pathExists(softlink))) {
-        await fs.link(folder, softlink)
+        // windows 下 dir 需要 Admin 权限
+        await fs.symlink(folder, softlink, isWindows() ? 'junction' : 'dir')
       }
 
       await Promise.all(
