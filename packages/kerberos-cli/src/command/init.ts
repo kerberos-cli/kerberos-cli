@@ -8,6 +8,8 @@ import { spawn } from '../services/process'
 import { confirm } from '../services/ui'
 import { success, warn, info } from '../services/logger'
 import { isWindows } from '../utils/os'
+import isKerberosProject from './share/isKerberosProject'
+import isDogeProject from './share/isDogeProject'
 import intercept from '../interceptors'
 import { configTemplate, configProjectFolderName, configFileName, workspacePackageFileName, workspaceDefaultName } from '../constants/conf'
 import i18n from '../i18n'
@@ -31,25 +33,6 @@ async function linkFile(target: string, linkPath: string) {
   } else {
     await fs.symlink(target, linkPath)
   }
-}
-
-async function isKerberosProject(folder: string): Promise<boolean> {
-  const cfg = path.join(folder, configFileName)
-  const pkg = path.join(folder, 'package.json')
-  if ((await fs.pathExists(cfg)) && (await fs.pathExists(pkg))) {
-    if ((await fs.lstat(cfg)).isSymbolicLink() && (await fs.lstat(pkg)).isSymbolicLink()) {
-      return true
-    }
-  }
-
-  return false
-}
-
-async function isDogeProject(folder: string): Promise<boolean> {
-  const cfg = path.join(folder, configFileName)
-  const pkg = path.join(folder, 'package.json')
-  const wkg = path.join(folder, workspacePackageFileName)
-  return (await fs.pathExists(cfg)) && (await fs.pathExists(pkg)) && (await fs.pathExists(wkg))
 }
 
 async function ensureContext(folder: string): Promise<string> {
@@ -144,7 +127,7 @@ async function init(folder: string, repo?: string): Promise<void> {
       throw new Error(`${i18n.COMMAND__INIT__ERROR_INVALID_REPO}: ${repo}`)
     }
 
-    if (!(await gitClone(repo, configProjectFolderName, path.join(folder, workspaceDefaultName)))) {
+    if (!(await gitClone(repo, path.join(folder, workspaceDefaultName), configProjectFolderName))) {
       throw new Error(`${i18n.COMMAND__INIT__ERROR_FAIL_CLONE}: ${repo}`)
     }
 

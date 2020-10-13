@@ -23,7 +23,7 @@ async function takeAction(repository: string, name: string = path.basename(repos
     throw new Error(i18n.COMMAND__CLONE__ERROR_EXISTS_PROJECT``)
   }
 
-  if (!(await gitClone(repository, name, folder))) {
+  if (!(await gitClone(repository, folder, name))) {
     throw new Error(i18n.COMMAND__CLONE__ERROR_FAILE_CLONE``)
   }
 

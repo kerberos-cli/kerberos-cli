@@ -1,6 +1,6 @@
 import os from 'os'
 import { promisify } from 'util'
-import flatten from 'lodash/flatten'
+import { uniq, flatten } from 'lodash'
 import commandExists from 'command-exists'
 import { getStdout } from './process'
 import * as Types from '../types'
@@ -76,4 +76,16 @@ export function getDependencyWeight(list: Types.FlattenDependencyList = []) {
     const weight = flattenPaths.reduce(reducer(name), -1)
     return { name, weight }
   })
+}
+
+/** 获取依赖 */
+export function getDependencies(source: Types.CPackage): string[] {
+  const { dependencies = {}, devDependencies = {}, optionalDependencies = {}, bundleDependencies = {}, bundledDependencies = {} } = source
+
+  const prod = Object.keys(dependencies)
+  const dev = Object.keys(devDependencies)
+  const optional = Object.keys(optionalDependencies)
+  const bundle = Object.keys(bundleDependencies)
+  const bundled = Object.keys(bundledDependencies)
+  return uniq([].concat(prod, dev, optional, bundle, bundled))
 }
