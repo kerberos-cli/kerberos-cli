@@ -31,7 +31,8 @@ async function takeAction(options?: Types.CLIBootstrapOptions): Promise<void> {
       const wsFolder = path.join(process.cwd(), workspace)
       await fs.ensureDir(wsFolder)
 
-      const code = await spawn('git', ['clone', repository, name], { cwd: wsFolder })
+      const params = ['clone', repository, name]
+      const code = await spawn('git', params, { cwd: wsFolder })
       codes.push(code)
     })
 

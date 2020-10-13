@@ -1,9 +1,10 @@
 import path from 'path'
+import fs from 'fs-extra'
 import { promisify } from 'util'
 import { glob } from 'glob'
 import semver from 'semver'
 import { flatten, uniq } from 'lodash'
-import { isPristine } from './git'
+import { isPristine, getBranch } from './git'
 import { openJsonFile, updateJsonFile } from './fileMemory'
 import { sequence } from '../utils/object'
 import { configFileName } from '../constants/conf'
@@ -22,6 +23,11 @@ export function getConfigPath(): string {
 export async function getConfig(file: string = getConfigPath()): Promise<Types.CConfig> {
   const content = await openJsonFile(file)
   return content
+}
+
+export async function getConfigBranch(folder?: string) {
+  const cfgFolder = folder || path.dirname(await fs.realpath(getConfigPath()))
+  return getBranch(cfgFolder)
 }
 
 /**
