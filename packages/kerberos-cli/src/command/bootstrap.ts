@@ -118,6 +118,7 @@ async function takeAction(options?: Types.CLIBootstrapOptions): Promise<void> {
 program
   .command('bootstrap')
   .description(i18n.COMMAND__BOOTSTRAP__DESC``)
+  .option('--no-clone', i18n.COMMAND__BOOTSTRAP__OPTION_NO_CLONE``)
   .option('--no-install', i18n.COMMAND__BOOTSTRAP__OPTION_NO_INSTALL``)
   .option('-y, --yes', i18n.COMMAND__BOOTSTRAP__OPTION_YES``)
   .option('-o, --optional', i18n.COMMAND__BOOTSTRAP__OPTION_OPTIONAL``)

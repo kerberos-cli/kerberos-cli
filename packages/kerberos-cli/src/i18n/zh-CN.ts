@@ -41,6 +41,7 @@ export const COMMAND__INSTALL__SUCCESS_COMPLETE = '工作区的初始设置已�
 // command bootstrap
 export const COMMAND__BOOTSTRAP__DESC = '初始化工作区并安装所有项目的依赖'
 export const COMMAND__BOOTSTRAP__OPTION_NO_INSTALL = '跳过 Yarn 安装依赖'
+export const COMMAND__BOOTSTRAP__OPTION_NO_CLONE = '跳过 Git clone'
 export const COMMAND__BOOTSTRAP__OPTION_YES = '跳过所有问题并以确认作为选项'
 export const COMMAND__BOOTSTRAP__OPTION_OPTIONAL = '指定在指定 --yes 选项时安装所有可选依赖项'
 export const COMMAND__BOOTSTRAP__OPTION_SEQUENCE = '指定按顺序克隆'
