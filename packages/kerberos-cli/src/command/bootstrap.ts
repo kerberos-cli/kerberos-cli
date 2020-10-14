@@ -9,6 +9,7 @@ import { confirm, multiSelect } from '../services/ui'
 import intercept from '../interceptors'
 import i18n from '../i18n'
 import * as Types from '../types'
+import { isWindows } from 'src/utils/os'
 
 async function takeAction(options?: Types.CLIBootstrapOptions): Promise<void> {
   const { yes, install: yarnInstall, optional } = options
@@ -81,6 +82,34 @@ async function takeAction(options?: Types.CLIBootstrapOptions): Promise<void> {
     if (yes || (await confirm(i18n.COMMAND__BOOTSTRAP__CONFIRM_INSTALL_DEPEDENCIES``))) {
       await spawn('yarn', [], { shell: true })
     }
+  }
+
+  try {
+    const projectInfo = await getProjectInfoCollection()
+    await Promise.all(
+      projectInfo.map(async ({ name, folder }) => {
+        const softlink = path.join(process.cwd(), 'node_modules', name)
+        if (!(await fs.pathExists(softlink))) {
+          // windows 下 dir 需要 Admin 权限
+          await fs.symlink(folder, softlink, isWindows() ? 'junction' : 'dir')
+        }
+
+        await Promise.all(
+          projectInfo.map(async ({ name: cName, folder: cFolder }) => {
+            if (cName === name) {
+              return
+            }
+
+            const dep = path.join(cFolder, 'node_modules', name)
+            if (await fs.pathExists(dep)) {
+              await fs.remove(dep)
+            }
+          })
+        )
+      })
+    )
+  } catch (error) {
+    // nothing todo...
   }
 
   success(i18n.COMMAND__BOOTSTRAP__SUCCESS_COMPLETE``)
