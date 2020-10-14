@@ -30,15 +30,19 @@ async function takeAction(branch: string, options?: Types.CLICheckoutOptions) {
         return { name, code: 0 }
       }
 
-      const { locals } = await getBranches(folder)
+      const { locals, remotes } = await getBranches(folder)
+      const remoteBranches = remotes.map((branch) => branch.replace(/remotes\/[\w\W]+?\//, ''))
+
       const params = ['checkout']
       if (locals.indexOf(branch) === -1) {
-        params.push('-b')
-      } else {
-        params.push('--track')
+        if (remoteBranches.indexOf(branch) === -1) {
+          params.push('-b', branch)
+        } else {
+          params.push('--track', `origin/${branch}`)
+        }
       }
 
-      const code = await spawn('git', [...params, branch], { cwd: folder })
+      const code = await spawn('git', params, { cwd: folder })
       return { name, code }
     })
   )

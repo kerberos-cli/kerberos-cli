@@ -77,6 +77,7 @@ export async function gitClone(repo: string, folder: string, name: string, branc
  * @param cwd 执行路径
  */
 export async function getBranch(folder: string): Promise<string> {
+  await spawn('git', ['fetch'], { cwd: folder })
   const stdout = await getStdout('git rev-parse --abbrev-ref HEAD', { cwd: folder })
   return stdout.split(os.EOL).shift()
 }
@@ -86,6 +87,7 @@ export async function getBranch(folder: string): Promise<string> {
  * @param folder 项目路径
  */
 export async function getBranches(folder: string): Promise<{ locals: string[]; remotes: string[] }> {
+  await spawn('git', ['fetch'], { cwd: folder })
   const stdout = await getStdout('git branch -a', { cwd: folder })
   const locals = []
   const remotes = []
@@ -123,6 +125,7 @@ export async function getBranchNames(folder: string): Promise<string[]> {
  * @param folder 项目路径
  */
 export async function getBranchTracking(folder: string): Promise<{ [N: string]: string }> {
+  await spawn('git', ['fetch'], { cwd: folder })
   const stdout = await getStdout('git branch -vv', { cwd: folder })
   const tracking = {}
 
@@ -142,6 +145,7 @@ export async function getBranchTracking(folder: string): Promise<{ [N: string]: 
 }
 
 export async function getRemotes(folder: string): Promise<Array<{ name: string; url: string; type: string }>> {
+  await spawn('git', ['fetch'], { cwd: folder })
   const stdout = await getStdout('git remote -v', { cwd: folder })
   const remotes = []
 

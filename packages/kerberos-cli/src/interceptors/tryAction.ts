@@ -14,6 +14,8 @@ export default function tryAction<T extends (...args: any[]) => Promise<any>, A 
       return await callback(...args)
     } catch (error) {
       fail(error)
+
+      throw error
     }
   }
 }
