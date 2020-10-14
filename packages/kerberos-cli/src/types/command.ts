@@ -8,6 +8,8 @@ export type CLIInstallOptions = {
 export type CLIBootstrapOptions = {
   /** 跳过提问 */
   yes?: boolean
+  /** 不克隆项目 */
+  clone?: boolean
   /** 不安装依赖 */
   install?: boolean
   /** 只安装可选 */

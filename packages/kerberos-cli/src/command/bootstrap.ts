@@ -6,74 +6,77 @@ import { getConfig, getProjectInfoCollection } from '../services/project'
 import { spawn } from '../services/process'
 import { success } from '../services/logger'
 import { confirm, multiSelect } from '../services/ui'
+import { isWindows } from '../utils/os'
 import intercept from '../interceptors'
 import i18n from '../i18n'
 import * as Types from '../types'
-import { isWindows } from 'src/utils/os'
 
 async function takeAction(options?: Types.CLIBootstrapOptions): Promise<void> {
-  const { yes, install: yarnInstall, optional } = options
-  const config = await getConfig()
-  const pkgFile = path.join(process.cwd(), 'package.json')
-  if (!(await fs.pathExists(pkgFile))) {
-    throw new Error(i18n.COMMAND__BOOTSTRAP__ERROR_INVALID_PACKAGE``)
-  }
+  const { yes, install: yarnInstall, clone: gitClone, optional } = options
 
-  // 克隆所有仓库
-  const projects = config?.projects || []
-  const existsProjects = (await getProjectInfoCollection()).map((project) => project.name)
-  const necessaries: Types.CProject[] = []
-  const optionals: Types.CProject[] = []
-  const codes: number[] = []
-  const install = async (projects: Types.DProjectInConfChoice[]) => {
-    const codes = []
-    const tasks = projects.map(({ name, workspace, repository }) => async () => {
-      const wsFolder = path.join(process.cwd(), workspace)
-      await fs.ensureDir(wsFolder)
+  if (gitClone === true) {
+    const config = await getConfig()
+    const pkgFile = path.join(process.cwd(), 'package.json')
+    if (!(await fs.pathExists(pkgFile))) {
+      throw new Error(i18n.COMMAND__BOOTSTRAP__ERROR_INVALID_PACKAGE``)
+    }
 
-      const params = ['clone', repository, name]
-      const code = await spawn('git', params, { cwd: wsFolder, shell: true })
-      codes.push(code)
+    // 克隆所有仓库
+    const projects = config?.projects || []
+    const existsProjects = (await getProjectInfoCollection()).map((project) => project.name)
+    const necessaries: Types.CProject[] = []
+    const optionals: Types.CProject[] = []
+    const codes: number[] = []
+    const install = async (projects: Types.DProjectInConfChoice[]) => {
+      const codes = []
+      const tasks = projects.map(({ name, workspace, repository }) => async () => {
+        const wsFolder = path.join(process.cwd(), workspace)
+        await fs.ensureDir(wsFolder)
+
+        const params = ['clone', repository, name]
+        const code = await spawn('git', params, { cwd: wsFolder, shell: true })
+        codes.push(code)
+      })
+
+      if (tasks.length === 0) {
+        return codes
+      }
+
+      if (options?.sequence) {
+        await waterfall(tasks)
+        return codes
+      }
+
+      Promise.all(tasks.map((exec) => exec()))
+      return codes
+    }
+
+    projects.forEach((project) => {
+      if (-1 === existsProjects.indexOf(project.name)) {
+        if (project.optional === true) {
+          optionals.push(project)
+        } else {
+          necessaries.push(project)
+        }
+      }
     })
 
-    if (tasks.length === 0) {
-      return codes
-    }
+    // 安装依赖
+    const nCodes = await install(necessaries)
+    codes.push(...nCodes)
 
-    if (options?.sequence) {
-      await waterfall(tasks)
-      return codes
-    }
-
-    Promise.all(tasks.map((exec) => exec()))
-    return codes
-  }
-
-  projects.forEach((project) => {
-    if (-1 === existsProjects.indexOf(project.name)) {
-      if (project.optional === true) {
-        optionals.push(project)
+    if (optionals.length > 0) {
+      if (yes) {
+        if (optional) {
+          const oCodes = await install(optionals)
+          codes.push(...oCodes)
+        }
       } else {
-        necessaries.push(project)
-      }
-    }
-  })
-
-  // 安装依赖
-  const nCodes = await install(necessaries)
-  codes.push(...nCodes)
-
-  if (optionals.length > 0) {
-    if (yes) {
-      if (optional) {
-        const oCodes = await install(optionals)
-        codes.push(...oCodes)
-      }
-    } else {
-      if (await confirm(i18n.COMMAND__BOOTSTRAP__CONFIRM_INSTALL_OPTIONAL``, false)) {
-        const selectedProjects = await multiSelect('projectInConfig')(i18n.COMMAND__BOOTSTRAP__SELECT_CLONE_PROJECT``, optionals)
-        const oCodes = await install(selectedProjects)
-        codes.push(...oCodes)
+        if (await confirm(i18n.COMMAND__BOOTSTRAP__CONFIRM_INSTALL_OPTIONAL``, false)) {
+          const selectedProjects = await multiSelect('projectInConfig')(i18n.COMMAND__BOOTSTRAP__SELECT_CLONE_PROJECT``, optionals)
+          const oCodes = await install(selectedProjects)
+          codes.push(...oCodes)
+        }
       }
     }
   }
