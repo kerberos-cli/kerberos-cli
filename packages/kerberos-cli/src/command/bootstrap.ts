@@ -6,7 +6,6 @@ import { getConfig, getProjectInfoCollection } from '../services/project'
 import { spawn } from '../services/process'
 import { success } from '../services/logger'
 import { confirm, multiSelect } from '../services/ui'
-import { isWindows } from '../utils/os'
 import intercept from '../interceptors'
 import i18n from '../i18n'
 import * as Types from '../types'
@@ -32,7 +31,7 @@ async function takeAction(options?: Types.CLIBootstrapOptions): Promise<void> {
       await fs.ensureDir(wsFolder)
 
       const params = ['clone', repository, name]
-      const code = await spawn('git', params, { cwd: wsFolder })
+      const code = await spawn('git', params, { cwd: wsFolder, shell: true })
       codes.push(code)
     })
 
@@ -83,38 +82,6 @@ async function takeAction(options?: Types.CLIBootstrapOptions): Promise<void> {
       await spawn('yarn', [], { shell: true })
     }
   }
-
-  /**
-   * 在 Yarn Workspace 中,
-   * 如果 package 存在 postinstall 脚本,
-   * 则会出现依赖不使用软链而安装到里面的情况,
-   * 但 workspace 根目录仍然拥有子项目的软链,
-   * 因此这里需要确保依赖都是顶级, 而删除子项目中
-   * 所有引用到 workspace 中已经存在的子项目.
-   */
-  const projectInfo = await getProjectInfoCollection()
-  await Promise.all(
-    projectInfo.map(async ({ name, folder }) => {
-      const softlink = path.join(process.cwd(), 'node_modules', name)
-      if (!(await fs.pathExists(softlink))) {
-        // windows 下 dir 需要 Admin 权限
-        await fs.symlink(folder, softlink, isWindows() ? 'junction' : 'dir')
-      }
-
-      await Promise.all(
-        projectInfo.map(async ({ name: cName, folder: cFolder }) => {
-          if (cName === name) {
-            return
-          }
-
-          const dep = path.join(cFolder, 'node_modules', name)
-          if (await fs.pathExists(dep)) {
-            await fs.remove(dep)
-          }
-        })
-      )
-    })
-  )
 
   success(i18n.COMMAND__BOOTSTRAP__SUCCESS_COMPLETE``)
 }
