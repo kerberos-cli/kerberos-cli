@@ -130,7 +130,6 @@ export async function updatePackage(options: Partial<Types.CPackage>, file: stri
  */
 export async function getPackagePathCollection(specifyConfig?: Types.CPackage): Promise<string[]> {
   const { workspaces } = specifyConfig || (await getPackage())
-
   let patterns = []
   if (Array.isArray(workspaces)) {
     patterns = workspaces
@@ -153,7 +152,7 @@ export async function getPackagePathCollection(specifyConfig?: Types.CPackage): 
     })
   )
 
-  return flatten(packages)
+  return uniq(flatten(packages))
 }
 
 /**
