@@ -42,24 +42,27 @@ export default function intercept<
   /** 返回值 */
   R extends PromiseType<ReturnType<T>>
 >(useInterceptors?: Array<keyof typeof allInterceptors>, unuseInterceptors?: Array<keyof typeof allInterceptors>): (callback: T) => (...args: A) => Promise<R> {
-  let names = Object.keys(allInterceptors)
+  const names = Object.keys(allInterceptors)
+  const used = Object.keys(interceptors)
   if (Array.isArray(useInterceptors) && useInterceptors.length > 0) {
-    names = names.filter((name: keyof typeof allInterceptors) => {
-      return -1 !== useInterceptors.indexOf(name)
+    useInterceptors.forEach((name) => {
+      const index = names.indexOf(name)
+      index !== -1 && used.push(name)
     })
   }
 
   if (Array.isArray(unuseInterceptors) && unuseInterceptors.length > 0) {
-    names = names.filter((name: keyof typeof allInterceptors) => {
-      return -1 === unuseInterceptors.indexOf(name)
+    unuseInterceptors.forEach((name) => {
+      const index = used.indexOf(name)
+      index !== -1 && used.splice(index, 1)
     })
   }
 
   return function (callback: T) {
     return async function (...args: A): Promise<R> {
       let context = callback
-      for (let i = 0; i < names.length; i++) {
-        const name = names[i]
+      for (let i = 0; i < used.length; i++) {
+        const name = used[i]
         const intercept = allInterceptors[name]
         context = intercept(context) as T
       }
