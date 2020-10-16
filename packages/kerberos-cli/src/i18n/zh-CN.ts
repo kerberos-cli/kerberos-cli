@@ -196,6 +196,9 @@ export const COMMAND_SHARE__TRY_GET_WORKSPACE__ERROR_NOT_FOUND_PROJECT = '找不
 // context
 export const INTERCEPTORS__CONTEXT__ERROR_INVALID_PROJECT = '当前目录及其任意父级目录均不是 Kerberos 工作区。'
 
+// branch
+export const INTERCEPTORS__BRANCH__ERROR_INVALID_PROJECT = '部分项目所在分支不同。'
+
 // supported
 export const INTERCEPTORS__SUPPORTED__ERROR_NOT_INSTALL_GIT = '不支持 Git，请先安装 Git。'
 export const INTERCEPTORS__SUPPORTED__ERROR_NOT_INSTALL_YARN = '不支持 Yarn，可以执行 `npm i -g yarn`。'

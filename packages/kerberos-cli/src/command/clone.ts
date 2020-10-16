@@ -2,7 +2,7 @@ import fs from 'fs-extra'
 import path from 'path'
 import { program } from 'commander'
 import isGitUrl from 'is-git-url'
-import { getConfig, addProjectsToConfig } from '../services/project'
+import { getConfig, addProjectsToConfig, getConfigBranch } from '../services/project'
 import { gitClone } from '../services/git'
 import { openJsonFile } from '../services/fileMemory'
 import { success } from '../services/logger'
@@ -23,8 +23,11 @@ async function takeAction(repository: string, name: string = path.basename(repos
     throw new Error(i18n.COMMAND__CLONE__ERROR_EXISTS_PROJECT``)
   }
 
-  if (!(await gitClone(repository, folder, name))) {
-    throw new Error(i18n.COMMAND__CLONE__ERROR_FAILE_CLONE``)
+  const curBranch = await getConfigBranch()
+  if (!(await gitClone(repository, folder, name, curBranch))) {
+    if (!(await gitClone(repository, folder, name))) {
+      throw new Error(i18n.COMMAND__CLONE__ERROR_FAILE_CLONE``)
+    }
   }
 
   const pkgFile = path.join(folder, name, 'package.json')

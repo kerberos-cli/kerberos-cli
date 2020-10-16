@@ -1,16 +1,26 @@
 import { PromiseType } from 'utility-types'
 import tryAction from './tryAction'
+import branch from './branch'
 import supported from './supported'
 import context from './context'
 
-/**
- * 拦截器集合
- */
+/** 拦截器集合 */
 const interceptors = {
   tryAction,
   supported,
   /** 注意 context 应该最早执行, 需要放最底下 */
   context,
+}
+
+/** 不使用的拦截器集合 */
+const unusedInterceptors = {
+  branch,
+}
+
+/** 全部拦截器集合 */
+const allInterceptors = {
+  ...interceptors,
+  ...unusedInterceptors,
 }
 
 /**
@@ -31,16 +41,16 @@ export default function intercept<
   A extends Parameters<T>,
   /** 返回值 */
   R extends PromiseType<ReturnType<T>>
->(useInterceptors?: Array<keyof typeof interceptors>, unuseInterceptors?: Array<keyof typeof interceptors>): (callback: T) => (...args: A) => Promise<R> {
-  let names = Object.keys(interceptors)
+>(useInterceptors?: Array<keyof typeof allInterceptors>, unuseInterceptors?: Array<keyof typeof allInterceptors>): (callback: T) => (...args: A) => Promise<R> {
+  let names = Object.keys(allInterceptors)
   if (Array.isArray(useInterceptors) && useInterceptors.length > 0) {
-    names = names.filter((name: keyof typeof interceptors) => {
+    names = names.filter((name: keyof typeof allInterceptors) => {
       return -1 !== useInterceptors.indexOf(name)
     })
   }
 
   if (Array.isArray(unuseInterceptors) && unuseInterceptors.length > 0) {
-    names = names.filter((name: keyof typeof interceptors) => {
+    names = names.filter((name: keyof typeof allInterceptors) => {
       return -1 === unuseInterceptors.indexOf(name)
     })
   }
@@ -50,7 +60,7 @@ export default function intercept<
       let context = callback
       for (let i = 0; i < names.length; i++) {
         const name = names[i]
-        const intercept = interceptors[name]
+        const intercept = allInterceptors[name]
         context = intercept(context) as T
       }
 

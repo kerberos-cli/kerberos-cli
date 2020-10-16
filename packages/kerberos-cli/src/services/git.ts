@@ -73,6 +73,32 @@ export async function gitClone(repo: string, folder: string, name: string, branc
 }
 
 /**
+ * 切换分支
+ * @param branch 分支名称
+ * @param folder 目录路径
+ */
+export async function gitCheckout(branch: string, folder: string): Promise<boolean> {
+  /* eslint-disable-next-line @typescript-eslint/no-use-before-define */
+  const { locals, remotes } = await getBranches(folder)
+  const remoteBranches = remotes.map((branch) => branch.replace(/remotes\/[\w\W]+?\//, ''))
+
+  const params = ['checkout']
+  if (locals.indexOf(branch) === -1) {
+    if (remoteBranches.indexOf(branch) === -1) {
+      params.push('-b', branch)
+    } else {
+      params.push('--track', `origin/${branch}`)
+    }
+  }
+
+  if (await spawn('git', params, { cwd: folder })) {
+    return false
+  }
+
+  return true
+}
+
+/**
  * 获取GIT当前分支
  * @param cwd 执行路径
  */
