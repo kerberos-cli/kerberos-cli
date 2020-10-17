@@ -55,7 +55,7 @@ export async function lookupContext(context: string = process.cwd()): Promise<Co
  * 主要为了在工作区中所有项目都可以
  * 直接调用工作区的配置, 类似 Git 命令
  */
-export default function context<T extends (...args: any[]) => Promise<any>, A extends Parameters<T>, R extends PromiseType<ReturnType<T>>>(
+export default function contextInterceptor<T extends (...args: any[]) => Promise<any>, A extends Parameters<T>, R extends PromiseType<ReturnType<T>>>(
   callback: T
 ): (...args: A) => Promise<R> {
   return async function (...args: A): Promise<R> {

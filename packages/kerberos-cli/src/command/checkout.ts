@@ -1,9 +1,8 @@
 import { program } from 'commander'
-import { spawn } from '../services/process'
 import { success } from '../services/logger'
 import tryGetProjects from './share/tryGetProjects'
 import intercept from '../interceptors'
-import { getBranch, getBranches } from '../services/git'
+import { getBranch, gitCheckout } from '../services/git'
 import { getDirtyProjectInfoCollection } from '../services/project'
 import i18n from '../i18n'
 import * as Types from '../types'
@@ -27,29 +26,20 @@ async function takeAction(branch: string, options?: Types.CLICheckoutOptions) {
     projects.map(async ({ name, folder }) => {
       const current = await getBranch(folder)
       if (current === branch) {
-        return { name, code: 0 }
+        return false
       }
 
-      const { locals, remotes } = await getBranches(folder)
-      const remoteBranches = remotes.map((branch) => branch.replace(/remotes\/[\w\W]+?\//, ''))
-
-      const params = ['checkout']
-      if (locals.indexOf(branch) === -1) {
-        if (remoteBranches.indexOf(branch) === -1) {
-          params.push('-b', branch)
-        } else {
-          params.push('--track', `origin/${branch}`)
-        }
+      if (!(await gitCheckout(branch, folder))) {
+        return name
       }
 
-      const code = await spawn('git', params, { cwd: folder })
-      return { name, code }
+      return false
     })
   )
 
-  const failedProjects = result.filter(({ code }) => code !== 0)
+  const failedProjects = result.filter(Boolean)
   if (failedProjects.length > 0) {
-    throw new Error(i18n.COMMAND__CHECKOUT__ERROR_FAIL_CHECKOUT`${failedProjects.map(({ name }) => chalk.white(name)).join(', ')}`)
+    throw new Error(i18n.COMMAND__CHECKOUT__ERROR_FAIL_CHECKOUT`${failedProjects.map((name) => chalk.white(name)).join(', ')}`)
   }
 
   success(i18n.COMMAND__CHECKOUT__SUCCESS_COMPLETE`${branch}`)

@@ -81,7 +81,6 @@ export async function gitCheckout(branch: string, folder: string): Promise<boole
   /* eslint-disable-next-line @typescript-eslint/no-use-before-define */
   const { locals, remotes } = await getBranches(folder)
   const remoteBranches = remotes.map((branch) => branch.replace(/remotes\/[\w\W]+?\//, ''))
-
   const params = ['checkout']
   if (locals.indexOf(branch) === -1) {
     if (remoteBranches.indexOf(branch) === -1) {
@@ -89,6 +88,8 @@ export async function gitCheckout(branch: string, folder: string): Promise<boole
     } else {
       params.push('--track', `origin/${branch}`)
     }
+  } else {
+    params.push(branch)
   }
 
   if (await spawn('git', params, { cwd: folder })) {

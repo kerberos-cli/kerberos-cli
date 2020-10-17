@@ -6,7 +6,7 @@ import { fail } from '../services/logger'
  * @description
  * 提供更加友好的错误提示
  */
-export default function tryAction<T extends (...args: any[]) => Promise<any>, A extends Parameters<T>, R extends PromiseType<ReturnType<T>>>(
+export default function tryActionInterceptor<T extends (...args: any[]) => Promise<any>, A extends Parameters<T>, R extends PromiseType<ReturnType<T>>>(
   callback: T
 ): (...args: A) => Promise<R> {
   return async function (...args: A): Promise<R> {
