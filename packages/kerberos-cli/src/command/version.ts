@@ -7,7 +7,6 @@ import isGitUrl from 'is-git-url'
 import { program } from 'commander'
 import { getConfig, updateConfig, getDependencyGraph, getDirtyProjectInfoCollection, getProjectInfoCollection, updatePackage } from '../services/project'
 import intercept from '../interceptors'
-import tryGetProjects from './share/tryGetProjects'
 import { spawn } from '../services/process'
 import { getBranch, getRemotes, isPristine } from '../services/git'
 import { confirm, selectVersion } from '../services/ui'
@@ -36,7 +35,7 @@ async function takeAction(version: string, options: Types.CLIVersionOptions = {}
 
   // 选择项目
   const releaseBranch = configs?.release?.branch
-  const projects = await tryGetProjects(i18n.COMMAND__VERSION__SELECT_PROJECTS``)
+  const projects = await getProjectInfoCollection()
   const branches = await Promise.all(
     projects.map(async (project) => {
       const { name, folder } = project
@@ -78,7 +77,7 @@ async function takeAction(version: string, options: Types.CLIVersionOptions = {}
   const invalidProjects = projects.filter(({ version }) => semver.compare(finalVersion, version) < 0)
   if (invalidProjects.length > 0) {
     const message = invalidProjects.map(({ name, version }) => chalk.gray(` - ${chalk.white(name)}@${chalk.cyan(version)}`)).join('\n')
-    throw new Error(`The version number entered is lower than the version number in the projects.\n${message}`)
+    throw new Error(i18n.COMMAND__VERSION__ERROR_VERSION`${message}`)
   }
 
   // 获取依赖
