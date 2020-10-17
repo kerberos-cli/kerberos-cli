@@ -19,15 +19,15 @@ async function takeAction(options?: Types.CLIBranchOptions): Promise<void> {
         const remote = tracking[name]
         const isCur = name === curBranch
         const symbol = isCur ? '*' : ' '
-        const message = ` ${symbol} ${chalk.green.bold(name)}` + (remote ? ` -> ${chalk.green.bold(remote)}` : '')
-        const content = isCur ? chalk.gray(message) : chalk.magenta(message)
+        const message = ` ${symbol} ${name}` + (remote ? ` -> ${remote}` : '')
+        const content = isCur ? chalk.green(message) : chalk.white(message)
         console.log(content)
       })
 
       if (options?.all) {
         remotes.forEach((name) => {
           const message = `   ${name}`
-          const content = chalk.grey(message)
+          const content = chalk.magenta(message)
           console.log(content)
         })
       }
