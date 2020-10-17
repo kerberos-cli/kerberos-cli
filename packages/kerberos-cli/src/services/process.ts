@@ -36,7 +36,7 @@ export function onexit(handle: (...args: any[]) => void) {
  */
 export function spawn(cli: string, params?: Array<string>, options?: SpawnOptions, stdoutFn?: (data: string, type: 'out' | 'err') => void, killToken?: symbol): Promise<any> {
   return new Promise((resolve, reject) => {
-    let cp = cpSpawn(cli, params || [], { stdio: 'inherit', ...options })
+    let cp = cpSpawn(cli, params || [], { stdio: typeof stdoutFn === 'function' ? 'pipe' : 'inherit', ...options })
 
     if (typeof stdoutFn === 'function') {
       cp.stdout.on('data', (data) => stdoutFn(data, 'out'))

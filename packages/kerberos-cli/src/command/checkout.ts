@@ -1,15 +1,13 @@
+import chalk from 'chalk'
 import { program } from 'commander'
 import { success } from '../services/logger'
-import tryGetProjects from './share/tryGetProjects'
 import intercept from '../interceptors'
 import { getBranch, gitCheckout } from '../services/git'
-import { getDirtyProjectInfoCollection } from '../services/project'
+import { getDirtyProjectInfoCollection, getProjectInfoCollection } from '../services/project'
 import i18n from '../i18n'
-import * as Types from '../types'
-import chalk from 'chalk'
 
-async function takeAction(branch: string, options?: Types.CLICheckoutOptions) {
-  const projects = await tryGetProjects(i18n.COMMAND__CHECKOUT__SELECT_PROJECT``, options.projects)
+async function takeAction(branch: string) {
+  const projects = await getProjectInfoCollection()
   if (projects.length === 0) {
     return
   }
@@ -50,5 +48,4 @@ program
   .description(i18n.COMMAND__CHECKOUT__DESC``, {
     branch: i18n.COMMAND__CHECKOUT__ARGS_BRANCH``,
   })
-  .option('-p, --project <projects...>', i18n.COMMAND__CHECKOUT__OPTION_PROJECT``)
-  .action((branch: string, options?: Types.CLICheckoutOptions) => intercept()(takeAction)(branch, options))
+  .action((branch: string) => intercept()(takeAction)(branch))

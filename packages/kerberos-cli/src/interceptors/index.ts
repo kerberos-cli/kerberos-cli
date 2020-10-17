@@ -23,6 +23,9 @@ const allInterceptors = {
   ...unusedInterceptors,
 }
 
+/** 拦截器类型 */
+type InterceptorTypes = keyof typeof allInterceptors
+
 /**
  * 拦截命令(默认使用全部)
  * @description
@@ -41,20 +44,40 @@ export default function intercept<
   A extends Parameters<T>,
   /** 返回值 */
   R extends PromiseType<ReturnType<T>>
->(useInterceptors?: Array<keyof typeof allInterceptors>, unuseInterceptors?: Array<keyof typeof allInterceptors>): (callback: T) => (...args: A) => Promise<R> {
+>(
+  useInterceptors?: InterceptorTypes[] | '*',
+  unuseInterceptors?: InterceptorTypes[] | '*',
+  additionInterceptors?: InterceptorTypes[]
+): (callback: T) => (...args: A) => Promise<R> {
   const names = Object.keys(allInterceptors)
-  const used = Object.keys(interceptors)
-  if (Array.isArray(useInterceptors) && useInterceptors.length > 0) {
+  const used = []
+
+  if (Array.isArray(useInterceptors)) {
     useInterceptors.forEach((name) => {
       const index = names.indexOf(name)
       index !== -1 && used.push(name)
     })
+  } else if (useInterceptors === '*') {
+    used.push(...Object.keys(allInterceptors))
+  } else {
+    used.push(...Object.keys(interceptors))
   }
 
-  if (Array.isArray(unuseInterceptors) && unuseInterceptors.length > 0) {
-    unuseInterceptors.forEach((name) => {
-      const index = used.indexOf(name)
-      index !== -1 && used.splice(index, 1)
+  if (used.length > 0) {
+    if (Array.isArray(unuseInterceptors)) {
+      unuseInterceptors.forEach((name) => {
+        const index = used.indexOf(name)
+        index !== -1 && used.splice(index, 1)
+      })
+    } else if (unuseInterceptors === '*') {
+      used.splice(0)
+    }
+  }
+
+  if (Array.isArray(additionInterceptors)) {
+    additionInterceptors.forEach((name) => {
+      const index = names.indexOf(name)
+      index !== -1 && used.push(name)
     })
   }
 

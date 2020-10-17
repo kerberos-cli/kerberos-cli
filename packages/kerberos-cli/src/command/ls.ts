@@ -1,3 +1,4 @@
+import path from 'path'
 import { program } from 'commander'
 import chalk from 'chalk'
 import { getDependencyGraph, getProjectInfoCollection } from '../services/project'
@@ -47,9 +48,10 @@ async function takeAction(options?: Types.CLILsOptions): Promise<void> {
   const branches = await Promise.all(finalProjects.map((project) => getBranch(project.folder)))
   const dependencyGraph = options?.dependencies ? await getDependencyGraph() : []
 
-  finalProjects.forEach(({ name, version }, index) => {
+  const cwd = process.cwd()
+  finalProjects.forEach(({ name, version, folder }, index) => {
     const branch = branches[index]
-    const message = chalk.grey(`- ${chalk.white.bold(name)}@${chalk.cyan.bold(version)} >> ${chalk.green.bold(branch)}`)
+    const message = chalk.grey(`- ${chalk.white.bold(name)}@${chalk.cyan.bold(version)} >> ${chalk.green.bold(branch)} >> ${chalk.grey.bold(path.relative(cwd, folder))}`)
     console.log(message)
 
     const dependency = dependencyGraph.find((item) => item.name === name)

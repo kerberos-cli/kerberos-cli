@@ -75,7 +75,7 @@ export const COMMAND__CLONE__SUCCESS_COMPLETE = 'Git clone project completed.'
 // command checkout
 export const COMMAND__CHECKOUT__DESC = 'check out the branch in the package'
 export const COMMAND__CHECKOUT__ARGS_BRANCH = 'specify the branch to checkout'
-export const COMMAND__CHECKOUT__OPTION_PROJECT = 'specify the project to switch'
+// export const COMMAND__CHECKOUT__OPTION_PROJECT = 'specify the project to switch'
 export const COMMAND__CHECKOUT__SELECT_PROJECT = 'Please select the projects to switch branch.'
 export const COMMAND__CHECKOUT__ERROR_NOT_SUBMIT = 'Some files in the projects are in temporary storage (not submitted), please submit first.\n#{1}'
 export const COMMAND__CHECKOUT__ERROR_FAIL_CHECKOUT = 'Project #{1} failed to switch branches, please complete the switch manually.'
@@ -83,7 +83,7 @@ export const COMMAND__CHECKOUT__SUCCESS_COMPLETE = 'Projects have been change br
 
 // command branch
 export const COMMAND__BRANCH__DESC = 'show all branches of the project (local and remote)'
-export const COMMAND__BRANCH__OPTION_PROJECT = 'specify the project to display the branch'
+export const COMMAND__BRANCH__OPTION_ALL = 'list both remote-tracking and local branches'
 export const COMMAND__BRANCH__SELECT_PROJECT = 'Please select the project to view the branch.'
 
 // command version

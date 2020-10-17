@@ -34,16 +34,10 @@ export type CLICloneOptions = {
   optional?: boolean
 }
 
-/** checkout 命令选项 */
-export type CLICheckoutOptions = {
-  /** 指定项目 */
-  projects?: string[]
-}
-
 /** branch 命令选项 */
 export type CLIBranchOptions = {
-  /** 指定项目 */
-  project?: string
+  /** 显示所有分支 */
+  all?: boolean
 }
 
 /** version 命令选项 */

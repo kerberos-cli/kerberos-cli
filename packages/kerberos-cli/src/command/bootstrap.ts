@@ -2,8 +2,9 @@ import fs from 'fs-extra'
 import path from 'path'
 import { program } from 'commander'
 import waterfall from 'promise-waterfall'
-import { getConfig, getProjectInfoCollection } from '../services/project'
+import { getConfig, getProjectInfoCollection, getConfigBranch } from '../services/project'
 import { spawn } from '../services/process'
+import { gitClone } from '../services/git'
 import { success } from '../services/logger'
 import { confirm, multiSelect } from '../services/ui'
 import intercept from '../interceptors'
@@ -11,9 +12,9 @@ import i18n from '../i18n'
 import * as Types from '../types'
 
 async function takeAction(options?: Types.CLIBootstrapOptions): Promise<void> {
-  const { yes, install: yarnInstall, clone: gitClone, optional } = options
+  const { yes, install: yarnInstall, clone: isGitClone, optional } = options
 
-  if (gitClone === true) {
+  if (isGitClone === true) {
     const config = await getConfig()
     const pkgFile = path.join(process.cwd(), 'package.json')
     if (!(await fs.pathExists(pkgFile))) {
@@ -25,29 +26,26 @@ async function takeAction(options?: Types.CLIBootstrapOptions): Promise<void> {
     const existsProjects = (await getProjectInfoCollection()).map((project) => project.name)
     const necessaries: Types.CProject[] = []
     const optionals: Types.CProject[] = []
-    const codes: number[] = []
+    const curBranch = await getConfigBranch()
     const install = async (projects: Types.DProjectInConfChoice[]) => {
-      const codes = []
       const tasks = projects.map(({ name, workspace, repository }) => async () => {
         const wsFolder = path.join(process.cwd(), workspace)
         await fs.ensureDir(wsFolder)
 
-        const params = ['clone', repository, name]
-        const code = await spawn('git', params, { cwd: wsFolder, shell: true })
-        codes.push(code)
+        if (!(await gitClone(repository, wsFolder, name, curBranch))) {
+          await gitClone(repository, wsFolder, name)
+        }
       })
 
       if (tasks.length === 0) {
-        return codes
+        return
       }
 
       if (options?.sequence) {
         await waterfall(tasks)
-        return codes
       }
 
-      Promise.all(tasks.map((exec) => exec()))
-      return codes
+      await Promise.all(tasks.map((exec) => exec()))
     }
 
     projects.forEach((project) => {
@@ -60,21 +58,17 @@ async function takeAction(options?: Types.CLIBootstrapOptions): Promise<void> {
       }
     })
 
-    // 安装依赖
-    const nCodes = await install(necessaries)
-    codes.push(...nCodes)
+    await install(necessaries)
 
     if (optionals.length > 0) {
       if (yes) {
         if (optional) {
-          const oCodes = await install(optionals)
-          codes.push(...oCodes)
+          await install(optionals)
         }
       } else {
         if (await confirm(i18n.COMMAND__BOOTSTRAP__CONFIRM_INSTALL_OPTIONAL``, false)) {
           const selectedProjects = await multiSelect('projectInConfig')(i18n.COMMAND__BOOTSTRAP__SELECT_CLONE_PROJECT``, optionals)
-          const oCodes = await install(selectedProjects)
-          codes.push(...oCodes)
+          await install(selectedProjects)
         }
       }
     }
