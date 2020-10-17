@@ -201,7 +201,7 @@ export const COMMAND_SHARE__TRY_GET_WORKSPACE__ERROR_NOT_FOUND_PROJECT = 'Projec
 export const INTERCEPTORS__CONTEXT__ERROR_INVALID_PROJECT = 'Not a kerberos workspace (or any of the parent directories).'
 
 // branch
-export const INTERCEPTORS__BRANCH__ERROR_INVALID_PROJECT = 'Some projects are in different branches.'
+export const INTERCEPTORS__BRANCH__ERROR_INVALID_BRANCH = 'Some projects are in different branches, please switch the following project to #{1} branch.\n#{2}'
 
 // supported
 export const INTERCEPTORS__SUPPORTED__ERROR_NOT_INSTALL_GIT = 'Git is not supported, please install Git first.'

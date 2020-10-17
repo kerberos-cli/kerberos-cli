@@ -196,7 +196,7 @@ export const COMMAND_SHARE__TRY_GET_WORKSPACE__ERROR_NOT_FOUND_PROJECT = '找不
 export const INTERCEPTORS__CONTEXT__ERROR_INVALID_PROJECT = '当前目录及其任意父级目录均不是 Kerberos 工作区。'
 
 // branch
-export const INTERCEPTORS__BRANCH__ERROR_INVALID_PROJECT = '部分项目所在分支不同。'
+export const INTERCEPTORS__BRANCH__ERROR_INVALID_BRANCH = '部分项目所在分支不同，请将以下项目切换到 #{1} 分支:\n#{2}'
 
 // supported
 export const INTERCEPTORS__SUPPORTED__ERROR_NOT_INSTALL_GIT = '不支持 Git，请先安装 Git。'

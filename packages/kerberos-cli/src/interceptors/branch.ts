@@ -1,3 +1,4 @@
+import chalk from 'chalk'
 import { getProjectInfoCollection, getConfigBranch } from '../services/project'
 import { getBranch } from '../services/git'
 import { fail } from '../services/logger'
@@ -19,7 +20,8 @@ export default function branchInterceptor<T extends (...args: any[]) => Promise<
     const branch = await getConfigBranch()
     const diff = branches.filter(({ branch: name }) => name !== branch)
     if (diff.length > 0) {
-      fail(i18n.INTERCEPTORS__BRANCH__ERROR_INVALID_PROJECT``)
+      const branches = diff.map(({ name, branch }) => chalk.gray(` - ${chalk.red.bold(name)} -> ${chalk.green.bold(branch)}`)).join('\n')
+      fail(i18n.INTERCEPTORS__BRANCH__ERROR_INVALID_BRANCH`${branch}${branches}`)
       process.exit(0)
     }
 

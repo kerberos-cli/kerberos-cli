@@ -41,4 +41,4 @@ program
   .option('-D, --dev', i18n.COMMAND__ADD__OPTION_DEV``)
   .option('-P, --peer', i18n.COMMAND__ADD__OPTION_PEER``)
   .option('-O, --optional', i18n.COMMAND__ADD__OPTION_OPTIONAL``)
-  .action((dependencies: string[], options: Types.CLIAddOptions) => intercept()(takeAction)(dependencies, options))
+  .action((dependencies: string[], options: Types.CLIAddOptions) => intercept(null, null, ['branch'])(takeAction)(dependencies, options))

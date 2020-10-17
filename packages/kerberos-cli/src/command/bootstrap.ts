@@ -91,4 +91,4 @@ program
   .option('-y, --yes', i18n.COMMAND__BOOTSTRAP__OPTION_YES``)
   .option('-o, --optional', i18n.COMMAND__BOOTSTRAP__OPTION_OPTIONAL``)
   .option('-S, --sequence', i18n.COMMAND__BOOTSTRAP__OPTION_SEQUENCE``)
-  .action((options: Types.CLIBootstrapOptions) => intercept()(takeAction)(options))
+  .action((options: Types.CLIBootstrapOptions) => intercept(null, null, ['branch'])(takeAction)(options))

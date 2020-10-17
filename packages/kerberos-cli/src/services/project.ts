@@ -25,6 +25,25 @@ export async function getConfig(file: string = getConfigPath()): Promise<Types.C
   return content
 }
 
+/** 获取配置项目路径 */
+export async function getConfigProjectPath(): Promise<string> {
+  const cwd = process.cwd()
+  const file = getConfigPath()
+  const realpath = await fs.realpath(file)
+  return path.relative(cwd, path.dirname(realpath))
+}
+
+/** 获取配置项目名称 */
+export async function getConfigProjectName(): Promise<string> {
+  const folder = await getConfigProjectPath()
+  const { name } = (await openJsonFile(path.join(folder, 'package.json'))) || {}
+  return name
+}
+
+/**
+ * 获取配置项目分支
+ * @param folder 项目目录
+ */
 export async function getConfigBranch(folder?: string) {
   const cfgFolder = folder || path.dirname(await fs.realpath(getConfigPath()))
   return getBranch(cfgFolder)

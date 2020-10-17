@@ -25,4 +25,4 @@ program
     dependencies: i18n.COMMAND__REMOVE__ARGS_DEPENDENCIES``,
   })
   .option('-p, --project <projects...>', i18n.COMMAND__REMOVE__OPTION_PROJECT``)
-  .action((dependencies: string[], options: Types.CLIRemoveOptions) => intercept()(takeAction)(dependencies, options))
+  .action((dependencies: string[], options: Types.CLIRemoveOptions) => intercept(null, null, ['branch'])(takeAction)(dependencies, options))

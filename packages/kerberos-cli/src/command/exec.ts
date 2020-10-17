@@ -43,4 +43,4 @@ program
   })
   .option('-p, --project <project>', i18n.COMMAND__EXEC__OPTION_PROJECT``)
   .option('-r, --root', i18n.COMMAND__EXEC__OPTION_ROOT``)
-  .action((command: string, options?: Types.CLIExecOptions) => intercept()(takeAction)(command, options))
+  .action((command: string, options?: Types.CLIExecOptions) => intercept(null, null, ['branch'])(takeAction)(command, options))

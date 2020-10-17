@@ -34,7 +34,7 @@ export function onexit(handle: (...args: any[]) => void) {
  * @param stdoutFn 输出配置
  * @param killToken 关闭 token
  */
-export function spawn(cli: string, params?: Array<string>, options?: SpawnOptions, stdoutFn?: (data: string, type: 'out' | 'err') => void, killToken?: symbol): Promise<any> {
+export function spawn(cli: string, params?: Array<string>, options?: SpawnOptions, stdoutFn?: (data: Buffer, type: 'out' | 'err') => void, killToken?: symbol): Promise<any> {
   return new Promise((resolve, reject) => {
     let cp = cpSpawn(cli, params || [], { stdio: typeof stdoutFn === 'function' ? 'pipe' : 'inherit', ...options })
 

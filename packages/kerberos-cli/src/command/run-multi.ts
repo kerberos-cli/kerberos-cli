@@ -57,4 +57,4 @@ program
   .option('-e, --exclude <projects...>', i18n.COMMAND__EXEC_MULTI__OPTION_EXCLUDE``)
   .option('-a, --all', i18n.COMMAND__EXEC_MULTI__OPTION_ALL``)
   .option('--parallel', i18n.COMMAND__RUN_MULTI__OPTION_PARALLEL``)
-  .action((script: string, options?: Types.CLIRunMultiOptions) => intercept()(takeAction)(script, options))
+  .action((script: string, options?: Types.CLIRunMultiOptions) => intercept(null, null, ['branch'])(takeAction)(script, options))
