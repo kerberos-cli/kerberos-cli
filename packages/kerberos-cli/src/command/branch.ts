@@ -14,13 +14,13 @@ async function takeAction(options?: Types.CLIBranchOptions): Promise<void> {
       const { locals, remotes } = await getBranches(folder)
       const tracking = await getBranchTracking(folder)
 
-      console.log(chalk.cyan(`[${name}]`))
+      console.log(chalk.cyan.bold(`[${name}]`))
       locals.forEach((name) => {
         const remote = tracking[name]
         const isCur = name === curBranch
         const symbol = isCur ? '*' : ' '
-        const message = ` ${symbol} ${name}` + (remote ? ` -> ${remote}` : '')
-        const content = isCur ? chalk.green(message) : chalk.magenta(message)
+        const message = ` ${symbol} ${chalk.green.bold(name)}` + (remote ? ` -> ${chalk.green.bold(remote)}` : '')
+        const content = isCur ? chalk.gray(message) : chalk.magenta(message)
         console.log(content)
       })
 
