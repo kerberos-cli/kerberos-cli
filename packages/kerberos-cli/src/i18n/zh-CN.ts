@@ -75,7 +75,6 @@ export const COMMAND__CLONE__SUCCESS_COMPLETE = 'Git 克隆项目已完成。'
 // command checkout
 export const COMMAND__CHECKOUT__DESC = '检出包中的分支'
 export const COMMAND__CHECKOUT__ARGS_BRANCH = '指定需要切换的分支'
-// export const COMMAND__CHECKOUT__OPTION_PROJECT = '指定要切换的项目'
 export const COMMAND__CHECKOUT__SELECT_PROJECT = '请选择要切换分支的项目。'
 export const COMMAND__CHECKOUT__ERROR_NOT_SUBMIT = '项目中的某些文件位于临时存储中（未提交），请先提交。\n#{1}'
 export const COMMAND__CHECKOUT__ERROR_FAIL_CHECKOUT = '项目 #{1} 无法切换分支，请手动完成切换。'
