@@ -147,21 +147,14 @@ export async function updatePackage(options: Partial<Types.CPackage>, file: stri
  * 获取所有子项目 package.json 文件路径集合
  * @param specifyConfig 指定根配置配置
  */
-export async function getPackagePathCollection(specifyConfig?: Types.CPackage): Promise<string[]> {
-  const { workspaces } = specifyConfig || (await getPackage())
-  let patterns = []
-  if (Array.isArray(workspaces)) {
-    patterns = workspaces
-  } else {
-    if (!Array.isArray(workspaces.packages)) {
-      return []
-    }
-
-    patterns = workspaces.packages
+export async function getPackagePathCollection(specifyConfig?: Types.CConfig): Promise<string[]> {
+  const { workspaces } = specifyConfig || (await getConfig())
+  if (!Array.isArray(workspaces)) {
+    return []
   }
 
   const packages = await Promise.all(
-    patterns.map(async (pattern) => {
+    workspaces.map(async (pattern) => {
       const projectPattern = path.join(pattern, 'package.json')
       const files = await promisify(glob)(projectPattern, {
         ignore: ['node_modules'],
@@ -250,13 +243,9 @@ export async function getDirtyProjectInfoCollection(specifyDirtyProjectPathColle
  * @param specifyProjectPathCollection 指定子项目的路径集合
  */
 export async function getWorkspacePathCollection(specifyProjectPathCollection?: string[]): Promise<string[]> {
-  let { workspaces } = await getPackage()
+  const { workspaces } = await getConfig()
   if (!Array.isArray(workspaces)) {
-    if (!Array.isArray(workspaces.packages)) {
-      return []
-    }
-
-    workspaces = workspaces.packages
+    return []
   }
 
   const abstract = workspaces.map((pattern) => pattern.split('/').shift())

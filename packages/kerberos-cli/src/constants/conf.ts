@@ -22,6 +22,9 @@ export const configProjectFolderName = 'doge'
 /** 工作区 package.json 名称 */
 export const workspacePackageFileName = 'package.workspace.json'
 
+/** 备份 package.json 名称 */
+export const backupPackageFileName = 'package.kerberos-backup.json'
+
 /** 默认工作区名称 */
 export const workspaceDefaultName = '@kerberos'
 

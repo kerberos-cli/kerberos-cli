@@ -1,5 +1,6 @@
 import { PromiseType } from 'utility-types'
 import tryAction from './tryAction'
+import recovery from './recovery'
 import branch from './branch'
 import supported from './supported'
 import context from './context'
@@ -8,6 +9,7 @@ import context from './context'
 const interceptors = {
   tryAction,
   supported,
+  recovery,
   /** 注意 context 应该最早执行, 需要放最底下 */
   context,
 }

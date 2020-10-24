@@ -1,4 +1,5 @@
 import { PromiseType } from 'utility-types'
+import { recovery } from '../services/actions'
 import { fail } from '../services/logger'
 
 /**
@@ -13,6 +14,7 @@ export default function tryActionInterceptor<T extends (...args: any[]) => Promi
     try {
       return await callback(...args)
     } catch (error) {
+      recovery()
       fail(error)
 
       throw error

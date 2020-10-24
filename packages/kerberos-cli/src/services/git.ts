@@ -105,8 +105,12 @@ export async function gitCheckout(branch: string, folder: string): Promise<boole
  */
 export async function getBranch(folder: string): Promise<string> {
   await spawn('git', ['fetch'], { cwd: folder })
-  const stdout = await getStdout('git rev-parse --abbrev-ref HEAD', { cwd: folder })
-  return stdout.split(os.EOL).shift()
+  try {
+    const stdout = await getStdout('git rev-parse --abbrev-ref HEAD', { cwd: folder })
+    return stdout.split(os.EOL).shift()
+  } catch (error) {
+    return ''
+  }
 }
 
 /**

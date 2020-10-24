@@ -51,7 +51,13 @@ async function takeAction(options?: Types.CLILsOptions): Promise<void> {
   const cwd = process.cwd()
   finalProjects.forEach(({ name, version, folder }, index) => {
     const branch = branches[index]
-    const message = chalk.grey(`- ${chalk.white.bold(name)}@${chalk.cyan.bold(version)} >> ${chalk.green.bold(branch)} >> ${chalk.grey.bold(path.relative(cwd, folder))}`)
+
+    let message = chalk.grey(`- ${chalk.white.bold(name)}@${chalk.cyan.bold(version)}`)
+    if (branch) {
+      message += chalk.grey(` >> ${chalk.green.bold(branch)}`)
+    }
+
+    message += chalk.grey(` >> ${chalk.magenta(path.relative(cwd, folder))}`)
     console.log(message)
 
     const dependency = dependencyGraph.find((item) => item.name === name)

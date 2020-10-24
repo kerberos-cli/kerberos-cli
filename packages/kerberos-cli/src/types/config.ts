@@ -5,7 +5,7 @@ export type CProject = {
   /** 项目地址 */
   repository: string
   /** 所在工作区 */
-  workspace: string
+  workspace?: string
   /** 选择性安装 */
   optional?: boolean
 }
@@ -23,6 +23,8 @@ export type CConfig = {
     /** 发布信息 */
     message?: string
   }
+  /** 工作区 */
+  workspaces: string[]
   /** 项目信息 */
   projects?: CProject[]
 }

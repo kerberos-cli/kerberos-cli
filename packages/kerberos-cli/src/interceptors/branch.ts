@@ -20,8 +20,16 @@ export default function branchInterceptor<T extends (...args: any[]) => Promise<
     const branch = await getConfigBranch()
     const diff = branches.filter(({ branch: name }) => name !== branch)
     if (diff.length > 0) {
-      const branches = diff.map(({ name, branch }) => chalk.gray(` - ${chalk.red.bold(name)} -> ${chalk.green.bold(branch)}`)).join('\n')
-      fail(i18n.INTERCEPTORS__BRANCH__ERROR_INVALID_BRANCH`${branch}${branches}`)
+      const branches = diff.map(({ name, branch }) => {
+        let content = chalk.gray(` - ${chalk.red.bold(name)}`)
+        if (branch) {
+          content += ` -> ${chalk.green.bold(branch)}`
+        }
+
+        return content
+      })
+
+      fail(i18n.INTERCEPTORS__BRANCH__ERROR_INVALID_BRANCH`${branch}${branches.join('\n')}`)
       process.exit(0)
     }
 
